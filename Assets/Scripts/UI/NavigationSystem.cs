@@ -44,7 +44,19 @@ public class NavigationSystem : MonoBehaviour
 
     private void Start()
     {
+        SetConstructionUI();
+    }
+
+    private void Update()
+    {
+        ManageConstructionUI();
+        CheckToggles();
+        CheckSelections();
+    }
+    private void SetConstructionUI()
+    {
         currentTileType = SelectedTileType.none;
+
         buildingTiles.SetActive(false);
         tileTypeSelector.SetActive(false);
         tileSelector.SetActive(false);
@@ -54,14 +66,6 @@ public class NavigationSystem : MonoBehaviour
 
         onConstruction = false;
     }
-
-    private void Update()
-    {
-        ManageConstructionUI();
-        CheckToggles();
-        CheckSelections();
-    }
-
     private void ManageConstructionUI() 
     {
         if (onConstruction)
@@ -84,9 +88,10 @@ public class NavigationSystem : MonoBehaviour
             ttButtonBackground.SetActive(false);
 
             buildingTiles.SetActive(false);
+            furnitureTiles.SetActive(false);
+            machineTiles.SetActive(false);
         }
     }
-
     private void CheckToggles() 
     {
         if (tileTypeDD.value == 0)
@@ -105,7 +110,6 @@ public class NavigationSystem : MonoBehaviour
             ClickedCon_Machines();
         }
     }
-
     private void CheckSelections()
     {
         switch (currentTileType)
@@ -156,7 +160,6 @@ public class NavigationSystem : MonoBehaviour
                 break;
         }
     }
-
     private void ClickedConstruction()
     {
         onConstruction = !onConstruction;
