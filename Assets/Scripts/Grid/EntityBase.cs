@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(RectTransform), typeof(Image))]
-public abstract class EntityBase : MonoBehaviour {
+public abstract class EntityBase : MonoBehaviour{
 
 	private EntityGrid GridCache = null;
 	private Vector2Int PositionCache = Vector2Int.zero;
@@ -53,5 +53,4 @@ public abstract class EntityBase : MonoBehaviour {
 	internal void OnGridDestroy() {
 		GridCache = null;
 	}
-
 }

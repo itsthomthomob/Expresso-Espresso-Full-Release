@@ -12,8 +12,8 @@ public class World : MonoBehaviour {
 		Grid = FindObjectOfType<EntityGrid>();
 
 		// Grid size
-		Min = new Vector2Int(-20, -10);
-		Max = new Vector2Int(+20, +10);
+		Min = new Vector2Int(-20, -20);
+		Max = new Vector2Int(+20, +20);
 		int size = (Max.x - Min.x) * (Max.y - Min.y);
 
 		// Concrete
