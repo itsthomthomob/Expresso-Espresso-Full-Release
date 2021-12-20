@@ -30,12 +30,14 @@ public class NavigationSystem : MonoBehaviour
     public SelectedTile currentTile;
     public bool onConstruction;
 
-    [Header("Buttons/GameObjects")]
+    [Header("UI Objects")]
     public Dropdown tileTypeDD;
     public GameObject tileTypeSelector;
     public GameObject tileSelector;
     public GameObject ttButtonBackground;
+    public GameObject scrollbar;
 
+    [Header("Container Objects")]
     public GameObject buildingTiles;
     public GameObject furnitureTiles;
     public GameObject machineTiles;
@@ -57,6 +59,7 @@ public class NavigationSystem : MonoBehaviour
     {
         currentTileType = SelectedTileType.none;
 
+        scrollbar.SetActive(false);
         buildingTiles.SetActive(false);
         tileTypeSelector.SetActive(false);
         tileSelector.SetActive(false);
@@ -72,10 +75,10 @@ public class NavigationSystem : MonoBehaviour
         {
             currentTileType = SelectedTileType.Building;
 
+            scrollbar.SetActive(true);
             tileTypeSelector.SetActive(true);
             tileSelector.SetActive(true);
             ttButtonBackground.SetActive(true);
-
 
             buildingTiles.SetActive(true);
         }
@@ -83,6 +86,7 @@ public class NavigationSystem : MonoBehaviour
         {
             currentTileType = SelectedTileType.none;
 
+            scrollbar.SetActive(false);
             tileTypeSelector.SetActive(false);
             tileSelector.SetActive(false);
             ttButtonBackground.SetActive(false);
