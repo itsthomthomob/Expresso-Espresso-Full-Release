@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class NavigationSystem : MonoBehaviour
+public class ConstructionSystem : MonoBehaviour
 {
     public enum SelectedTileType
     {
@@ -44,9 +44,13 @@ public class NavigationSystem : MonoBehaviour
 
     public Button constructionButton;
 
+    [Header("Tile Buttons")]
+    public Button Tile_Floor1;
+
     private void Start()
     {
         SetConstructionUI();
+        SetButtons();
     }
 
     private void Update()
@@ -55,16 +59,25 @@ public class NavigationSystem : MonoBehaviour
         CheckToggles();
         CheckSelections();
     }
+
+    public void SetButtons() 
+    {
+        Tile_Floor1.onClick.AddListener(SelectedFloorOne);
+    }
+
     private void SetConstructionUI()
     {
+        // Set initial state
         currentTileType = SelectedTileType.none;
 
+        // Construction UI elements
         scrollbar.SetActive(false);
         buildingTiles.SetActive(false);
         tileTypeSelector.SetActive(false);
         tileSelector.SetActive(false);
         ttButtonBackground.SetActive(false);
 
+        // UI Icon
         constructionButton.onClick.AddListener(ClickedConstruction);
 
         onConstruction = false;
@@ -189,5 +202,10 @@ public class NavigationSystem : MonoBehaviour
     {
         currentTileType = SelectedTileType.Machines;
 
+    }
+
+    private void SelectedFloorOne() 
+    {
+        currentTile = SelectedTile.Floor1;
     }
 }

@@ -23,13 +23,6 @@ public class World : MonoBehaviour {
 			}
 		}
 
-		// Walls
-		for (int i = 0; i < size / 4; i++) {
-			Vector2Int position = GetRandomLocation();
-			Grid.DestroyAll(position);
-			Grid.Create<EntityWall>(position);
-		}
-
 		// Road
 		for (int x = Min.x; x < Max.x; x++) {
 			Vector2Int position = new Vector2Int(x, 0);
