@@ -22,6 +22,7 @@ public class ConstructionSystem : MonoBehaviour
         Floor3,
         Floor4,
         Floor5,
+        Floor6,
         Wall1
     }
 
@@ -46,6 +47,10 @@ public class ConstructionSystem : MonoBehaviour
 
     [Header("Tile Buttons")]
     public Button Tile_Floor1;
+    public Button Tile_Floor2;
+    public Button Tile_Floor3;
+    public Button Tile_Floor4;
+    public Button Tile_Floor5;
 
     private void Start()
     {
@@ -63,6 +68,10 @@ public class ConstructionSystem : MonoBehaviour
     public void SetButtons() 
     {
         Tile_Floor1.onClick.AddListener(SelectedFloorOne);
+        Tile_Floor2.onClick.AddListener(SelectedFloorTwo);
+        Tile_Floor3.onClick.AddListener(SelectedFloorThree);
+        Tile_Floor4.onClick.AddListener(SelectedFloorFour);
+        Tile_Floor5.onClick.AddListener(SelectedFloorFive);
     }
 
     private void SetConstructionUI()
@@ -207,5 +216,21 @@ public class ConstructionSystem : MonoBehaviour
     private void SelectedFloorOne() 
     {
         currentTile = SelectedTile.Floor1;
+    }
+    private void SelectedFloorTwo()
+    {
+        currentTile = SelectedTile.Floor2;
+    }
+    private void SelectedFloorThree()
+    {
+        currentTile = SelectedTile.Floor3;
+    }
+    private void SelectedFloorFour()
+    {
+        currentTile = SelectedTile.Floor4;
+    }
+    private void SelectedFloorFive()
+    {
+        currentTile = SelectedTile.Floor5;
     }
 }

@@ -48,7 +48,14 @@ public class CameraSystem : MonoBehaviour, IDragHandler
             if (Input.GetKey(KeyCode.E))
             {
                 rootTrans.sizeDelta = new Vector2(rootTrans.sizeDelta.x - zoomStep, rootTrans.sizeDelta.y - zoomStep);
-
+            }
+            if (Input.GetAxis("Mouse ScrollWheel") < 0)
+            {
+                rootTrans.sizeDelta = new Vector2(rootTrans.sizeDelta.x - zoomStep, rootTrans.sizeDelta.y - zoomStep);
+            }
+            if (Input.GetAxis("Mouse ScrollWheel") > 0)
+            {
+                rootTrans.sizeDelta = new Vector2(rootTrans.sizeDelta.x + zoomStep, rootTrans.sizeDelta.y + zoomStep);
             }
         }
     }

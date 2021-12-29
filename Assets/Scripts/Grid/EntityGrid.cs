@@ -310,16 +310,21 @@ public class EntityGrid : MonoBehaviour {
 		return last;
 	}
 
-	public EntityBase[] FindEntities(Vector2Int min, Vector2Int max) {
+	public EntityBase[] FindEntities(Vector2Int a, Vector2Int b)
+	{
+		Vector2Int min = Vector2Int.Min(a, b);
+		Vector2Int max = Vector2Int.Max(a, b);
 		List<EntityBase> list = new List<EntityBase>();
-		for (int x = min.x; x < max.x; x++) {
-			for (int y = min.y; y < max.y; y++) {
+		for (int x = min.x; x < max.x; x++)
+		{
+			for (int y = min.y; y < max.y; y++)
+			{
 				Vector2Int position = new Vector2Int(x, y);
 				Grid.TryGetValue(position, out List<EntityBase> found);
 				if (found != null) list.AddRange(found);
 			}
 		}
-		return list.ToArray(); ;
+		return list.ToArray();
 	}
 
 	public T[] FindEntities<T>(Vector2Int min, Vector2Int max) where T : EntityBase {
@@ -367,5 +372,4 @@ public class EntityGrid : MonoBehaviour {
 		if (compared != 0) return compared;
 		return b.Position.y.CompareTo(a.Position.y);
 	}
-
 }
