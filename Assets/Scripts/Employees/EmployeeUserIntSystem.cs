@@ -13,6 +13,14 @@ public class EmployeeUserIntSystem : MonoBehaviour
         onSupport,
         onFront
     }
+    public enum EmployeesTabs 
+    { 
+        onHire,
+        onEmployees,
+        onRelations,
+        onSchedule,
+        onLogs
+    }
 
     [Header("Master Objs")]
     public GameObject EmployeeMenuUI;
@@ -21,6 +29,7 @@ public class EmployeeUserIntSystem : MonoBehaviour
     public Button EmployeesCloseButton;
 
     [Header("Tabs")]
+    public EmployeesTabs selectedTab;
     public GameObject HireUI;
     public GameObject EmployeesUI;
     public GameObject RelationsUI;
