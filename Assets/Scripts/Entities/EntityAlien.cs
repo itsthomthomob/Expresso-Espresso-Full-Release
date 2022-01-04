@@ -13,7 +13,7 @@ public class EntityAlien : EntityBase {
 	}
 
 	protected override Sprite GetEntitySprite() {
-		return Resources.Load<Sprite>("Sprites/Alien");
+		return Resources.Load<Sprite>("Sprites/Characters/Alien");
 	}
 
 	protected override EntityPriority GetEntityPriority() {
