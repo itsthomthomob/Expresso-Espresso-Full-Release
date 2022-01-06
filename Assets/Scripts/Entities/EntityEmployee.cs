@@ -5,10 +5,25 @@ using UnityEngine.UI;
 
 public class EntityEmployee : EntityBase
 {
+	public enum EmployeeRoles
+	{
+		Barista,
+		Support,
+		Front
+	}
+	public enum PersonalityTypes
+	{
+		Introvert,
+		Extrovert
+	}
+
 	private World World;
 	private Vector2Int Destination;
 	private float Speed;
 
+	private int EmployeeID;
+	private EmployeeRoles EmployeeRole;
+	private PersonalityTypes EmployeePersonality;
 	private string EmployeeName;
 	private string SpriteName;
 	private float WageAmount;
@@ -24,17 +39,25 @@ public class EntityEmployee : EntityBase
 		SpriteName = "Character001";
 	}
 
+	public void SetEmployeeID(int newID) { EmployeeID = newID; }
+	public int GetEmployeeID() { return EmployeeID; }
+
 	public void SetSpriteName(string newSprite) { SpriteName = newSprite; }
+	public string GetSpriteName() { return SpriteName; }
 	public void SetEmployeeName(string newName) { EmployeeName = newName; }
-	public string GetEmployeeName(string newName) { return EmployeeName; }
+	public string GetEmployeeName() { return EmployeeName; }
+	public void SetEmployeeRole(EmployeeRoles newRole) { EmployeeRole = newRole; }
+	public EmployeeRoles GetEmployeeRole() { return EmployeeRole; }
+	public void SetEmployeePersonality(PersonalityTypes newPers) { EmployeePersonality = newPers; }
+	public PersonalityTypes GetEmployeePersonality() { return EmployeePersonality; }
 	public void SetWageAmount(float newWage) { WageAmount = newWage; }
 	public float GetWageAmount() { return WageAmount;}
 	public void SetDays(Image[] newDays) { days = newDays; }
 	public Image[] GetDays() { return days; }
-	public void SetSkillModifer(float newSkill) { SkillModifier = newSkill;}
-	public float GetSkillModifer() { return SkillModifier; }
-	public void SetEfficiencyModifer(float newEff) { EfficiencyModifier = newEff; }
-	public float GetEfficiencyModifer(float newEff) { return EfficiencyModifier; }
+	public void SetSkillModifier(float newSkill) { SkillModifier = newSkill;}
+	public float GetSkillModifier() { return SkillModifier; }
+	public void SetEfficiencyModifier(float newEff) { EfficiencyModifier = newEff; }
+	public float GetEfficiencyModifier() { return EfficiencyModifier; }
 
 	protected override Sprite GetEntitySprite()
 	{

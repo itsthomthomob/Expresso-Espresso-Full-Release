@@ -36,6 +36,8 @@ public class EmployeeUserIntSystem : MonoBehaviour
     public GameObject LogsUI;
 
     [Header("Tabs - Buttons")]
+    public Color selectedColor = new Color(153, 153, 153);
+    public Color originalColor = new Color(255, 255, 255);
     public Button HireTab;
     public Button EmployeesTab;
     public Button RelationsTab;
@@ -59,13 +61,15 @@ public class EmployeeUserIntSystem : MonoBehaviour
     public Slider WageOffer;
 
     [Header("Hire - Attributes")]
-    public string currentCharImage;
-    public float skillAmount;
-    public string employeeName;
     public int HireableAmount;
-    public float MinimumWage;
-    public float CurrentWageOffer;
+    public int CurrentNewEmployeeID;
     public string[] names;
+    public string employeeName;
+    public string currentTrait;
+    public float skillAmount;
+    public float CurrentWageOffer;
+    public float MinimumWage;
+    public string currentCharImage;
     public Image[] days;
 
     [Header("Character Info Card")]
@@ -79,6 +83,8 @@ public class EmployeeUserIntSystem : MonoBehaviour
         HireableAmount = 7;
         MinimumWage = 10.00f;
         grid = FindObjectOfType<EntityGrid>();
+        selectedTab = EmployeesTabs.onHire;
+
         LoadButtons();
         GenerateBaristas();
     }
@@ -87,6 +93,37 @@ public class EmployeeUserIntSystem : MonoBehaviour
     {
         CheckHireTypes();
         GenerateInfoCard();
+        ManageTabs();
+    }
+
+    private void ManageTabs() 
+    {
+        var colors = HireTab.colors;
+        var colors2 = EmployeesTab.colors;
+
+        switch (selectedTab)
+        {
+            case EmployeesTabs.onHire:
+                colors.normalColor = selectedColor;
+                colors2.normalColor = originalColor;
+                HireUI.SetActive(true);
+                EmployeesUI.SetActive(false);
+                break;
+            case EmployeesTabs.onEmployees:
+                colors2.normalColor = selectedColor;
+                colors.normalColor = originalColor;
+                HireUI.SetActive(false);
+                EmployeesUI.SetActive(true);
+                break;
+            case EmployeesTabs.onRelations:
+                break;
+            case EmployeesTabs.onSchedule:
+                break;
+            case EmployeesTabs.onLogs:
+                break;
+            default:
+                break;
+        }
     }
 
     private void GenerateBaristas() 
@@ -159,20 +196,15 @@ public class EmployeeUserIntSystem : MonoBehaviour
                                 }
                             }
                         }
-                        if (CharCardChild.name == "Pinup")
+                        if (InfoCardChild.name == "Personality")
                         {
-                            if (CharCardChild.TryGetComponent(out Image charImage))
-                            {
-                                //TO-DO:
-                                // - Add random sprite picker
-                                // - Add more sprites
-                                // - Add dictionary of sprite names
-                                currentCharImage = "Character001";
-                                if (InfoCardChild.name == "CharacterSprite")
-                                {
-                                    charImage = InfoCardChild.GetComponent<Image>();
-                                }
-                            }
+                            currentTrait = InfoCardChild.GetComponent<TMP_Text>().text;
+                        }
+                        if (InfoCardChild.name == "Pinup")
+                        {
+                            Debug.Log("Getting image...");
+                            Sprite childSprite = InfoCardChild.GetComponent<Image>().sprite;
+                            currentCharImage = childSprite.name;
                         }
                         if (CharCardChild.name == "Skill-EXP-BG")
                         {
@@ -188,9 +220,9 @@ public class EmployeeUserIntSystem : MonoBehaviour
                                 }
                             }
                         }
-                        if (InfoCardChild.name == "WageAmount")
+                        if (CharCardChild.name == "WageAmount")
                         {
-                            float wage = InfoCardChild.GetComponent<Slider>().value;
+                            float wage = CharCardChild.GetComponent<Slider>().value;
                             CurrentWageOffer = wage;
                         }
                     }
@@ -198,6 +230,7 @@ public class EmployeeUserIntSystem : MonoBehaviour
             }
         }
     }
+
     private void CheckHireTypes() 
     {
         switch (currentEmployeeType)
@@ -219,8 +252,12 @@ public class EmployeeUserIntSystem : MonoBehaviour
                 break;
         }
     }
+
     private void LoadButtons()
     {
+        HireTab.onClick.AddListener(OnHire);
+        EmployeesTab.onClick.AddListener(OnEmployees);
+
         Baristas.onClick.AddListener(OnBaristas);
         Support.onClick.AddListener(OnSupport);
         Front.onClick.AddListener(OnFront);
@@ -228,14 +265,45 @@ public class EmployeeUserIntSystem : MonoBehaviour
         EmployeesCloseButton.onClick.AddListener(CloseEmployeesMenu);
         EmployeesOpenButton.onClick.AddListener(OpenEmployeesMenu);
     }
+
     private void CreateEmployee() 
     {
         EntityEmployee newEmployee = grid.Create<EntityEmployee>(new Vector2Int(0, 0));
+        
+        newEmployee.SetEmployeeID(CurrentNewEmployeeID);
+        CurrentNewEmployeeID += 1;
         newEmployee.SetDays(days);
         newEmployee.SetEmployeeName(employeeName);
-        newEmployee.SetSpriteName(currentCharImage);
+        //newEmployee.SetSpriteName(currentCharImage);
         newEmployee.SetWageAmount(CurrentWageOffer);
+        newEmployee.SetSkillModifier(skillAmount);
+        newEmployee.SetEfficiencyModifier(skillAmount / 2);
+        switch (currentTrait)
+        {
+            case "Extrovert":
+                newEmployee.SetEmployeePersonality(EntityEmployee.PersonalityTypes.Extrovert);
+                break;
+            case "Introvert":
+                newEmployee.SetEmployeePersonality(EntityEmployee.PersonalityTypes.Introvert);
+                break;
+        }
+
+        switch (currentEmployeeType)
+        {
+            case EmployeeTypeButtons.onBaristas:
+                newEmployee.SetEmployeeRole(EntityEmployee.EmployeeRoles.Barista);
+                break;
+            case EmployeeTypeButtons.onSupport:
+                newEmployee.SetEmployeeRole(EntityEmployee.EmployeeRoles.Support);
+                break;
+            case EmployeeTypeButtons.onFront:
+                newEmployee.SetEmployeeRole(EntityEmployee.EmployeeRoles.Front);
+                break;
+            default:
+                break;
+        }
     }
+
     private void OnBaristas() 
     {
         currentEmployeeType = EmployeeTypeButtons.onBaristas;
@@ -248,6 +316,16 @@ public class EmployeeUserIntSystem : MonoBehaviour
     {
         currentEmployeeType = EmployeeTypeButtons.onFront;
     }
+
+    private void OnHire() 
+    {
+        selectedTab = EmployeesTabs.onHire;
+    }
+    private void OnEmployees()
+    {
+        selectedTab = EmployeesTabs.onEmployees;
+    }
+
     private void CloseEmployeesMenu() 
     {
         EmployeeMenuUI.SetActive(false);

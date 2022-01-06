@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 749468935837560549}
   - component: {fileID: 2833988544801308201}
   m_Layer: 5
-  m_Name: H_7
+  m_Name: Role
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 6196759536798739560}
   - component: {fileID: 6196759536798739563}
   m_Layer: 5
-  m_Name: H_6
+  m_Name: Efficiency
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -462,7 +462,7 @@ GameObject:
   - component: {fileID: 6196759537719806456}
   - component: {fileID: 6196759537719806459}
   m_Layer: 5
-  m_Name: H_4
+  m_Name: Wage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -732,7 +732,7 @@ GameObject:
   - component: {fileID: 6196759538012275577}
   - component: {fileID: 6196759538012275576}
   m_Layer: 5
-  m_Name: H_5
+  m_Name: Skill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -866,7 +866,7 @@ GameObject:
   - component: {fileID: 6196759538252346051}
   - component: {fileID: 6196759538252346050}
   m_Layer: 5
-  m_Name: H_3
+  m_Name: Trait
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
