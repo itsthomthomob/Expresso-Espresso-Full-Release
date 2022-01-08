@@ -87,6 +87,8 @@ public class EmployeeUserIntSystem : MonoBehaviour
 
         LoadButtons();
         GenerateBaristas();
+        GenerateSupport();
+        GenerateFront();
     }
 
     private void Update()
@@ -169,6 +171,93 @@ public class EmployeeUserIntSystem : MonoBehaviour
             HireableEmployee.transform.SetParent(BaristasParent.transform);
         }
     }
+    private void GenerateSupport()
+    {
+        for (int i = 0; i < HireableAmount; i++)
+        {
+            GameObject HireableEmployee = Instantiate(HireablePrefab);
+            int InfoAmount = HireableEmployee.transform.childCount;
+            for (int j = 0; j < InfoAmount; j++)
+            {
+                var child = HireableEmployee.transform.GetChild(j);
+                if (child.name == "Name")
+                {
+                    child.GetComponent<TMP_Text>().text = names[Random.Range(0, names.Length)];
+                }
+                if (child.name == "Personality")
+                {
+                    float index = Random.Range(0, 2);
+                    Debug.Log(index);
+                    if (index == 0)
+                    {
+                        child.GetComponent<TMP_Text>().text = "Introvert";
+                    }
+                    if (index == 1)
+                    {
+                        child.GetComponent<TMP_Text>().text = "Extrovert";
+                    }
+                }
+                if (child.name == "Pinup")
+                {
+                    var SR = child.GetComponent<Sprite>();
+                }
+                if (child.name == "Experience-Bar-Background")
+                {
+                    if (child.transform.GetChild(0).name == "EXP-BAR")
+                    {
+                        RectTransform EXPBAR = child.transform.GetChild(0).GetComponent<RectTransform>();
+                        EXPBAR.sizeDelta = new Vector2(Random.Range(10, 200), 14);
+                    }
+                }
+            }
+            HireableEmployee.name = "Character-Container-Small";
+            HireableEmployee.transform.SetParent(SupportParent.transform);
+        }
+    }
+    private void GenerateFront()
+    {
+        for (int i = 0; i < HireableAmount; i++)
+        {
+            GameObject HireableEmployee = Instantiate(HireablePrefab);
+            int InfoAmount = HireableEmployee.transform.childCount;
+            for (int j = 0; j < InfoAmount; j++)
+            {
+                var child = HireableEmployee.transform.GetChild(j);
+                if (child.name == "Name")
+                {
+                    child.GetComponent<TMP_Text>().text = names[Random.Range(0, names.Length)];
+                }
+                if (child.name == "Personality")
+                {
+                    float index = Random.Range(0, 2);
+                    Debug.Log(index);
+                    if (index == 0)
+                    {
+                        child.GetComponent<TMP_Text>().text = "Introvert";
+                    }
+                    if (index == 1)
+                    {
+                        child.GetComponent<TMP_Text>().text = "Extrovert";
+                    }
+                }
+                if (child.name == "Pinup")
+                {
+                    var SR = child.GetComponent<Sprite>();
+                }
+                if (child.name == "Experience-Bar-Background")
+                {
+                    if (child.transform.GetChild(0).name == "EXP-BAR")
+                    {
+                        RectTransform EXPBAR = child.transform.GetChild(0).GetComponent<RectTransform>();
+                        EXPBAR.sizeDelta = new Vector2(Random.Range(10, 200), 14);
+                    }
+                }
+            }
+            HireableEmployee.name = "Character-Container-Small";
+            HireableEmployee.transform.SetParent(FrontParent.transform);
+        }
+    }
+
     private void GenerateInfoCard() 
     {
         int childAmount = CharacterCard.transform.childCount;

@@ -8833,11 +8833,6 @@ MonoBehaviour:
   selectedTile: 0
   GetConstruction: {fileID: 0}
   destroyOn: 0
-  squareMode: 0
-  ClickCount: 0
-  spawnPos: {x: 0, y: 0}
-  firstPos: {x: 0, y: 0, z: 0}
-  secondPos: {x: 0, y: 0}
   selectionMode: 0
   min: {x: 0, y: 0}
   max: {x: 0, y: 0}
@@ -17870,6 +17865,7 @@ MonoBehaviour:
   currentTileType: 0
   currentTile: 0
   onConstruction: 0
+  grid: {fileID: 0}
   tileTypeDD: {fileID: 1329609379}
   tileTypeSelector: {fileID: 1329609377}
   tileSelector: {fileID: 3681989}
@@ -17884,6 +17880,14 @@ MonoBehaviour:
   Tile_Floor3: {fileID: 895950087}
   Tile_Floor4: {fileID: 729432219}
   Tile_Floor5: {fileID: 1158732870}
+  Tile_Wall1: {fileID: 1222178516}
+  Brewer1: {fileID: 414387470}
+  Brewer2: {fileID: 197264093}
+  Brewer3: {fileID: 260913224}
+  Espresso1: {fileID: 976988071}
+  Espresso2: {fileID: 2052314119}
+  Espresso3: {fileID: 1285483455}
+  Roastery: {fileID: 1160965299}
 --- !u!4 &1765303358
 Transform:
   m_ObjectHideFlags: 0
@@ -17952,17 +17956,19 @@ MonoBehaviour:
   SupportParent: {fileID: 127467097}
   FrontParent: {fileID: 904492122}
   WageOffer: {fileID: 1746801286}
-  currentCharImage: 
-  skillAmount: 0
-  employeeName: 
   HireableAmount: 0
-  MinimumWage: 0
-  CurrentWageOffer: 0
+  CurrentNewEmployeeID: 0
   names:
   - John Doe
   - Bob DIllon
   - Tony Stella
   - John Caffeine
+  employeeName: 
+  currentTrait: 
+  skillAmount: 0
+  CurrentWageOffer: 0
+  MinimumWage: 0
+  currentCharImage: 
   days:
   - {fileID: 1948653490}
   - {fileID: 962259776}
@@ -17989,7 +17995,8 @@ MonoBehaviour:
   EmployeeInfoPrefab: {fileID: 6196759536977680653, guid: 5bc4b8ddf29b18b42a4f976a7ebc3086, type: 3}
   EmployeeList: {fileID: 106578450}
   EmployeesArray: []
-  EmployeesList: []
+  EmployeesListFromArray: []
+  GeneratedEmployeesList: []
   TotalEmployees: 0
 --- !u!1 &1768941533
 GameObject:
