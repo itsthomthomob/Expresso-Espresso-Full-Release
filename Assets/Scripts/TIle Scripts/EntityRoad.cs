@@ -10,4 +10,8 @@ public class EntityRoad : EntityBase {
         return EntityPriority.Terrain;
     }
 
+    public override string GetEntityName()
+    {
+        throw new System.NotImplementedException();
+    }
 }

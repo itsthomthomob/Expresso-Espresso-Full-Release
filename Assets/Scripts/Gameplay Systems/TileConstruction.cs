@@ -27,6 +27,7 @@ public class TileConstruction : MonoBehaviour
 
     [Header("Modes")]
     public bool destroyOn;
+    public bool isOverUI;
 
     [Header("Selection Mode")]
     public bool selectionMode;
@@ -58,9 +59,12 @@ public class TileConstruction : MonoBehaviour
         selectedTile = GetConstruction.currentTile;
 
         ManageMode();
-        ManageBuilding();
-        TileSelection();
-        ManageSelected();
+        if (!isOverUI)
+        {
+            ManageBuilding();
+            TileSelection();
+            ManageSelected();
+        }
     }
 
     public void ManageMode() 

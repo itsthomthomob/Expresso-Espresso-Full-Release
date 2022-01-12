@@ -92,4 +92,9 @@ public class EntityEmployee : EntityBase
 			return true;
 		}
 	}
+
+    public override string GetEntityName()
+    {
+        throw new System.NotImplementedException();
+    }
 }

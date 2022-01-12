@@ -37,4 +37,8 @@ public class EntityAlien : EntityBase {
 		}
 	}
 
+    public override string GetEntityName()
+    {
+        throw new System.NotImplementedException();
+    }
 }

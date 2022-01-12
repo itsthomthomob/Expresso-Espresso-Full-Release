@@ -9,6 +9,7 @@ public abstract class EntityBase : MonoBehaviour{
 	private Vector2Int PositionCache = Vector2Int.zero;
 	private RectTransform RectTransformCache = null;
 	private Sprite SpriteCache = null;
+	private string EntityName = null;
 	private Image ImageCache = null;
 	private bool MovingCache = false;
 
@@ -22,6 +23,7 @@ public abstract class EntityBase : MonoBehaviour{
 
 	protected abstract EntityPriority GetEntityPriority();
 	protected abstract Sprite GetEntitySprite();
+	public abstract string GetEntityName();
 
 	public void Move(Vector2Int position, float seconds = 0f) {
 		if (GridCache == null) {
@@ -53,4 +55,6 @@ public abstract class EntityBase : MonoBehaviour{
 	internal void OnGridDestroy() {
 		GridCache = null;
 	}
+
+
 }

@@ -13,4 +13,9 @@ public class EntityFloorSix : EntityBase
 	{
 		return EntityPriority.Buildings;
 	}
+
+    public override string GetEntityName()
+    {
+        throw new System.NotImplementedException();
+    }
 }

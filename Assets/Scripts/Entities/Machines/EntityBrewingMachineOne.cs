@@ -12,8 +12,19 @@ public class EntityBrewingMachineOne : EntityBase
 
 	private void Awake()
 	{
+		gameObject.AddComponent<InspectorHelper>();
+
 		Level = 1;
 		EspressoUnits = 0;
+	}
+
+	public int GetLevel()
+	{
+		return Level;
+	}
+	public void SetLevel(int newLevel)
+	{
+		Level = newLevel;
 	}
 
 	protected override Sprite GetEntitySprite()
@@ -25,5 +36,10 @@ public class EntityBrewingMachineOne : EntityBase
 	{
 		return EntityPriority.Furniture;
 		;
+	}
+
+    public override string GetEntityName()
+    {
+		return "Brewer";
 	}
 }

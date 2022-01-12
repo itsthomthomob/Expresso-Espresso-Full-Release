@@ -15,12 +15,23 @@ public class EntityEspressoMachineOne : EntityBase
 
     private void Awake()
     {
+		gameObject.AddComponent<InspectorHelper>();
+
 		Level = 1;
 		EspressoUnits = 0;
 		MilkUnits = 0;
 	}
 
-    protected override Sprite GetEntitySprite()
+	public int GetLevel()
+	{
+		return Level;
+	}
+	public void SetLevel(int newLevel)
+	{
+		Level = newLevel;
+	}
+
+	protected override Sprite GetEntitySprite()
 	{
 		return Resources.Load<Sprite>("Sprites/Tiles/Machines/Espresso-machine-1-front");
 	}
@@ -29,4 +40,9 @@ public class EntityEspressoMachineOne : EntityBase
 	{
 		return EntityPriority.Furniture;
 	}
+
+    public override string GetEntityName()
+    {
+		return "Espresso-Machine";
+    }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class EntityRoasteryMachineOne : EntityBase
 {
 	private int Cost = 5000;
@@ -15,9 +16,19 @@ public class EntityRoasteryMachineOne : EntityBase
 
 	private void Awake()
 	{
+		gameObject.AddComponent<InspectorHelper>();
 		Level = 1;
 		EspressoUnits = 0;
 		MilkUnits = 0;
+	}
+
+	public int GetLevel() 
+	{
+		return Level;
+	}
+	public void SetLevel(int newLevel)
+	{
+		Level = newLevel;
 	}
 
 	protected override Sprite GetEntitySprite()
@@ -29,4 +40,9 @@ public class EntityRoasteryMachineOne : EntityBase
 	{
 		return EntityPriority.Furniture;
 	}
+
+    public override string GetEntityName()
+    {
+		return "Roaster";
+    }
 }
