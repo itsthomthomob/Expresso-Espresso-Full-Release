@@ -183,7 +183,7 @@ public class TileConstruction : MonoBehaviour
                     selectionRect.transform.localScale = new Vector2(1, 1);
                     selectionRect.transform.position = new Vector3(min.x, min.y, -10);
 
-                    max = new Vector2Int((int)Input.mousePosition.x, (int)Input.mousePosition.y);
+                    max = new Vector2Int((int)Input.mousePosition.x + 1, (int)Input.mousePosition.y + 1);
                     Vector2Int minCorner = Vector2Int.Min(min, max);
                     Vector2Int maxCorner = Vector2Int.Max(min, max);
 
