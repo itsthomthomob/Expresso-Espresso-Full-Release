@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InspectorMaster : MonoBehaviour
 {
@@ -9,11 +10,18 @@ public class InspectorMaster : MonoBehaviour
     public GameObject InspectorUI;
     public TMP_Text MachineName;
     public TMP_Text MachineLevel;
+    public Button InspectMachine_B;
     public Canvas canvas;
     public float XAdjust;
     public float YAdjust;
     public bool isActive;
     public Vector3 newPos;
+
+    [Header("Machine HUDs")]
+    public GameObject RoasteryUI;
+    public GameObject BrewerUI;
+    public GameObject GrinderUI;
+    public GameObject EspressoUI;
 
     private void Start()
     {

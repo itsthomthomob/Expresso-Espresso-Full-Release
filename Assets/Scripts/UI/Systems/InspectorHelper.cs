@@ -26,12 +26,22 @@ public class InspectorHelper : MonoBehaviour
 
     private void Start()
     {
+        FindObjects();
+    }
+
+    private void FindObjects() 
+    {
         root = GameObject.Find("Grid").GetComponent<RectTransform>();
         Grid = FindObjectOfType<EntityGrid>();
         IM = FindObjectOfType<InspectorMaster>();
+
         InspectorUI = IM.InspectorUI;
         MachineName = IM.MachineName;
         MachineLevel = IM.MachineLevel;
+        InspectButton = IM.InspectMachine_B;
+
+        RoasteryHUD = IM.RoasteryUI;
+        BrewerHUD = IM.BrewerUI;
     }
 
     private void Update()
@@ -73,20 +83,48 @@ public class InspectorHelper : MonoBehaviour
                     EntityBrewingMachineOne entity = gameObject.GetComponent<EntityBrewingMachineOne>();
                     MachineName.text = "Brewer";
                     MachineLevel.text = "Level - " + entity.GetLevel().ToString();
+                    InspectButton.onClick.RemoveAllListeners();
+                    InspectButton.onClick.AddListener(SetBrewer);
+                    InspectButton.onClick.AddListener(CloseIM);
                     break;
                 case "Espresso-Machine":
                     EntityEspressoMachineOne entity1 = gameObject.GetComponent<EntityEspressoMachineOne>();
                     MachineName.text = "Espresso";
                     MachineLevel.text = "Level - " + entity1.GetLevel().ToString();
+                    InspectButton.onClick.RemoveAllListeners();
+                    InspectButton.onClick.AddListener(SetEspresso);
+                    InspectButton.onClick.AddListener(CloseIM);
                     break;
                 case "Roaster":
                     EntityRoasteryMachineOne entity2 = gameObject.GetComponent<EntityRoasteryMachineOne>();
                     MachineName.text = "Roastery";
                     MachineLevel.text = "Level - " + entity2.GetLevel().ToString();
+                    InspectButton.onClick.RemoveAllListeners();
+                    InspectButton.onClick.AddListener(SetRoaster);
+                    InspectButton.onClick.AddListener(CloseIM);
                     break;
                 default:
                     break;
             }
         }
     }
+
+    private void SetRoaster() 
+    {
+        RoasteryHUD.SetActive(true);
+    }
+    private void SetEspresso()
+    {
+
+    }
+    private void SetGrinder()
+    {
+
+    }
+    private void SetBrewer()
+    {
+        BrewerHUD.SetActive(true);
+
+    }
+    private void CloseIM() { IM.InspectorUI.SetActive(false); }
 }
