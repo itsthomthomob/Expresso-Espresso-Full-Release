@@ -16,10 +16,10 @@ public class World : MonoBehaviour {
 		Max = new Vector2Int(+20, +20);
 		int size = (Max.x - Min.x) * (Max.y - Min.y);
 
-		// Concrete
+		// Grass
 		for (int x = Min.x; x <= Max.x; x++) {
 			for (int y = Min.y; y <= Max.y; y++) {
-				Grid.Create<EntityConcrete>(new Vector2Int(x, y));
+				Grid.Create<EntityGrass>(new Vector2Int(x, y));
 			}
 		}
 
@@ -28,11 +28,6 @@ public class World : MonoBehaviour {
 			Vector2Int position = new Vector2Int(x, 0);
 			Grid.DestroyAll(position);
 			Grid.Create<EntityRoad>(position);
-		}
-
-		// Aliens
-		for (int i = 0; i < 100; i++) {
-			Grid.Create<EntityAlien>(GetRandomLocation());
 		}
 
 	}

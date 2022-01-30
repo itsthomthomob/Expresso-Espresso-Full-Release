@@ -9,6 +9,11 @@ public class BrewerInterfaceSystem : MonoBehaviour
     public GameObject BrewerUI;
     public Button CloseButton;
 
+    [Header("Inventory")]
+    public int BrewedCoffeeUnits;
+    public string CurrentCustomer;
+    public string TimeLeft;
+
     private void Start()
     {
         BrewerUI.SetActive(false);

@@ -32,6 +32,7 @@ public class EmployeeUserIntSystem : MonoBehaviour
     public EmployeesTabs selectedTab;
     public GameObject HireUI;
     public GameObject EmployeesUI;
+    public GameObject ScheduleUI;
     public GameObject RelationsUI;
     public GameObject LogsUI;
 
@@ -40,11 +41,13 @@ public class EmployeeUserIntSystem : MonoBehaviour
     public Color originalColor = new Color(255, 255, 255);
     public Button HireTab;
     public Button EmployeesTab;
+    public Button ScheduleTab;
     public Button RelationsTab;
     public Button LogTab;
 
     [Header("Hire - Elements")]
     public GameObject HireablePrefab;
+    public List<GameObject> Hireables = new List<GameObject>();
 
     public GameObject BaristasTab;
     public GameObject SupportTab;
@@ -58,8 +61,6 @@ public class EmployeeUserIntSystem : MonoBehaviour
     public GameObject SupportParent;
     public GameObject FrontParent;
 
-    public Slider WageOffer;
-
     [Header("Hire - Attributes")]
     public int HireableAmount;
     public int CurrentNewEmployeeID;
@@ -68,13 +69,15 @@ public class EmployeeUserIntSystem : MonoBehaviour
     public string currentTrait;
     public float skillAmount;
     public float CurrentWageOffer;
+    public Slider WageSlider;
+    public TMP_Text WageOffer;
     public float MinimumWage;
     public string currentCharImage;
-    public Image[] days;
 
     [Header("Character Info Card")]
     public GameObject CharacterCard;
     public Button hireButton;
+    public GameObject FirstObj;
 
     public EmployeeTypeButtons currentEmployeeType;
 
@@ -89,12 +92,15 @@ public class EmployeeUserIntSystem : MonoBehaviour
         GenerateBaristas();
         GenerateSupport();
         GenerateFront();
+        CharacterCard.SetActive(false);
+        FirstObj.SetActive(false);
     }
 
     private void Update()
     {
         CheckHireTypes();
         GenerateInfoCard();
+        ManageWage();
         ManageTabs();
     }
 
@@ -110,16 +116,25 @@ public class EmployeeUserIntSystem : MonoBehaviour
                 colors2.normalColor = originalColor;
                 HireUI.SetActive(true);
                 EmployeesUI.SetActive(false);
+                ScheduleUI.SetActive(false);
+
                 break;
             case EmployeesTabs.onEmployees:
                 colors2.normalColor = selectedColor;
                 colors.normalColor = originalColor;
                 HireUI.SetActive(false);
                 EmployeesUI.SetActive(true);
+                ScheduleUI.SetActive(false);
+
                 break;
             case EmployeesTabs.onRelations:
                 break;
             case EmployeesTabs.onSchedule:
+                colors2.normalColor = selectedColor;
+                colors.normalColor = originalColor;
+                HireUI.SetActive(false);
+                EmployeesUI.SetActive(false);
+                ScheduleUI.SetActive(true);
                 break;
             case EmployeesTabs.onLogs:
                 break;
@@ -133,6 +148,7 @@ public class EmployeeUserIntSystem : MonoBehaviour
         for (int i = 0; i < HireableAmount; i++)
         {
             GameObject HireableEmployee = Instantiate(HireablePrefab);
+            Hireables.Add(HireableEmployee);
             int InfoAmount = HireableEmployee.transform.childCount;
             for (int j = 0; j < InfoAmount; j++)
             {
@@ -266,6 +282,8 @@ public class EmployeeUserIntSystem : MonoBehaviour
         {
             if (EventSystem.current.currentSelectedGameObject.name == "Character-Container-Small")
             {
+                CharacterCard.SetActive(true);
+
                 int cardChildAmount = EventSystem.current.currentSelectedGameObject.transform.childCount;
                 for (int i = 0; i < childAmount; i++)
                 {
@@ -309,14 +327,19 @@ public class EmployeeUserIntSystem : MonoBehaviour
                                 }
                             }
                         }
-                        if (CharCardChild.name == "WageAmount")
-                        {
-                            float wage = CharCardChild.GetComponent<Slider>().value;
-                            CurrentWageOffer = wage;
-                        }
                     }
                 }
             }
+        }
+    }
+
+    private void ManageWage() 
+    {
+        if (WageSlider.IsActive())
+        {
+            float wage = WageSlider.value;
+            WageOffer.text = wage.ToString();
+            CurrentWageOffer = wage;
         }
     }
 
@@ -353,6 +376,7 @@ public class EmployeeUserIntSystem : MonoBehaviour
         hireButton.onClick.AddListener(CreateEmployee);
         EmployeesCloseButton.onClick.AddListener(CloseEmployeesMenu);
         EmployeesOpenButton.onClick.AddListener(OpenEmployeesMenu);
+        ScheduleTab.onClick.AddListener(OnSchedule);
     }
 
     private void CreateEmployee() 
@@ -361,7 +385,6 @@ public class EmployeeUserIntSystem : MonoBehaviour
         
         newEmployee.SetEmployeeID(CurrentNewEmployeeID);
         CurrentNewEmployeeID += 1;
-        newEmployee.SetDays(days);
         newEmployee.SetEmployeeName(employeeName);
         //newEmployee.SetSpriteName(currentCharImage);
         newEmployee.SetWageAmount(CurrentWageOffer);
@@ -413,6 +436,10 @@ public class EmployeeUserIntSystem : MonoBehaviour
     private void OnEmployees()
     {
         selectedTab = EmployeesTabs.onEmployees;
+    }
+    private void OnSchedule()
+    {
+        selectedTab = EmployeesTabs.onSchedule;
     }
 
     private void CloseEmployeesMenu() 

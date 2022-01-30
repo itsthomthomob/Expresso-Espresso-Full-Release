@@ -24,6 +24,8 @@ public class ConstructionSystemUI : MonoBehaviour
         Floor5,
         Floor6,
         Wall1,
+        Table1,
+        Chair1,
         Brewing1,
         Brewing2,
         Brewing3,
@@ -62,6 +64,10 @@ public class ConstructionSystemUI : MonoBehaviour
     [Header("Tile - Wall - Buttons")]
     public Button Tile_Wall1;
 
+    [Header("Tile - Furniture - Buttons")]
+    public Button Table1;
+    public Button Chair1;
+
     [Header("Tile - Machine - Buttons")]
     public Button Brewer1;
     public Button Brewer2;
@@ -93,6 +99,8 @@ public class ConstructionSystemUI : MonoBehaviour
         Tile_Floor4.onClick.AddListener(SelectedFloorFour);
         Tile_Floor5.onClick.AddListener(SelectedFloorFive);
         Tile_Wall1.onClick.AddListener(SelectedWall1);
+        Table1.onClick.AddListener(SelectedTable1);
+        Chair1.onClick.AddListener(SelectedChair1);
         Brewer1.onClick.AddListener(SelectedBrewerOne);
         Espresso1.onClick.AddListener(SelectedEspressoOne);
         Roastery.onClick.AddListener(SelectedRoastery);
@@ -367,5 +375,13 @@ public class ConstructionSystemUI : MonoBehaviour
     private void SelectedRoastery()
     {
         currentTile = SelectedTile.Roastery;
+    }
+    private void SelectedTable1()
+    {
+        currentTile = SelectedTile.Table1;
+    }
+    private void SelectedChair1()
+    {
+        currentTile = SelectedTile.Chair1;
     }
 }

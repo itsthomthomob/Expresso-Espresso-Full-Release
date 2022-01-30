@@ -42,6 +42,7 @@ public class InspectorHelper : MonoBehaviour
 
         RoasteryHUD = IM.RoasteryUI;
         BrewerHUD = IM.BrewerUI;
+        EspressoHUD = IM.EspressoUI;
     }
 
     private void Update()
@@ -82,7 +83,7 @@ public class InspectorHelper : MonoBehaviour
                 case "Brewer":
                     EntityBrewingMachineOne entity = gameObject.GetComponent<EntityBrewingMachineOne>();
                     MachineName.text = "Brewer";
-                    MachineLevel.text = "Level - " + entity.GetLevel().ToString();
+                    MachineLevel.text = "";
                     InspectButton.onClick.RemoveAllListeners();
                     InspectButton.onClick.AddListener(SetBrewer);
                     InspectButton.onClick.AddListener(CloseIM);
@@ -90,7 +91,7 @@ public class InspectorHelper : MonoBehaviour
                 case "Espresso-Machine":
                     EntityEspressoMachineOne entity1 = gameObject.GetComponent<EntityEspressoMachineOne>();
                     MachineName.text = "Espresso";
-                    MachineLevel.text = "Level - " + entity1.GetLevel().ToString();
+                    MachineLevel.text = "";
                     InspectButton.onClick.RemoveAllListeners();
                     InspectButton.onClick.AddListener(SetEspresso);
                     InspectButton.onClick.AddListener(CloseIM);
@@ -98,7 +99,7 @@ public class InspectorHelper : MonoBehaviour
                 case "Roaster":
                     EntityRoasteryMachineOne entity2 = gameObject.GetComponent<EntityRoasteryMachineOne>();
                     MachineName.text = "Roastery";
-                    MachineLevel.text = "Level - " + entity2.GetLevel().ToString();
+                    MachineLevel.text = "";
                     InspectButton.onClick.RemoveAllListeners();
                     InspectButton.onClick.AddListener(SetRoaster);
                     InspectButton.onClick.AddListener(CloseIM);
@@ -115,6 +116,7 @@ public class InspectorHelper : MonoBehaviour
     }
     private void SetEspresso()
     {
+        EspressoHUD.SetActive(true);
 
     }
     private void SetGrinder()

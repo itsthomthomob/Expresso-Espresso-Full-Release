@@ -136,17 +136,43 @@ public class TileConstruction : MonoBehaviour
                 break;
             case ConstructionSystemUI.SelectedTile.Wall1:
                 Grid.Create<EntityWall>(atPos);
+                break;
+            case ConstructionSystemUI.SelectedTile.Table1:
+                if (Grid.GetLastEntity<EntityBase>(atPos).Priority == EntityPriority.Furniture)
+                {
+                    return;
+                }
+                Grid.Create<EntityTableOne>(atPos);
+                break;
+            case ConstructionSystemUI.SelectedTile.Chair1:
+                if (Grid.GetLastEntity<EntityBase>(atPos).Priority == EntityPriority.Furniture)
+                {
+                    return;
+                }
+                Grid.Create<EntityChairOne>(atPos);
 
                 break;
             case ConstructionSystemUI.SelectedTile.Brewing1:
+                if (Grid.GetLastEntity<EntityBase>(atPos).Priority == EntityPriority.Furniture)
+                {
+                    return;
+                }
                 Grid.Create<EntityBrewingMachineOne>(atPos);
 
                 break;
             case ConstructionSystemUI.SelectedTile.Espresso1:
+                if (Grid.GetLastEntity<EntityBase>(atPos).Priority == EntityPriority.Furniture)
+                {
+                    return;
+                }
                 Grid.Create<EntityEspressoMachineOne>(atPos);
 
                 break;
             case ConstructionSystemUI.SelectedTile.Roastery:
+                if (Grid.GetLastEntity<EntityBase>(atPos).Priority == EntityPriority.Furniture)
+                {
+                    return;
+                }
                 Grid.Create<EntityRoasteryMachineOne>(atPos);
 
                 break;
