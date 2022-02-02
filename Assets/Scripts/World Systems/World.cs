@@ -22,18 +22,9 @@ public class World : MonoBehaviour {
 				Grid.Create<EntityGrass>(new Vector2Int(x, y));
 			}
 		}
-
-		// Road
-		for (int x = Min.x; x < Max.x; x++) {
-			Vector2Int position = new Vector2Int(x, 0);
-			Grid.DestroyAll(position);
-			Grid.Create<EntityRoad>(position);
-		}
-
 	}
 
 	public Vector2Int GetRandomLocation() {
 		return new Vector2Int(Random.Range(Min.x, Max.x), Random.Range(Min.y, Max.y));
 	}
-
 }

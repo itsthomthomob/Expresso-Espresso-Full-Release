@@ -137,6 +137,21 @@ public class TileConstruction : MonoBehaviour
             case ConstructionSystemUI.SelectedTile.Wall1:
                 Grid.Create<EntityWall>(atPos);
                 break;
+            case ConstructionSystemUI.SelectedTile.Register:
+                Grid.Create<EntityRegister>(atPos);
+
+                break;
+            case ConstructionSystemUI.SelectedTile.Barstool1:
+                Grid.Create<EntityBarstool>(atPos);
+
+                break;
+            case ConstructionSystemUI.SelectedTile.Counter1:
+                if (Grid.GetLastEntity<EntityBase>(atPos).Priority == EntityPriority.Furniture)
+                {
+                    return;
+                }
+                Grid.Create<EntityCounterOne>(atPos);
+                break;
             case ConstructionSystemUI.SelectedTile.Table1:
                 if (Grid.GetLastEntity<EntityBase>(atPos).Priority == EntityPriority.Furniture)
                 {
@@ -233,7 +248,7 @@ public class TileConstruction : MonoBehaviour
 
                 if (selectedEntities.Length == 0)
                 {
-                    selectedEntities = Grid.FindEntities(minSelected, maxSelected);
+                    selectedEntities = Grid.FindEntities(minSelected, maxSelected, true);
                     for (int i = 0; i < selectedEntities.Length; i++)
                     {
                         if (selectedEntities[i].Priority == EntityPriority.Characters) { }

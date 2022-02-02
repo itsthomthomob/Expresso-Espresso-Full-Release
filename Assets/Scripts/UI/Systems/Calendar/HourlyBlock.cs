@@ -15,7 +15,7 @@ public class HourlyBlock : MonoBehaviour, IPointerDownHandler
     public void OnPointerDown(PointerEventData eventData)
     {
         Image MyImage = gameObject.GetComponent<Image>();
-        MyImage.color = Color.black;
+        MyImage.color = Color.red;
         Debug.Log("Changed Color on: " + "Day " + Day + " Hour " + Hour);
     }
 

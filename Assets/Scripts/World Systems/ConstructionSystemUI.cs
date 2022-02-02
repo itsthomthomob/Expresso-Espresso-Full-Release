@@ -26,13 +26,16 @@ public class ConstructionSystemUI : MonoBehaviour
         Wall1,
         Table1,
         Chair1,
+        Counter1,
+        Barstool1,
         Brewing1,
         Brewing2,
         Brewing3,
         Espresso1,
         Espresso2,
         Espresso3,
-        Roastery
+        Roastery,
+        Register
     }
 
     [Header("Selected Tiles")]
@@ -67,6 +70,8 @@ public class ConstructionSystemUI : MonoBehaviour
     [Header("Tile - Furniture - Buttons")]
     public Button Table1;
     public Button Chair1;
+    public Button Counter1;
+    public Button Barstool;
 
     [Header("Tile - Machine - Buttons")]
     public Button Brewer1;
@@ -76,6 +81,7 @@ public class ConstructionSystemUI : MonoBehaviour
     public Button Espresso2;
     public Button Espresso3;
     public Button Roastery;
+    public Button Register;
 
     private void Start()
     {
@@ -98,12 +104,18 @@ public class ConstructionSystemUI : MonoBehaviour
         Tile_Floor3.onClick.AddListener(SelectedFloorThree);
         Tile_Floor4.onClick.AddListener(SelectedFloorFour);
         Tile_Floor5.onClick.AddListener(SelectedFloorFive);
+
         Tile_Wall1.onClick.AddListener(SelectedWall1);
+
         Table1.onClick.AddListener(SelectedTable1);
         Chair1.onClick.AddListener(SelectedChair1);
+        Counter1.onClick.AddListener(SelectedCounter1);
+        Barstool.onClick.AddListener(SelectedBarstool1);
+
         Brewer1.onClick.AddListener(SelectedBrewerOne);
         Espresso1.onClick.AddListener(SelectedEspressoOne);
         Roastery.onClick.AddListener(SelectedRoastery);
+        Register.onClick.AddListener(SelectedRegister1);
     }
 
     private void SetConstructionUI()
@@ -383,5 +395,18 @@ public class ConstructionSystemUI : MonoBehaviour
     private void SelectedChair1()
     {
         currentTile = SelectedTile.Chair1;
+    }
+    private void SelectedCounter1()
+    {
+        currentTile = SelectedTile.Counter1;
+    }
+    private void SelectedBarstool1()
+    {
+        currentTile = SelectedTile.Barstool1;
+    }
+    private void SelectedRegister1() 
+    { 
+        currentTile = SelectedTile.Register;
+
     }
 }

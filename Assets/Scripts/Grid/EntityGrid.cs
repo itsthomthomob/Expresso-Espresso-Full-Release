@@ -310,10 +310,11 @@ public class EntityGrid : MonoBehaviour {
 		return last;
 	}
 
-	public EntityBase[] FindEntities(Vector2Int a, Vector2Int b)
+	public EntityBase[] FindEntities(Vector2Int a, Vector2Int b, bool inclusive = false)
 	{
 		Vector2Int min = Vector2Int.Min(a, b);
 		Vector2Int max = Vector2Int.Max(a, b);
+		if (inclusive) max += Vector2Int.one;
 		List<EntityBase> list = new List<EntityBase>();
 		for (int x = min.x; x < max.x; x++)
 		{
@@ -327,19 +328,26 @@ public class EntityGrid : MonoBehaviour {
 		return list.ToArray();
 	}
 
-	public T[] FindEntities<T>(Vector2Int min, Vector2Int max) where T : EntityBase {
+	public T[] FindEntities<T>(Vector2Int a, Vector2Int b, bool inclusive = false) where T : EntityBase
+	{
+		Vector2Int min = Vector2Int.Min(a, b);
+		Vector2Int max = Vector2Int.Max(a, b);
+		if (inclusive) max += Vector2Int.one;
 		List<T> list = new List<T>();
-		for (int x = min.x; x < max.x; x++) {
-			for (int y = min.y; y < max.y; y++) {
+		for (int x = min.x; x < max.x; x++)
+		{
+			for (int y = min.y; y < max.y; y++)
+			{
 				Vector2Int position = new Vector2Int(x, y);
 				Grid.TryGetValue(position, out List<EntityBase> found);
 				if (found == null) continue;
-				foreach(EntityBase entity in found) {
+				foreach (EntityBase entity in found)
+				{
 					if (entity is T t) found.Add(t);
 				}
 			}
 		}
-		return list.ToArray(); ;
+		return list.ToArray();
 	}
 
 	private void UpdateTransform(EntityBase entity, Vector2 position) {
