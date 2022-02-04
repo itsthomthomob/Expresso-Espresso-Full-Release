@@ -363,6 +363,11 @@ public class EntityGrid : MonoBehaviour {
 		entity.RectTransform.offsetMax = Vector2.zero;
 	}
 
+	public void UpdateTransform(EntityBase entity)
+	{
+		UpdateTransform(entity, entity.Position);
+	}
+
 	private static int GetSortedSiblingIndex(Transform parent, EntityBase entity) {
 		int sibling = 0;
 		foreach (Transform child in parent) {

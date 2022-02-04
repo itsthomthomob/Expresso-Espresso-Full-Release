@@ -30,7 +30,9 @@ public class EntityAlien : EntityBase {
 	}
 
 	private bool IsPassableForAlien(Vector2Int position) {
-		if (Grid.HasEntity<EntityWall>(position)) {
+		if (Grid.HasEntity<EntityWallPlaster>(position) || Grid.HasEntity<EntityWallBrick>(position) ||
+			Grid.HasEntity<EntityWallGreyBrick>(position) || Grid.HasEntity<EntityWallPale>(position))
+		{
 			return false;
 		} else {
 			return true;

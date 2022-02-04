@@ -33,6 +33,13 @@ public abstract class EntityBase : MonoBehaviour{
 		}
 	}
 
+	protected void SetEntitySprite() 
+	{
+		SpriteCache = Sprite;
+		Image.sprite = Sprite;
+		Grid.UpdateTransform(this);
+	}
+
 	internal void OnGridCreate(EntityGrid grid, Vector2Int position) {
 		GridCache = grid;
 		PositionCache = position;

@@ -96,13 +96,10 @@ public class TileConstruction : MonoBehaviour
                     if (destroyOn)
                     {
                         Debug.Log("Destroying: " + Grid.GetLastEntity<EntityBase>(gridPoint));
-                        if (Grid.GetLastEntity<EntityBase>(gridPoint) is EntityAlien)
+                        if (Grid.GetLastEntity<EntityBase>(gridPoint).Priority == EntityPriority.Characters) { }
+                        else if (Grid.GetLastEntity<EntityBase>(gridPoint).Priority == EntityPriority.Terrain) { }
+                        else if (Grid.GetLastEntity<EntityBase>(gridPoint).Priority == EntityPriority.Buildings) 
                         {
-                            // Do nothing, can't destroy characters
-                            Debug.Log("Can't destroy characters");
-                        }
-                        else 
-                        { 
                             Grid.Destroy(Grid.GetLastEntity<EntityBase>(gridPoint));
                         }
                     }
@@ -132,10 +129,16 @@ public class TileConstruction : MonoBehaviour
                 Grid.Create<EntityFloorFour>(atPos);
                 break;
             case ConstructionSystemUI.SelectedTile.Floor5:
+                Grid.Create<EntityFloorFive>(atPos);
+                break;
+            case ConstructionSystemUI.SelectedTile.Floor6:
                 Grid.Create<EntityFloorSix>(atPos);
                 break;
+            case ConstructionSystemUI.SelectedTile.Floor7:
+                Grid.Create<EntityFloorSeven>(atPos);
+                break;
             case ConstructionSystemUI.SelectedTile.Wall1:
-                Grid.Create<EntityWall>(atPos);
+                Grid.Create<EntityWallBrick>(atPos);
                 break;
             case ConstructionSystemUI.SelectedTile.Register:
                 Grid.Create<EntityRegister>(atPos);
@@ -150,21 +153,21 @@ public class TileConstruction : MonoBehaviour
                 {
                     return;
                 }
-                Grid.Create<EntityCounterOne>(atPos);
+                Grid.Create<EntityCounterMarble>(atPos);
                 break;
             case ConstructionSystemUI.SelectedTile.Table1:
                 if (Grid.GetLastEntity<EntityBase>(atPos).Priority == EntityPriority.Furniture)
                 {
                     return;
                 }
-                Grid.Create<EntityTableOne>(atPos);
+                Grid.Create<EntityTableSmooth>(atPos);
                 break;
             case ConstructionSystemUI.SelectedTile.Chair1:
                 if (Grid.GetLastEntity<EntityBase>(atPos).Priority == EntityPriority.Furniture)
                 {
                     return;
                 }
-                Grid.Create<EntityChairOne>(atPos);
+                Grid.Create<EntityChairSmooth>(atPos);
 
                 break;
             case ConstructionSystemUI.SelectedTile.Brewing1:
@@ -245,31 +248,42 @@ public class TileConstruction : MonoBehaviour
                     Debug.Log("Max Point: " + gridPoint);
                     maxSelected = gridPoint;
                 }
-
                 if (selectedEntities.Length == 0)
                 {
                     selectedEntities = Grid.FindEntities(minSelected, maxSelected, true);
+                    if (selectedEntities.Length <= 2)
+                    {
+                        for (int i = 0; i < selectedEntities.Length; i++)
+                        {
+                            selectedEntities[i].GetComponent<Image>().material = null;
+                        }
+                        selectedEntities = new EntityBase[0];
+                        return;
+                    }
                     for (int i = 0; i < selectedEntities.Length; i++)
                     {
                         if (selectedEntities[i].Priority == EntityPriority.Characters) { }
-                        else 
-                        { 
+                        else
+                        {
                             GameObject currentEntity = selectedEntities[i].gameObject;
                             currentEntity.GetComponent<Image>().material = Resources.Load<Material>("Sprites/UI/Indicators/SelectedEntity");
                         }
                     }
                 }
-
                 selectionRect.SetActive(false);
             }
         }
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            if (selectedEntities.Length != 0)
+            if (selectedEntities.Length > 0)
             {
                 for (int i = 0; i < selectedEntities.Length; i++)
                 {
+                    if (selectedEntities[i] == null)
+                    {
+                        return;
+                    }
                     GameObject currentEntity = selectedEntities[i].gameObject;
                     currentEntity.GetComponent<Image>().material = null;
                 }
@@ -283,8 +297,21 @@ public class TileConstruction : MonoBehaviour
             {
                 for (int i = 0; i < selectedEntities.Length; i++)
                 {
-                    if (selectedEntities[i].Priority == EntityPriority.Characters) { }
-                    else { Grid.Destroy(selectedEntities[i]); }
+                    if (selectedEntities[i].Priority == EntityPriority.Characters) {
+                        GameObject currentEntity = selectedEntities[i].gameObject;
+                        currentEntity.GetComponent<Image>().material = null;
+                    }
+                    else if (selectedEntities[i].Priority == EntityPriority.Terrain) {
+                        GameObject currentEntity = selectedEntities[i].gameObject;
+                        currentEntity.GetComponent<Image>().material = null;
+                    }
+                    else if (selectedEntities[i].Priority == EntityPriority.Buildings) 
+                    {
+                        GameObject currentEntity = selectedEntities[i].gameObject;
+                        currentEntity.GetComponent<Image>().material = null; 
+                        Grid.Destroy(selectedEntities[i]); 
+                    }
+                    
                 }
             }
             selectedEntities = new EntityBase[0];

@@ -15,13 +15,11 @@ public class UpdateButton : MonoBehaviour
     {
         Updates_B.onClick.AddListener(OpenUpdatesUI);
         CloseUpdates.onClick.AddListener(CloseUpdatesUI);
-        PlayerPrefs.SetInt("ClickedUpdate", 0);
-
     }
 
     private void Update()
     {
-        if (PlayerPrefs.GetInt("ClickedUpdate") == 1)
+        if (PlayerPrefs.GetInt("ClickedUpdate2") == 1)
         {
             notification.SetActive(false);
         }
@@ -30,7 +28,7 @@ public class UpdateButton : MonoBehaviour
     void OpenUpdatesUI() 
     {
         ChangesUI.SetActive(true);
-        PlayerPrefs.SetInt("ClickedUpdate", 1);
+        PlayerPrefs.SetInt("ClickedUpdate2", 1);
     }
     void CloseUpdatesUI()
     {
