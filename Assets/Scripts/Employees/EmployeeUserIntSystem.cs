@@ -444,6 +444,9 @@ public class EmployeeUserIntSystem : MonoBehaviour
 
     private void CloseEmployeesMenu() 
     {
+        MasterUIController GetUI = FindObjectOfType<MasterUIController>();
+        GetUI.currentlyActiveUI = null;
+        GetUI.isActive = false;
         EmployeeMenuUI.SetActive(false);
     }
     private void OpenEmployeesMenu()

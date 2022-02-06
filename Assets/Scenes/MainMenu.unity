@@ -138,7 +138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &105570318
 RectTransform:
   m_ObjectHideFlags: 0
@@ -153,13 +153,13 @@ RectTransform:
   - {fileID: 198967824}
   - {fileID: 356893325}
   - {fileID: 760441679}
+  - {fileID: 405188469}
   - {fileID: 2089201033}
   - {fileID: 1814380024}
   - {fileID: 478536420}
   - {fileID: 1770863971}
   - {fileID: 1271018923}
   - {fileID: 612955072}
-  - {fileID: 405188469}
   - {fileID: 1075386462}
   m_Father: {fileID: 1962044556}
   m_RootOrder: 8
@@ -1039,7 +1039,7 @@ RectTransform:
   m_Children:
   - {fileID: 420463703}
   m_Father: {fileID: 105570318}
-  m_RootOrder: 9
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1292,7 +1292,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 105570318}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1323,7 +1323,8 @@ MonoBehaviour:
     fixes for building\n   - Tile outline when placing down tiles\n   - Game crashes
     when deleting tiles, then clearing selected tiles\n   - More accurate rectangle
     selections\n   - Other misc. bugs\n- Added new floor tiles, wall brick tiles.
-    \n- Enabled Employees UI (for user testing)\n   - Relations and Logs are disabled"
+    \n- Added more Tool Tips\n- Enabled Employees UI (for user testing)\n   - Relations
+    and Logs are disabled"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1551,11 +1552,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 105570318}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0015526, y: -305.64}
+  m_AnchoredPosition: {x: -0.0015526, y: -336.64}
   m_SizeDelta: {x: 647.12, y: 165.94}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &612955073
@@ -2317,11 +2318,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 105570318}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 19.827, y: -168.83873}
+  m_AnchoredPosition: {x: 19.827, y: -199.83873}
   m_SizeDelta: {x: 607.4633, y: 231.6574}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1271018924
@@ -2676,8 +2677,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.00096512, y: -29}
-  m_SizeDelta: {x: 441.1, y: 180.7867}
+  m_AnchoredPosition: {x: -0.000011444, y: -30}
+  m_SizeDelta: {x: 491.8971, y: 180.7867}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1452284818
 MonoBehaviour:
@@ -3202,11 +3203,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 105570318}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 19.8266, y: -28}
+  m_AnchoredPosition: {x: 19.8266, y: -59}
   m_SizeDelta: {x: 607.4633, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1770863972
@@ -3402,7 +3403,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 105570318}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3719,7 +3720,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 105570318}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

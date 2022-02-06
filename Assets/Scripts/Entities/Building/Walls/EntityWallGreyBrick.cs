@@ -3,7 +3,7 @@
 public class EntityWallGreyBrick : EntityBase {
 
 	protected override Sprite GetEntitySprite() {
-		return Resources.Load<Sprite>("Sprites/Wall4");
+		return Resources.Load<Sprite>("Sprites/Tiles/Building/Wall3");
 	}
 
 	protected override EntityPriority GetEntityPriority() {

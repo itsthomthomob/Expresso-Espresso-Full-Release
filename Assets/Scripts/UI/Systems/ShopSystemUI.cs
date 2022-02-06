@@ -7,36 +7,35 @@ using UnityEngine.UI;
 public class ShopSystemUI : MonoBehaviour
 {
     [Header("Shop UI Object")]
-    public GameObject shopUI;
+    public GameObject ShopUI;
+    public MasterUIController GetUI;
 
     [Header("Shop UI")]
     public Button shopButton;
     public Button closeShopButton;
 
-    [Header("Shop Variables")]
-    public bool isOpen;
-
     private void Start()
     {
-        shopButton.onClick.AddListener(CloseShop);
-        closeShopButton.onClick.AddListener(CloseShop);
-        isOpen = false;
+        GetUI = FindObjectOfType<MasterUIController>();
+        LoadButtons();
     }
 
-    private void Update()
+    private void LoadButtons() 
     {
-        if (isOpen)
-        {
-            shopUI.SetActive(true);
-        }
-        else 
-        {
-            shopUI.SetActive(false);
-        }
+        shopButton.onClick.AddListener(OpenShop);
+        closeShopButton.onClick.AddListener(CloseShop);
+    }
+
+    private void OpenShop() 
+    {
+        ShopUI.SetActive(true);
     }
 
     private void CloseShop()
     {
-        isOpen = !isOpen;
+        MasterUIController GetUI = FindObjectOfType<MasterUIController>();
+        GetUI.currentlyActiveUI = null;
+        GetUI.isActive = false;
+        ShopUI.SetActive(false);
     }
 }

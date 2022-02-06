@@ -3,7 +3,7 @@
 public class EntityWallPlaster : EntityBase {
 
 	protected override Sprite GetEntitySprite() {
-		return Resources.Load<Sprite>("Sprites/Wall1");
+		return Resources.Load<Sprite>("Sprites/Tiles/Building/Wall1");
 	}
 
 	protected override EntityPriority GetEntityPriority() {

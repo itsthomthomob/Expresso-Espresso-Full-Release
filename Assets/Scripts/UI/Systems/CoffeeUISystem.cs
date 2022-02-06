@@ -8,7 +8,6 @@ public class CoffeeUISystem : MonoBehaviour
 {
     [Header("Master Controllers")]
     public GameObject CoffeeUI;
-    public Button CoffeeButton;
     public Button CloseCoffee;
     public Button MenuTab;
     public Button CoffeeCreationTab;
@@ -24,18 +23,14 @@ public class CoffeeUISystem : MonoBehaviour
 
     private void LoadButtons()
     {
-        CoffeeButton.onClick.AddListener(OpenTechUI);
         CloseCoffee.onClick.AddListener(CloseCoffeeUI);
     }
 
     private void CloseCoffeeUI()
     {
+        MasterUIController GetUI = FindObjectOfType<MasterUIController>();
+        GetUI.currentlyActiveUI = null;
+        GetUI.isActive = false;
         CoffeeUI.SetActive(false);
-
-    }
-
-    private void OpenTechUI()
-    {
-        CoffeeUI.SetActive(true);
     }
 }

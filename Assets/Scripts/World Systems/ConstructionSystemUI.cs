@@ -25,6 +25,9 @@ public class ConstructionSystemUI : MonoBehaviour
         Floor6,
         Floor7,
         Wall1,
+        Wall2,
+        Wall3,
+        Wall4,
         Table1,
         Chair1,
         Counter1,
@@ -38,6 +41,9 @@ public class ConstructionSystemUI : MonoBehaviour
         Roastery,
         Register
     }
+
+    [Header("Master UI Obj")]
+    public GameObject ConstructionUI;
 
     [Header("Selected Tiles")]
     public SelectedTileType currentTileType;
@@ -69,6 +75,9 @@ public class ConstructionSystemUI : MonoBehaviour
 
     [Header("Tile - Wall - Buttons")]
     public Button Tile_Wall1;
+    public Button Tile_Wall2;
+    public Button Tile_Wall3;
+    public Button Tile_Wall4;
 
     [Header("Tile - Furniture - Buttons")]
     public Button Table1;
@@ -111,6 +120,9 @@ public class ConstructionSystemUI : MonoBehaviour
         Tile_Floor7.onClick.AddListener(SelectedFloorSeven);
 
         Tile_Wall1.onClick.AddListener(SelectedWall1);
+        Tile_Wall2.onClick.AddListener(SelectedWall2);
+        Tile_Wall3.onClick.AddListener(SelectedWall3);
+        Tile_Wall4.onClick.AddListener(SelectedWall4);
 
         Table1.onClick.AddListener(SelectedTable1);
         Chair1.onClick.AddListener(SelectedChair1);
@@ -238,10 +250,19 @@ public class ConstructionSystemUI : MonoBehaviour
     }
     private void ClickedConstruction()
     {
-        onConstruction = !onConstruction;
+        
+        onConstruction = true;
+
+
         if (onConstruction)
         {
+            ConstructionUI.SetActive(true);
             currentTileType = SelectedTileType.Building;
+            scrollbar.SetActive(true);
+            buildingTiles.SetActive(true);
+            tileTypeSelector.SetActive(true);
+            tileSelector.SetActive(true);
+            ttButtonBackground.SetActive(true);
         }
         else
         {
@@ -266,7 +287,7 @@ public class ConstructionSystemUI : MonoBehaviour
     private void SelectedFloorOne() 
     {
         currentTile = SelectedTile.Floor1;
-        if (FindObjectOfType<TileConstruction>().selectedEntities.Length > 0)
+        if (FindObjectOfType<TileConstruction>().selectedEntities.Length >= 0)
         {
             for (int i = 0; i < FindObjectOfType<TileConstruction>().selectedEntities.Length; i++)
             {
@@ -440,6 +461,84 @@ public class ConstructionSystemUI : MonoBehaviour
     private void SelectedWall1()
     {
         currentTile = SelectedTile.Wall1;
+        if (FindObjectOfType<TileConstruction>().selectedEntities.Length > 0)
+        {
+            for (int i = 0; i < FindObjectOfType<TileConstruction>().selectedEntities.Length; i++)
+            {
+                if (FindObjectOfType<TileConstruction>().selectedEntities[i] == null)
+                {
+                    return;
+                }
+                if (FindObjectOfType<TileConstruction>().selectedEntities[i].Priority == EntityPriority.Characters)
+                {
+
+                }
+                else if (FindObjectOfType<TileConstruction>().selectedEntities[i].GetComponent<EntityWallBrick>()) { }
+                else
+                {
+                    grid.Create<EntityWallBrick>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                }
+                GameObject currentEntity = FindObjectOfType<TileConstruction>().selectedEntities[i].gameObject;
+                currentEntity.GetComponent<Image>().material = null;
+            }
+            FindObjectOfType<TileConstruction>().selectedEntities = new EntityBase[0];
+        }
+    }
+    private void SelectedWall2()
+    {
+        currentTile = SelectedTile.Wall2;
+        if (FindObjectOfType<TileConstruction>().selectedEntities.Length > 0)
+        {
+            for (int i = 0; i < FindObjectOfType<TileConstruction>().selectedEntities.Length; i++)
+            {
+                if (FindObjectOfType<TileConstruction>().selectedEntities[i] == null)
+                {
+                    return;
+                }
+                if (FindObjectOfType<TileConstruction>().selectedEntities[i].Priority == EntityPriority.Characters)
+                {
+
+                }
+                else if (FindObjectOfType<TileConstruction>().selectedEntities[i].GetComponent<EntityWallBrick>()) { }
+                else
+                {
+                    grid.Create<EntityWallBrick>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                }
+                GameObject currentEntity = FindObjectOfType<TileConstruction>().selectedEntities[i].gameObject;
+                currentEntity.GetComponent<Image>().material = null;
+            }
+            FindObjectOfType<TileConstruction>().selectedEntities = new EntityBase[0];
+        }
+    }
+    private void SelectedWall3()
+    {
+        currentTile = SelectedTile.Wall3;
+        if (FindObjectOfType<TileConstruction>().selectedEntities.Length > 0)
+        {
+            for (int i = 0; i < FindObjectOfType<TileConstruction>().selectedEntities.Length; i++)
+            {
+                if (FindObjectOfType<TileConstruction>().selectedEntities[i] == null)
+                {
+                    return;
+                }
+                if (FindObjectOfType<TileConstruction>().selectedEntities[i].Priority == EntityPriority.Characters)
+                {
+
+                }
+                else if (FindObjectOfType<TileConstruction>().selectedEntities[i].GetComponent<EntityWallBrick>()) { }
+                else
+                {
+                    grid.Create<EntityWallBrick>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                }
+                GameObject currentEntity = FindObjectOfType<TileConstruction>().selectedEntities[i].gameObject;
+                currentEntity.GetComponent<Image>().material = null;
+            }
+            FindObjectOfType<TileConstruction>().selectedEntities = new EntityBase[0];
+        }
+    }
+    private void SelectedWall4()
+    {
+        currentTile = SelectedTile.Wall4;
         if (FindObjectOfType<TileConstruction>().selectedEntities.Length > 0)
         {
             for (int i = 0; i < FindObjectOfType<TileConstruction>().selectedEntities.Length; i++)

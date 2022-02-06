@@ -36,7 +36,12 @@ public class StatisticsSystem : MonoBehaviour
     }
 
     private void LoadStatisticsUI() { StatsUI.SetActive(true); }
-    private void CloseStatsUI() { StatsUI.SetActive(false); }
+    private void CloseStatsUI() {
+        MasterUIController GetUI = FindObjectOfType<MasterUIController>();
+        GetUI.currentlyActiveUI = null;
+        GetUI.isActive = false;
+        StatsUI.SetActive(false); 
+    }
     private void LoadEcoUI() { EcoUI.SetActive(true); InvUI.SetActive(false); }
     private void LoadInvUI() { InvUI.SetActive(true); EcoUI.SetActive(false); }
 }

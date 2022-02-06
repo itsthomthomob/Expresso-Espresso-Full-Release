@@ -19,15 +19,19 @@ public class TileConstruction : MonoBehaviour
     public RectTransform root;
     public Camera _main;
     public GameObject destroyIcon;
+    public GameObject ghostTile;
 
     [Header("Grid Objects")]
     public ConstructionSystemUI.SelectedTile selectedTile;
     public ConstructionSystemUI GetConstruction;
+    public PauseManager GetPause;
+
     private EntityGrid Grid;
 
     [Header("Modes")]
     public bool destroyOn;
     public bool isOverUI;
+    public bool IsUIActive;
 
     [Header("Selection Mode")]
     public bool selectionMode;
@@ -46,7 +50,6 @@ public class TileConstruction : MonoBehaviour
         GetConstruction = FindObjectOfType<ConstructionSystemUI>();
 
         selectionRectImg = selectionRect.GetComponent<RectTransform>();
-        selectionRect.SetActive(false);
 
         currentTypeSelected = EntityTypeSelected.All;
 
@@ -56,14 +59,30 @@ public class TileConstruction : MonoBehaviour
 
     private void Update()
     {
+        if (GetPause.isPaused)
+        {
+            return;
+        }
+
+        IsUIActive = FindObjectOfType<MasterUIController>().isActive;
         selectedTile = GetConstruction.currentTile;
 
-        ManageMode();
-        if (!isOverUI)
+        if (IsUIActive == true || isOverUI == true || ghostTile.activeSelf ||
+            selectedTile != ConstructionSystemUI.SelectedTile.none)
         {
-            ManageBuilding();
-            TileSelection();
-            ManageSelected();
+            selectionMode = false;
+            selectionRect.SetActive(false);
+        }
+
+        if (IsUIActive == false)
+        {
+            ManageMode();
+            if (!isOverUI)
+            {
+                ManageBuilding();
+                TileSelection();
+                ManageSelected();
+            }
         }
     }
 
@@ -140,6 +159,15 @@ public class TileConstruction : MonoBehaviour
             case ConstructionSystemUI.SelectedTile.Wall1:
                 Grid.Create<EntityWallBrick>(atPos);
                 break;
+            case ConstructionSystemUI.SelectedTile.Wall2:
+                Grid.Create<EntityWallPlaster>(atPos);
+                break;
+            case ConstructionSystemUI.SelectedTile.Wall3:
+                Grid.Create<EntityWallPale>(atPos);
+                break;
+            case ConstructionSystemUI.SelectedTile.Wall4:
+                Grid.Create<EntityWallGreyBrick>(atPos);
+                break;
             case ConstructionSystemUI.SelectedTile.Register:
                 Grid.Create<EntityRegister>(atPos);
 
@@ -200,6 +228,7 @@ public class TileConstruction : MonoBehaviour
     }
     public void TileSelection() 
     {
+        // Get tile position
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             Vector2 pos;
@@ -213,9 +242,23 @@ public class TileConstruction : MonoBehaviour
             }
         }
 
+        // For dragging selection rectangle
         if (Input.GetKey(KeyCode.Mouse0))
         {
-            selectionMode = true;
+            if (selectedEntities.Length > 0)
+            {
+                for (int i = 0; i < selectedEntities.Length; i++)
+                {
+                    selectedEntities[i].GetComponent<Image>().material = null;
+                }
+                selectedEntities = new EntityBase[0];
+            }
+
+            if (IsUIActive == false || isOverUI == false)
+            {
+                selectionMode = true;
+            }
+
             if (RectTransformUtility.ScreenPointToLocalPointInRectangle(root, Input.mousePosition, null, out Vector2 localPoint))
             {
                 Vector2Int gridPoint = Vector2Int.RoundToInt(new Vector2(localPoint.x / root.sizeDelta.x + root.pivot.x, localPoint.y / root.sizeDelta.y + root.pivot.y));
@@ -223,59 +266,80 @@ public class TileConstruction : MonoBehaviour
                 // Manage UI selection 
                 if (selectionMode == true)
                 {
-                    selectionRect.SetActive(true);
-                    selectionRect.transform.localScale = new Vector2(1, 1);
-                    selectionRect.transform.position = new Vector3(min.x, min.y, -10);
+                    if (GetConstruction.currentTile == ConstructionSystemUI.SelectedTile.none)
+                    { 
+                        selectionRect.SetActive(true);
+                        selectionRect.transform.localScale = new Vector2(1, 1);
+                        selectionRect.transform.position = new Vector3(min.x, min.y, -10);
 
-                    max = new Vector2Int((int)Input.mousePosition.x + 1, (int)Input.mousePosition.y + 1);
-                    Vector2Int minCorner = Vector2Int.Min(min, max);
-                    Vector2Int maxCorner = Vector2Int.Max(min, max);
+                        max = new Vector2Int((int)Input.mousePosition.x + 1, (int)Input.mousePosition.y + 1);
+                        Vector2Int minCorner = Vector2Int.Min(min, max);
+                        Vector2Int maxCorner = Vector2Int.Max(min, max);
 
-                    selectionRectImg.offsetMin = minCorner;
-                    selectionRectImg.offsetMax = maxCorner;
+                        selectionRectImg.offsetMin = minCorner;
+                        selectionRectImg.offsetMax = maxCorner;
+                    }
+                    else 
+                    {
+                        selectionMode = false;
+                    }
                 }
             }
         }
 
+        // Get max position
         if (Input.GetKeyUp(KeyCode.Mouse0)) 
         {
-            if (selectionMode == true)
+            if (!ghostTile.activeSelf)
             {
-                Debug.Log("Released left-mouse");
-                if (RectTransformUtility.ScreenPointToLocalPointInRectangle(root, Input.mousePosition, null, out Vector2 localPoint))
+                if (selectionMode == true)
                 {
-                    Vector2Int gridPoint = Vector2Int.RoundToInt(new Vector2(localPoint.x / root.sizeDelta.x + root.pivot.x, localPoint.y / root.sizeDelta.y + root.pivot.y));
-                    Debug.Log("Max Point: " + gridPoint);
-                    maxSelected = gridPoint;
-                }
-                if (selectedEntities.Length == 0)
-                {
-                    selectedEntities = Grid.FindEntities(minSelected, maxSelected, true);
-                    if (selectedEntities.Length <= 2)
+                    Debug.Log("Released left-mouse");
+                    if (RectTransformUtility.ScreenPointToLocalPointInRectangle(root, Input.mousePosition, null, out Vector2 localPoint))
                     {
+                        Vector2Int gridPoint = Vector2Int.RoundToInt(new Vector2(localPoint.x / root.sizeDelta.x + root.pivot.x, localPoint.y / root.sizeDelta.y + root.pivot.y));
+                        Debug.Log("Max Point: " + gridPoint);
+                        maxSelected = gridPoint;
+                    }
+                    if (selectedEntities.Length == 0)
+                    {
+                        if (IsUIActive == false || isOverUI == false)
+                        {
+                            selectedEntities = Grid.FindEntities(minSelected, maxSelected, true);
+                        }
+                        if (selectedEntities.Length <= 2)
+                        {
+                            for (int i = 0; i < selectedEntities.Length; i++)
+                            {
+                                selectedEntities[i].GetComponent<Image>().material = null;
+                            }
+                            selectedEntities = new EntityBase[0];
+                            return;
+                        }
                         for (int i = 0; i < selectedEntities.Length; i++)
                         {
-                            selectedEntities[i].GetComponent<Image>().material = null;
-                        }
-                        selectedEntities = new EntityBase[0];
-                        return;
-                    }
-                    for (int i = 0; i < selectedEntities.Length; i++)
-                    {
-                        if (selectedEntities[i].Priority == EntityPriority.Characters) { }
-                        else
-                        {
-                            GameObject currentEntity = selectedEntities[i].gameObject;
-                            currentEntity.GetComponent<Image>().material = Resources.Load<Material>("Sprites/UI/Indicators/SelectedEntity");
+                            if (selectedEntities[i].Priority == EntityPriority.Characters) { }
+                            else
+                            {
+                                GameObject currentEntity = selectedEntities[i].gameObject;
+                                currentEntity.GetComponent<Image>().material = Resources.Load<Material>("Sprites/UI/Indicators/SelectedEntity");
+                            }
                         }
                     }
+                    selectionRect.SetActive(false);
                 }
-                selectionRect.SetActive(false);
             }
         }
 
+        // Clear selected entities, exit selection mode
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
+            if (GetConstruction.currentTile != ConstructionSystemUI.SelectedTile.none)
+            {
+                GetConstruction.currentTile = ConstructionSystemUI.SelectedTile.none;
+                ghostTile.SetActive(false);
+            }
+
             if (selectedEntities.Length > 0)
             {
                 for (int i = 0; i < selectedEntities.Length; i++)
@@ -291,6 +355,7 @@ public class TileConstruction : MonoBehaviour
             }
         }
 
+        // Delete all entities except for terrain and character priorities
         if (Input.GetKeyDown(KeyCode.Delete))
         {
             if (selectedEntities.Length != 0)

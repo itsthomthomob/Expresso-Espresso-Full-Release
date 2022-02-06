@@ -28,6 +28,9 @@ public class TechGraphUISystem : MonoBehaviour
 
     private void CloseTechUI()
     {
+        MasterUIController GetUI = FindObjectOfType<MasterUIController>();
+        GetUI.currentlyActiveUI = null;
+        GetUI.isActive = false;
         TechUI.SetActive(false);
 
     }

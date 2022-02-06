@@ -12,10 +12,14 @@ public class CameraSystem : MonoBehaviour, IDragHandler
     public Camera _main;
     public float cameraSpeed;
     public int zoomStep;
+    public MasterUIController GetUI;
 
     private void Update()
     {
-        HandleMovement();
+        if (!GetUI.isActive)
+        {
+            HandleMovement();
+        }
     }
 
     private void HandleMovement()
