@@ -1296,8 +1296,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 19.827, y: 162.16127}
-  m_SizeDelta: {x: 607.4633, y: 231.6574}
+  m_AnchoredPosition: {x: 19.827, y: 122}
+  m_SizeDelta: {x: 607.4633, y: 311.99}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &478536421
 MonoBehaviour:
@@ -1321,10 +1321,10 @@ MonoBehaviour:
       m_Calls: []
   m_text: "- New Discord invite button! Join our Discord!\n- Quality of Life bug
     fixes for building\n   - Tile outline when placing down tiles\n   - Game crashes
-    when deleting tiles, then clearing selected tiles\n   - More accurate rectangle
-    selections\n   - Other misc. bugs\n- Added new floor tiles, wall brick tiles.
-    \n- Added more Tool Tips\n- Enabled Employees UI (for user testing)\n   - Relations
-    and Logs are disabled"
+    when deleting and clearing tiles\n   - More accurate rectangle selections\n  
+    - Fixed UI resolution bugs\n- Added new floor tiles, wall brick tiles. \n- Added
+    more Tool Tips\n- Enabled Employees UI (for user testing)\n   - Relations and
+    Logs are disabled"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1579,7 +1579,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Remember to Wishlist!
+  m_text: Remember to Wishlist <3
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1612,7 +1612,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 3
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -2322,8 +2322,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 19.827, y: -199.83873}
-  m_SizeDelta: {x: 607.4633, y: 231.6574}
+  m_AnchoredPosition: {x: 19.827, y: -197.84001}
+  m_SizeDelta: {x: 607.4633, y: 169.66}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1271018924
 MonoBehaviour:
@@ -3207,7 +3207,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 19.8266, y: -59}
+  m_AnchoredPosition: {x: 19.8266, y: -88}
   m_SizeDelta: {x: 607.4633, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1770863972
@@ -3430,7 +3430,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: List of Changes
+  m_text: New Additions / Bug Fixes
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
