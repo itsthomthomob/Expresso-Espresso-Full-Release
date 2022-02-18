@@ -310,6 +310,38 @@ public class EntityGrid : MonoBehaviour {
 		return last;
 	}
 
+	public T FindNearestEntity<T>(Vector2Int source) where T : EntityBase
+	{
+		T entity = null;
+		FloodFill(source, (queue, position) => {
+			entity = GetFirstEntity<T>(position);
+			if (entity != null) queue.Clear();
+			return true;
+		});
+		return entity;
+	}
+
+	public void FloodFill(Vector2Int source, Predicate<Queue<Vector2Int>, Vector2Int> visit)
+	{
+		Queue<Vector2Int> queue = new Queue<Vector2Int>(new Vector2Int[] { source });
+		HashSet<Vector2Int> nodes = new HashSet<Vector2Int>();
+		while (queue.Count > 0 && nodes.Count < Grid.Count)
+		{
+			Vector2Int current = queue.Dequeue();
+			if (visit.Invoke(queue, current))
+			{
+				Vector2Int a = new Vector2Int(current.x + 1, current.y + 0);
+				Vector2Int b = new Vector2Int(current.x + 0, current.y + 1);
+				Vector2Int c = new Vector2Int(current.x - 1, current.y + 0);
+				Vector2Int d = new Vector2Int(current.x + 0, current.y - 1);
+				if (GetEntityCount(a) > 0 && nodes.Add(a)) queue.Enqueue(a);
+				if (GetEntityCount(b) > 0 && nodes.Add(b)) queue.Enqueue(b);
+				if (GetEntityCount(c) > 0 && nodes.Add(c)) queue.Enqueue(c);
+				if (GetEntityCount(d) > 0 && nodes.Add(d)) queue.Enqueue(d);
+			}
+		}
+	}
+
 	public EntityBase[] FindEntities(Vector2Int a, Vector2Int b, bool inclusive = false)
 	{
 		Vector2Int min = Vector2Int.Min(a, b);

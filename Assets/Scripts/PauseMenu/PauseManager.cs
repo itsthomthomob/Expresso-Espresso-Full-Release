@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class PauseManager : MonoBehaviour
 {
     public GameObject pauseMenu;
+    public GameObject pauseMenuFilter;
     public GameObject ghost;
     public ConstructionSystemUI tile;
     public Button resume;
@@ -38,11 +39,14 @@ public class PauseManager : MonoBehaviour
         {
             ghost.SetActive(false);
             pauseMenu.SetActive(true);
+            pauseMenuFilter.SetActive(true);
             Time.timeScale = 0;
         }
         else
         {
             pauseMenu.SetActive(false);
+            pauseMenuFilter.SetActive(false);
+
             if (tile.currentTile != ConstructionSystemUI.SelectedTile.none)
             {
                 ghost.SetActive(true);
