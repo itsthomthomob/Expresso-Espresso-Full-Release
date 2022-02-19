@@ -4,18 +4,11 @@ using UnityEngine;
 
 public class EntityBarstool : EntityBase
 {
-    public override string GetEntityName()
-    {
-        return "Barstool-1";
-    }
 
-    protected override EntityPriority GetEntityPriority()
+    public override void OnEntityAwake()
     {
-        return EntityPriority.Furniture;
-    }
-
-    protected override Sprite GetEntitySprite()
-    {
-        return Resources.Load<Sprite>("Sprites/Tiles/Furniture/rred chair_back");
+        SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/rred chair_back"));
+        SetEntityPriority(EntityPriority.Furniture);
+        SetEntityName("Red Barstool");
     }
 }

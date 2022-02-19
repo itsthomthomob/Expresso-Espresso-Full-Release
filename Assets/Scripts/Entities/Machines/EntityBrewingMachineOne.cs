@@ -4,24 +4,10 @@ using UnityEngine;
 
 public class EntityBrewingMachineOne : EntityBase
 {
-	private int Cost = 2000;
-	private void Awake()
+	public override void OnEntityAwake()
 	{
-		gameObject.AddComponent<InspectorHelper>();
-	}
-	protected override Sprite GetEntitySprite()
-	{
-		return Resources.Load<Sprite>("Sprites/Tiles/Machines/Brewing-machine-1-front");
-	}
-
-	protected override EntityPriority GetEntityPriority()
-	{
-		return EntityPriority.Furniture;
-		;
-	}
-
-    public override string GetEntityName()
-    {
-		return "Brewer";
+		SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Machines/Brewing-machine-1-front"));
+		SetEntityPriority(EntityPriority.Appliances);
+		SetEntityName("Brewer");
 	}
 }

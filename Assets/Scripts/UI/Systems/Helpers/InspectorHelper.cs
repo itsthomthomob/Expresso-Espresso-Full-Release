@@ -77,7 +77,7 @@ public class InspectorHelper : MonoBehaviour
         {
             InspectorUI.SetActive(true);
             EntityBase currentEntity = gameObject.GetComponent<EntityBase>();
-            string EntityName = currentEntity.GetEntityName();
+            string EntityName = currentEntity.Name;
             switch (EntityName)
             {
                 case "Brewer":

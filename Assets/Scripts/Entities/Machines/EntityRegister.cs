@@ -4,19 +4,10 @@ using UnityEngine;
 
 public class EntityRegister : EntityBase
 {
-    public override string GetEntityName()
+    public override void OnEntityAwake()
     {
-        return "Register";
-    }
-
-    protected override EntityPriority GetEntityPriority()
-    {
-        return EntityPriority.Appliances;
-        //
-    }
-
-    protected override Sprite GetEntitySprite()
-    {
-        return Resources.Load<Sprite>("Sprites/Tiles/Machines/Register");
+        SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Machines/Register"));
+        SetEntityPriority(EntityPriority.Appliances);
+        SetEntityName("Register");
     }
 }

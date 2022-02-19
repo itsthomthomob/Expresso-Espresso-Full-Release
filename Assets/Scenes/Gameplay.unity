@@ -31847,7 +31847,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc0e45806ee8245488788b66c6aa87bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Employees: []
+  SupportEmployees: []
+  BaristaEmployees: []
+  FrontEmployees: []
   TotalEmployees: 0
   payrates: []
 --- !u!114 &837644312
@@ -62857,7 +62859,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -3.3245, y: 49.50995}
+  m_AnchoredPosition: {x: -3.3245, y: 49.51001}
   m_SizeDelta: {x: 670.7721, y: 97.422}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1740542163
@@ -63700,7 +63702,6 @@ GameObject:
   - component: {fileID: 1765303357}
   - component: {fileID: 1765303359}
   - component: {fileID: 1765303360}
-  - component: {fileID: 1765303361}
   - component: {fileID: 1765303362}
   - component: {fileID: 1765303363}
   - component: {fileID: 1765303364}
@@ -63855,24 +63856,6 @@ MonoBehaviour:
   hireButton: {fileID: 762006682}
   FirstObj: {fileID: 1207091264}
   currentEmployeeType: 0
---- !u!114 &1765303361
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1765303356}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a5b5a22b045ca04da66e9930b5b5b75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EmployeeInfoPrefab: {fileID: 6196759536977680653, guid: 5bc4b8ddf29b18b42a4f976a7ebc3086, type: 3}
-  EmployeeList: {fileID: 106578450}
-  EmployeesArray: []
-  EmployeesListFromArray: []
-  GeneratedEmployeesList: []
-  TotalEmployees: 0
 --- !u!114 &1765303362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68998,7 +68981,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 5.599121, y: 50.8}
+  m_AnchoredPosition: {x: 5.599121, y: 50.80005}
   m_SizeDelta: {x: 686.80176, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1891461623
@@ -70994,8 +70977,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1610034674}
   m_HandleRect: {fileID: 1610034673}
   m_Direction: 0
-  m_Value: 0.8800001
-  m_Size: 0.47315294
+  m_Value: 0.8799999
+  m_Size: 0.47315285
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

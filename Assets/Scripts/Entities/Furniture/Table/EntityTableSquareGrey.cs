@@ -4,18 +4,10 @@ using UnityEngine;
 
 public class EntityTableSquareGrey : EntityBase
 {
-    public override string GetEntityName()
+    public override void OnEntityAwake()
     {
-        return "Square Grey Table";
-    }
-
-    protected override EntityPriority GetEntityPriority()
-    {
-        return EntityPriority.Furniture;
-    }
-
-    protected override Sprite GetEntitySprite()
-    {
-        return Resources.Load<Sprite>("Sprites/Tiles/Furniture/Table3");
+        SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/Table3"));
+        SetEntityPriority(EntityPriority.Furniture);
+        SetEntityName("Square Grey Table");
     }
 }

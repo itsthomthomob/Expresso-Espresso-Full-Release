@@ -3,65 +3,116 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(RectTransform), typeof(Image))]
-public abstract class EntityBase : MonoBehaviour{
+public abstract class EntityBase : MonoBehaviour
+{
 
-	private EntityGrid GridCache = null;
-	private Vector2Int PositionCache = Vector2Int.zero;
-	private RectTransform RectTransformCache = null;
-	private Sprite SpriteCache = null;
-	private string EntityName = null;
-	private Image ImageCache = null;
+	private EntityGrid CacheGrid = null;
+	private Vector2Int CachePosition = Vector2Int.zero;
+	private EntityPriority CachePriority = EntityPriority.Unknown;
+	private RectTransform CacheRect = null;
+	private Image CacheImage = null;
+	private Sprite CacheSprite = null;
+	private string CacheName = "";
+
 	private bool MovingCache = false;
 
-	public Vector2Int Position => PositionCache;
-	public EntityGrid Grid => GridCache;
-	public RectTransform RectTransform => RectTransformCache ??= GetComponent<RectTransform>();
-	public Image Image  => ImageCache ??= GetComponent<Image>();
-	public Sprite Sprite => SpriteCache ??= GetEntitySprite();
-	public EntityPriority Priority => GetEntityPriority();
-	public bool IsMoving => MovingCache;
+	public EntityGrid Grid
+	{
+		get => CacheGrid;
+	}
 
-	protected abstract EntityPriority GetEntityPriority();
-	protected abstract Sprite GetEntitySprite();
-	public abstract string GetEntityName();
+	public Vector2Int Position
+	{
+		get => CachePosition;
+	}
 
-	public void Move(Vector2Int position, float seconds = 0f) {
-		if (GridCache == null) {
+	public EntityPriority Priority
+	{
+		get => CachePriority;
+	}
+
+	public RectTransform RectTransform
+	{
+		get => CacheRect ??= GetComponent<RectTransform>();
+	}
+
+	public Image Image
+	{
+		get => CacheImage ??= GetComponent<Image>();
+	}
+
+	public Sprite Sprite
+	{
+		get => CacheSprite;
+	}
+
+	public string Name
+	{
+		get => CacheName;
+	}
+
+	public bool IsMoving
+	{
+		get => MovingCache;
+	}
+
+	public abstract void OnEntityAwake();
+
+	public void Move(Vector2Int position, float seconds = 0f)
+	{
+		if (CacheGrid == null)
+		{
 			throw new InvalidOperationException("No grid");
-		} else {
-			GridCache.Move(this, position, seconds);
+		}
+		else
+		{
+			CacheGrid.Move(this, position, seconds);
 		}
 	}
 
-	protected void SetEntitySprite() 
+	protected void SetEntityPriority(EntityPriority priority)
 	{
-		SpriteCache = Sprite;
-		Image.sprite = Sprite;
-		Grid.UpdateTransform(this);
+		CachePriority = priority;
+		Grid.UpdateEntityPriority(this);
 	}
 
-	internal void OnGridCreate(EntityGrid grid, Vector2Int position) {
-		GridCache = grid;
-		PositionCache = position;
+	protected void SetEntitySprite(Sprite sprite)
+	{
+		CacheSprite = sprite;
+		Grid.UpdateEntitySprite(this);
 	}
 
-	internal void OnGridMoveBegin(Vector2Int position) {
-		PositionCache = position;
+	protected void SetEntityName(string name)
+	{
+		CacheName = name;
+	}
+
+	internal void OnGridCreate(EntityGrid grid, Vector2Int position)
+	{
+		CacheGrid = grid;
+		CachePosition = position;
+	}
+
+	internal void OnGridMoveBegin(Vector2Int position)
+	{
+		CachePosition = position;
 		MovingCache = true;
 	}
 
-	internal void OnGridMoveEnd() {
+	internal void OnGridMoveEnd()
+	{
 		MovingCache = false;
 	}
 
-	internal void OnGridTeleport(Vector2Int position) {
-		PositionCache = position;
+	internal void OnGridTeleport(Vector2Int position)
+	{
+		CachePosition = position;
 		MovingCache = false;
 	}
 
-	internal void OnGridDestroy() {
-		GridCache = null;
+	internal void OnGridDestroy()
+	{
+		CacheGrid = null;
 	}
-
 
 }

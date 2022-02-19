@@ -381,37 +381,35 @@ public class EmployeeUserIntSystem : MonoBehaviour
 
     private void CreateEmployee() 
     {
-        EntityEmployee newEmployee = grid.Create<EntityEmployee>(new Vector2Int(0, 0));
-        
-        newEmployee.SetEmployeeID(CurrentNewEmployeeID);
-        CurrentNewEmployeeID += 1;
-        newEmployee.SetEmployeeName(employeeName);
-        //newEmployee.SetSpriteName(currentCharImage);
-        newEmployee.SetWageAmount(CurrentWageOffer);
-        newEmployee.SetSkillModifier(skillAmount);
-        newEmployee.SetEfficiencyModifier(skillAmount / 2);
-        switch (currentTrait)
-        {
-            case "Extrovert":
-                newEmployee.SetEmployeePersonality(EntityEmployee.PersonalityTypes.Extrovert);
-                break;
-            case "Introvert":
-                newEmployee.SetEmployeePersonality(EntityEmployee.PersonalityTypes.Introvert);
-                break;
-        }
-
         switch (currentEmployeeType)
         {
             case EmployeeTypeButtons.onBaristas:
-                newEmployee.SetEmployeeRole(EntityEmployee.EmployeeRoles.Barista);
+                EntityBarista newBarista = grid.Create<EntityBarista>(new Vector2Int(0, 0));
+
+
                 break;
             case EmployeeTypeButtons.onSupport:
-                newEmployee.SetEmployeeRole(EntityEmployee.EmployeeRoles.Support);
+                EntitySupport newSupport = grid.Create<EntitySupport>(new Vector2Int(0, 0));
+                newSupport.SetEmployeeID(CurrentNewEmployeeID);
+                CurrentNewEmployeeID += 1;
+                newSupport.SetEmployeeName(employeeName);
+                //newEmployee.SetSpriteName(currentCharImage);
+                newSupport.SetWageAmount(CurrentWageOffer);
+                newSupport.SetSkillModifier(skillAmount);
+                newSupport.SetEfficiencyModifier(skillAmount / 2);
+                switch (currentTrait)
+                {
+                    case "Extrovert":
+                        newSupport.SetEmployeePersonality("Extrovert");
+                        break;
+                    case "Introvert":
+                        newSupport.SetEmployeePersonality("Introvert");
+                        break;
+                }
+
                 break;
             case EmployeeTypeButtons.onFront:
-                newEmployee.SetEmployeeRole(EntityEmployee.EmployeeRoles.Front);
-                break;
-            default:
+                EntityFront newFront = grid.Create<EntityFront>(new Vector2Int(0, 0));
                 break;
         }
     }

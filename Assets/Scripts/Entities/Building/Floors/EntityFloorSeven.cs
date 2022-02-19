@@ -4,18 +4,10 @@ using UnityEngine;
 
 public class EntityFloorSeven : EntityBase
 {
-	protected override Sprite GetEntitySprite()
+	public override void OnEntityAwake()
 	{
-		return Resources.Load<Sprite>("Sprites/Tiles/Building/Floor6");
+		SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Building/Floor6"));
+		SetEntityPriority(EntityPriority.Foundations);
+		SetEntityName("Checkered Floor");
 	}
-
-	protected override EntityPriority GetEntityPriority()
-	{
-		return EntityPriority.Buildings;
-	}
-
-    public override string GetEntityName()
-    {
-        throw new System.NotImplementedException();
-    }
 }

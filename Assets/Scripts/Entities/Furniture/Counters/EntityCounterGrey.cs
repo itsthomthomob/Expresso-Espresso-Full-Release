@@ -4,18 +4,11 @@ using UnityEngine;
 
 public class EntityCounterGrey : EntityBase
 {
-    public override string GetEntityName()
-    {
-        return "Grey Counter";
-    }
 
-    protected override EntityPriority GetEntityPriority()
+    public override void OnEntityAwake()
     {
-        return EntityPriority.Furniture;
-    }
-
-    protected override Sprite GetEntitySprite()
-    {
-        return Resources.Load<Sprite>("Sprites/Tiles/Furniture/Counter");
+        SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/Counter"));
+        SetEntityPriority(EntityPriority.Furniture);
+        SetEntityName("Grey Counter");
     }
 }

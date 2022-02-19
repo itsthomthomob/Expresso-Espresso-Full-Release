@@ -2,16 +2,10 @@ using UnityEngine;
 
 public class EntityConcrete : EntityBase {
 
-    protected override Sprite GetEntitySprite() {
-        return Resources.Load<Sprite>("Sprites/Concrete");
-    }
-
-    protected override EntityPriority GetEntityPriority() {
-        return EntityPriority.Terrain;
-    }
-
-    public override string GetEntityName()
+    public override void OnEntityAwake()
     {
-        throw new System.NotImplementedException();
+        SetEntitySprite(Resources.Load<Sprite>("Sprites/Concrete"));
+        SetEntityPriority(EntityPriority.Terrain);
+        SetEntityName("Concrete");
     }
 }

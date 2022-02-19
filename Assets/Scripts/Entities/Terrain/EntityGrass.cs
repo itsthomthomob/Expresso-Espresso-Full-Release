@@ -4,18 +4,10 @@ using UnityEngine;
 
 public class EntityGrass : EntityBase
 {
-    public override string GetEntityName()
+    public override void OnEntityAwake()
     {
-        return "Grass";
-    }
-
-    protected override EntityPriority GetEntityPriority()
-    {
-        return EntityPriority.Terrain;
-    }
-
-    protected override Sprite GetEntitySprite()
-    {
-        return Resources.Load<Sprite>("Sprites/Tiles/Grass");
+        SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Grass"));
+        SetEntityPriority(EntityPriority.Terrain);
+        SetEntityName("Grass");
     }
 }

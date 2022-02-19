@@ -2,16 +2,10 @@ using UnityEngine;
 
 public class EntityRoad : EntityBase {
 
-	protected override Sprite GetEntitySprite() {
-        return Resources.Load<Sprite>("Sprites/Road");
-    }
-
-    protected override EntityPriority GetEntityPriority() {
-        return EntityPriority.Terrain;
-    }
-
-    public override string GetEntityName()
+    public override void OnEntityAwake()
     {
-        throw new System.NotImplementedException();
+        SetEntitySprite(Resources.Load<Sprite>("Sprites/Road"));
+        SetEntityPriority(EntityPriority.Terrain);
+        SetEntityName("Road");
     }
 }

@@ -4,18 +4,10 @@ using UnityEngine;
 
 public class EntityTableWhite : EntityBase
 {
-    public override string GetEntityName()
+    public override void OnEntityAwake()
     {
-        return "White Table";
-    }
-
-    protected override EntityPriority GetEntityPriority()
-    {
-        return EntityPriority.Furniture;
-    }
-
-    protected override Sprite GetEntitySprite()
-    {
-        return Resources.Load<Sprite>("Sprites/Tiles/Furniture/Table4");
+        SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/Table4"));
+        SetEntityPriority(EntityPriority.Furniture);
+        SetEntityName("White Table");
     }
 }

@@ -13,7 +13,14 @@ public class EntityEspressoMachineOne : EntityBase
 	private int EspressoMax = 100;
 	private int EspressoMin = 0;
 
-    private void Awake()
+	public override void OnEntityAwake()
+	{
+		SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Machines/Espresso-machine-1-front"));
+		SetEntityPriority(EntityPriority.Appliances);
+		SetEntityName("Espresso-Machine");
+	}
+
+	private void Awake()
     {
 		gameObject.AddComponent<InspectorHelper>();
 
@@ -30,19 +37,4 @@ public class EntityEspressoMachineOne : EntityBase
 	{
 		Level = newLevel;
 	}
-
-	protected override Sprite GetEntitySprite()
-	{
-		return Resources.Load<Sprite>("Sprites/Tiles/Machines/Espresso-machine-1-front");
-	}
-
-	protected override EntityPriority GetEntityPriority()
-	{
-		return EntityPriority.Furniture;
-	}
-
-    public override string GetEntityName()
-    {
-		return "Espresso-Machine";
-    }
 }

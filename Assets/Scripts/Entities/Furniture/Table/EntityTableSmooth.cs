@@ -4,18 +4,10 @@ using UnityEngine;
 
 public class EntityTableSmooth : EntityBase
 {
-    public override string GetEntityName()
+    public override void OnEntityAwake()
     {
-        return "Smooth Table";
-    }
-
-    protected override EntityPriority GetEntityPriority()
-    {
-        return EntityPriority.Furniture;
-    }
-
-    protected override Sprite GetEntitySprite()
-    {
-        return Resources.Load<Sprite>("Sprites/Tiles/Furniture/Table");
+        SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/Table"));
+        SetEntityPriority(EntityPriority.Furniture);
+        SetEntityName("Smooth Table");
     }
 }

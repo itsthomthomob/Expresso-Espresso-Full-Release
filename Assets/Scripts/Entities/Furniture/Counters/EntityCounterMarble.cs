@@ -4,18 +4,10 @@ using UnityEngine;
 
 public class EntityCounterMarble : EntityBase
 {
-    public override string GetEntityName()
+    public override void OnEntityAwake()
     {
-        return "Marble Counter";
-    }
-
-    protected override EntityPriority GetEntityPriority()
-    {
-        return EntityPriority.Furniture;
-    }
-
-    protected override Sprite GetEntitySprite()
-    {
-        return Resources.Load<Sprite>("Sprites/Tiles/Furniture/Counter1");
+        SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/Counter1"));
+        SetEntityPriority(EntityPriority.Furniture);
+        SetEntityName("Marble Counter");
     }
 }

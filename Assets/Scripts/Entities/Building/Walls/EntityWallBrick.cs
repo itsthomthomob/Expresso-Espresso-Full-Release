@@ -2,16 +2,10 @@
 
 public class EntityWallBrick : EntityBase {
 
-	protected override Sprite GetEntitySprite() {
-		return Resources.Load<Sprite>("Sprites/Tiles/Building/Wall");
+	public override void OnEntityAwake()
+	{
+		SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Building/Wall"));
+		SetEntityPriority(EntityPriority.Buildings);
+		SetEntityName("Brick Wall");
 	}
-
-	protected override EntityPriority GetEntityPriority() {
-		return EntityPriority.Buildings;
-	}
-
-    public override string GetEntityName()
-    {
-		return "Brick Wall";
-    }
 }

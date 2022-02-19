@@ -4,18 +4,10 @@ using UnityEngine;
 
 public class EntityCounterRed : EntityBase
 {
-    public override string GetEntityName()
+    public override void OnEntityAwake()
     {
-        return "Red Counter";
-    }
-
-    protected override EntityPriority GetEntityPriority()
-    {
-        return EntityPriority.Furniture;
-    }
-
-    protected override Sprite GetEntitySprite()
-    {
-        return Resources.Load<Sprite>("Sprites/Tiles/Furniture/Counter2");
+        SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/Counter2"));
+        SetEntityPriority(EntityPriority.Furniture);
+        SetEntityName("Red Counter");
     }
 }
