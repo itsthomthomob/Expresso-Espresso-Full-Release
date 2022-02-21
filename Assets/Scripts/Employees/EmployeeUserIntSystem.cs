@@ -309,7 +309,7 @@ public class EmployeeUserIntSystem : MonoBehaviour
                         }
                         if (InfoCardChild.name == "Pinup")
                         {
-                            Debug.Log("Getting image...");
+                            //Debug.Log("Getting image...");
                             Sprite childSprite = InfoCardChild.GetComponent<Image>().sprite;
                             currentCharImage = childSprite.name;
                         }

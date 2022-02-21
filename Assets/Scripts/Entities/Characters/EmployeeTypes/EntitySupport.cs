@@ -38,6 +38,9 @@ public class EntitySupport : EntityBase
 
     public State CurrentState = State.TravelToRoaster;
 
+    public EntityRoasteryMachineOne Roaster;
+    public EntityBrewingMachineOne Brewer;
+
     public override void OnEntityAwake()
     {
         SetEntitySprite(Resources.Load<Sprite>("Sprites/Characters/Character001"));
@@ -90,7 +93,8 @@ public class EntitySupport : EntityBase
     {
         if (!IsMoving)
         {
-            EntityRoasteryMachineOne Roaster = Grid.FindNearestEntity<EntityRoasteryMachineOne>(Position);
+            Roaster = Grid.FindNearestEntity<EntityRoasteryMachineOne>(Position);
+
             if (Roaster == null)
             {
                 CurrentState = State.TravelToBrewer;
@@ -98,7 +102,7 @@ public class EntitySupport : EntityBase
             }
             else if ((Position - Roaster.Position).magnitude < 1.5f)
             {
-                CurrentState = State.TravelToBrewer;
+                CurrentState = State.FillRoaster;
                 Debug.LogWarning("At roaster");
             }
             else
@@ -106,13 +110,13 @@ public class EntitySupport : EntityBase
                 bool found = Grid.Pathfind(Position, Roaster.Position, IsPassable, out Vector2Int next);
                 if (found)
                 {
-                    Move(next, 2.0f);
+                    Move(next, 0.25f);
                 }
                 else
                 {
                     Debug.LogWarning("Finished State");
 
-                    CurrentState = State.TravelToBrewer;
+                    CurrentState = State.FillRoaster;
                 }
             }
         }
@@ -120,12 +124,64 @@ public class EntitySupport : EntityBase
 
     private void OnFillRoaster()
     {
-        //
+        Debug.Log("Fill roaster?");
+
+        if (Roaster != null)
+        {
+            if (!Roaster.isFilling)
+            {
+                Debug.Log("Roaster is not filling");
+                // not filling
+                if (Roaster.IsBelowFillThreshold())
+                {
+                    // not filling and below threshold
+                    Debug.Log("Filling roaster");
+                    Roaster.StartFilling();
+                }
+                else
+                {
+                    // not filling and above threshold
+                    CurrentState = State.TravelToBrewer;
+                }
+            }
+        }
+        else 
+        {
+            CurrentState = State.TravelToBrewer;
+        }
     }
 
     private void OnTravelToBrewer()
     {
-        //
+        if (!IsMoving)
+        {
+            Brewer = Grid.FindNearestEntity<EntityBrewingMachineOne>(Position);
+
+            if (Brewer == null)
+            {
+                CurrentState = State.TravelToBrewer;
+                Debug.LogWarning("No Brewer Found");
+            }
+            else if ((Position - Brewer.Position).magnitude < 1.5f)
+            {
+                CurrentState = State.FillBrewer;
+                Debug.LogWarning("At Brewer");
+            }
+            else
+            {
+                bool found = Grid.Pathfind(Position, Brewer.Position, IsPassable, out Vector2Int next);
+                if (found)
+                {
+                    Move(next, 0.25f);
+                }
+                else
+                {
+                    Debug.LogWarning("Finished State");
+
+                    CurrentState = State.FillBrewer;
+                }
+            }
+        }
     }
 
     private void OnFillBrewer()

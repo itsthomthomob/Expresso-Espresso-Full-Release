@@ -77,6 +77,11 @@ public class InspectorHelper : MonoBehaviour
         {
             InspectorUI.SetActive(true);
             EntityBase currentEntity = gameObject.GetComponent<EntityBase>();
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(root, Input.mousePosition, null, out Vector2 localPoint))
+            {
+                Vector2Int gridPoint = Vector2Int.RoundToInt(new Vector2(localPoint.x / root.sizeDelta.x + root.pivot.x, localPoint.y / root.sizeDelta.y + root.pivot.y));
+                currentEntity = Grid.GetLastEntity<EntityBase>(gridPoint);
+            }
             string EntityName = currentEntity.Name;
             switch (EntityName)
             {
@@ -96,7 +101,7 @@ public class InspectorHelper : MonoBehaviour
                     InspectButton.onClick.AddListener(SetEspresso);
                     InspectButton.onClick.AddListener(CloseIM);
                     break;
-                case "Roaster":
+                case "RoasterLvl1":
                     EntityRoasteryMachineOne entity2 = gameObject.GetComponent<EntityRoasteryMachineOne>();
                     MachineName.text = "Roastery";
                     MachineLevel.text = "";

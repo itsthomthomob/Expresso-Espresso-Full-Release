@@ -380,24 +380,13 @@ public class EntityGrid : MonoBehaviour
 		T entity = null;
 		FloodFill(source, (queue, position) => {
 			entity = GetFirstEntity<T>(position);
-			if (entity != null) queue.Clear();
-			return true;
-		});
-		return entity;
-	}
-
-	public T FindNearestEntity<T>(Vector2Int source, Predicate<Vector2Int> passable) where T : EntityBase
-	{
-		T entity = null;
-		FloodFill(source, (queue, position) => {
-			if (passable.Invoke(position))
+			if (entity == null)
 			{
-				entity = GetFirstEntity<T>(position);
-				if (entity != null) queue.Clear();
 				return true;
 			}
 			else
 			{
+				queue.Clear();
 				return false;
 			}
 		});
