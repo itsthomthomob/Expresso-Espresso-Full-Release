@@ -14,16 +14,21 @@ public class EntityBrewingMachineOne : EntityBase
     public int FullBatch = 64;
     public float ForHalfBatch = 20.0f;
     public float ForFullBatch = 40.0f;
-    public float ForEachUnit = 1.50f;
+    public float ForEachUnit = 0.25f;
     public bool isFilling;
     public float StartTime;
+
+    private void Awake()
+    {
+        gameObject.AddComponent<InspectorHelper>();
+    }
 
     private void FixedUpdate()
     {
         float CurrentTime = Time.time;
         if (isFilling)
         {
-            if (BrewedCoffeeUnits == BrewedCoffeeLimit)
+            if (BrewedCoffeeUnits >= BrewedCoffeeLimit)
             {
                 isFilling = false;
             }

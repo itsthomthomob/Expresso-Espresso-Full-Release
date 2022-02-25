@@ -1,40 +1,156 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public class EntityEspressoMachineOne : EntityBase
 {
-	private int Cost = 5000;
-	private int Level;
-	private int MilkUnits;
-	private int EspressoUnits;
-	private int MilkMax = 100;
-	private int MilkMin = 0;
-	private int EspressoMax = 100;
-	private int EspressoMin = 0;
+	public int MilkUnits;
+	public int MilkUnitsLimit = 10;
+	public int EspressoUnits;
+	public int EspressoUnitsLimit = 10;
+	private TimeSpan ForEachUnit = new TimeSpan(0, 0, 1);
+	public bool isFillingMilk;
+	public bool isFillingEspresso;
+	public float StartTime;
 
-	public override void OnEntityAwake()
+	public Stopwatch EspressoWatch = new Stopwatch();
+	public Stopwatch MilkWatch = new Stopwatch();
+
+
+    public override void OnEntityAwake()
 	{
 		SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Machines/Espresso-machine-1-front"));
 		SetEntityPriority(EntityPriority.Appliances);
 		SetEntityName("Espresso-Machine");
 	}
 
-	private void Awake()
+    private void FixedUpdate()
     {
-		gameObject.AddComponent<InspectorHelper>();
+		UnityEngine.Debug.Log("Calling fixed update, ");
+		UnityEngine.Debug.Log("isFillingMilk: " + isFillingMilk);
+		UnityEngine.Debug.Log("isFillingEspresso: " + isFillingEspresso);
 
-		Level = 1;
-		EspressoUnits = 0;
-		MilkUnits = 0;
+		if (isFillingMilk)
+		{
+            UnityEngine.Debug.Log("Filling milk..");
+			if (MilkUnits >= MilkUnitsLimit)
+			{
+				isFillingMilk = false;
+				UnityEngine.Debug.Log("Stopped filling milk");
+
+				MilkWatch.Reset();
+				MilkWatch.Stop();
+
+			}
+			else if (MilkWatch.Elapsed > ForEachUnit)
+			{
+				MilkUnits += 1;
+
+				MilkWatch.Reset();
+				MilkWatch.Start();
+			}
+		}
+
+		if (isFillingEspresso)
+		{
+			UnityEngine.Debug.Log("Filling espresso..");
+
+			if (EspressoUnits >= EspressoUnitsLimit)
+			{
+				isFillingEspresso = false;
+				UnityEngine.Debug.Log("Stopped filling espresso");
+
+				EspressoWatch.Reset();
+				EspressoWatch.Stop();
+			}
+			else if (EspressoWatch.Elapsed > ForEachUnit)
+			{
+				EspressoUnits += 1;
+
+				EspressoWatch.Reset();
+				EspressoWatch.Start();
+			}
+		}
 	}
 
-	public int GetLevel()
+	public bool IsEspressoBelowFillThreshold()
 	{
-		return Level;
+		if (EspressoUnits == 0)
+		{
+			return true;
+		}
+		else if (EspressoUnits >= EspressoUnitsLimit)
+		{
+			return false;
+		}
+		else if (EspressoUnits < 0)
+		{
+			return true;
+		}
+		else if (EspressoUnits < EspressoUnitsLimit)
+		{
+			return true;
+		}
+		else
+		{
+			return true;
+		}
 	}
-	public void SetLevel(int newLevel)
+
+	public bool IsMilkBelowFillThreshold()
 	{
-		Level = newLevel;
+		if (MilkUnits == 0)
+		{
+			return true;
+		}
+		else if (MilkUnits >= MilkUnitsLimit)
+		{
+			return false;
+		}
+		else if (MilkUnits < 0)
+		{
+			return true;
+		}
+		else if (MilkUnits < MilkUnitsLimit)
+		{
+			return true;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
+	public void StartFillingEspresso()
+	{
+		EspressoWatch.Start();
+		isFillingEspresso = true;
+	}
+	public void StartFillingMilk()
+	{
+		MilkWatch.Start();
+		isFillingMilk = true;
+	}
+
+	public bool IsFillingEspresso()
+	{
+		return isFillingEspresso;
+	}
+	public bool IsFillingMilk()
+	{
+		return isFillingMilk;
+	}
+
+	public void StopFillingEspresso()
+	{
+		EspressoWatch.Stop();
+		isFillingEspresso = false;
+	}
+	public void StopFillingMilk()
+	{
+		EspressoWatch.Stop();
+		isFillingMilk = false;
 	}
 }

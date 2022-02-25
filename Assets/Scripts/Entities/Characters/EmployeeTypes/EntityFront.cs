@@ -9,7 +9,10 @@ public class EntityFront : EntityBase
     private string SpriteName;
     private float WageAmount;
     private float SkillModifier;
+    private string PersonalityType = "N/A";
+
     private float EfficiencyModifier;
+    public string GetEmployeeRole() { return "Front"; }
 
     public void SetEmployeeID(int newID) { EmployeeID = newID; }
     public int GetEmployeeID() { return EmployeeID; }
@@ -22,6 +25,11 @@ public class EntityFront : EntityBase
     public float GetSkillModifier() { return SkillModifier; }
     public void SetEfficiencyModifier(float newEff) { EfficiencyModifier = newEff; }
     public float GetEfficiencyModifier() { return EfficiencyModifier; }
+    public string GetEmployeePersonality() { return PersonalityType; }
+    public void SetEmployeePersonality(string newPers) { PersonalityType = newPers; }
+
+    public float GetWageAmount() { return WageAmount; }
+    public void SetWageAmount(float wageOffer) { WageAmount = wageOffer; }
 
 
     public override void OnEntityAwake()

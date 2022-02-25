@@ -11,7 +11,7 @@ public class EntitySupport : EntityBase
     private float WageAmount;
     private float SkillModifier;
     private float EfficiencyModifier;
-    private string PersonalityType;
+    private string PersonalityType = "N/A";
 
     public void SetWageAmount(float wageOffer) { WageAmount = wageOffer; }
     public float GetWageAmount() { return WageAmount; }
@@ -19,6 +19,7 @@ public class EntitySupport : EntityBase
     public void SetEmployeeID(int newID) { EmployeeID = newID; }
     public int GetEmployeeID() { return EmployeeID; }
 
+    public string GetEmployeeRole() { return "Support"; }
     public void SetEmployeePersonality(string newPers) { PersonalityType = newPers; }
     public string GetEmployeePersonality() { return PersonalityType; }
     public void SetSpriteName(string newSprite) { SpriteName = newSprite; }
@@ -40,6 +41,7 @@ public class EntitySupport : EntityBase
 
     public EntityRoasteryMachineOne Roaster;
     public EntityBrewingMachineOne Brewer;
+    public EntityEspressoMachineOne Espresso;
 
     public override void OnEntityAwake()
     {
@@ -159,7 +161,7 @@ public class EntitySupport : EntityBase
 
             if (Brewer == null)
             {
-                CurrentState = State.TravelToBrewer;
+                CurrentState = State.TravelToEspresso;
                 Debug.LogWarning("No Brewer Found");
             }
             else if ((Position - Brewer.Position).magnitude < 1.5f)
@@ -186,16 +188,92 @@ public class EntitySupport : EntityBase
 
     private void OnFillBrewer()
     {
-        //
+        Debug.Log("Fill brewer?");
+
+        if (Brewer != null)
+        {
+            if (!Brewer.isFilling)
+            {
+                Debug.Log("Brewer is not filling");
+                // not filling
+                if (Brewer.IsBelowFillThreshold())
+                {
+                    // not filling and below threshold
+                    Debug.Log("Brewer roaster");
+                    Brewer.StartFilling();
+                }
+                else
+                {
+                    // not filling and above threshold
+                    CurrentState = State.TravelToEspresso;
+                }
+            }
+        }
+        else
+        {
+            CurrentState = State.TravelToEspresso;
+        }
     }
 
     private void OnTravelToEspresso()
     {
-        //
+        if (!IsMoving)
+        {
+            Espresso = Grid.FindNearestEntity<EntityEspressoMachineOne>(Position);
+
+            if (Espresso == null)
+            {
+                CurrentState = State.TravelToRoaster;
+                Debug.LogWarning("No Espresso Found");
+            }
+            else if ((Position - Espresso.Position).magnitude < 1.5f)
+            {
+                CurrentState = State.FillEspresso;
+                Debug.LogWarning("At Espresso");
+            }
+            else
+            {
+                bool found = Grid.Pathfind(Position, Espresso.Position, IsPassable, out Vector2Int next);
+                if (found)
+                {
+                    Move(next, 0.25f);
+                }
+                else
+                {
+                    Debug.LogWarning("Finished State");
+
+                    CurrentState = State.FillEspresso;
+                }
+            }
+        }
     }
 
     private void OnFillEspresso()
     {
-        //
+        if (Espresso == null)
+        {
+            // No espresso found
+            CurrentState = State.TravelToRoaster;
+        }
+        else
+        {
+            bool milkBelowThreshold = Espresso.IsMilkBelowFillThreshold();
+            bool espressoBelowThreshold = Espresso.IsEspressoBelowFillThreshold();
+            if (Espresso.isFillingMilk || Espresso.isFillingEspresso)
+            {
+                // Either milk or espresso is filling, wait
+            }
+            else if (milkBelowThreshold || espressoBelowThreshold)
+            {
+                // Start filling milk or espresso or both
+                if (milkBelowThreshold) Espresso.StartFillingMilk();
+                if (espressoBelowThreshold) Espresso.StartFillingEspresso();
+            }
+            else
+            {
+                // Neither milk nor espresso is filling or below threshold
+                CurrentState = State.TravelToRoaster;
+            }
+        }
     }
 }

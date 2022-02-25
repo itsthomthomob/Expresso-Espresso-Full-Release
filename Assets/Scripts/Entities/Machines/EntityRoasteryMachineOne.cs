@@ -39,10 +39,8 @@ public class EntityRoasteryMachineOne : EntityBase
             if (CurrentTime - StartTime > TimeForBag)
             {
                 Debug.Log("Adding bags...");
-                if (AmountOfCoffeeBags < CoffeeBagLimit)
-                {
-                    AmountOfCoffeeBags += 1;
-                }
+                AmountOfCoffeeBags += 1;
+
                 StartTime = CurrentTime;
             }
         }

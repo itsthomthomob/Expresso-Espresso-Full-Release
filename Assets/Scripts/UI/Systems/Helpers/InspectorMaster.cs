@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class InspectorMaster : MonoBehaviour
@@ -13,6 +14,7 @@ public class InspectorMaster : MonoBehaviour
     public TMP_Text MachineName;
     public TMP_Text MachineLevel;
     public Button InspectMachine_B;
+    public Button SellMachine_B;
     public Canvas canvas;
     public float XAdjust;
     public float YAdjust;
@@ -54,6 +56,7 @@ public class InspectorMaster : MonoBehaviour
         {
             moveUI = true;
         }
+        CloseInspector();
     }
 
     private void GetSelectedEntity() 
@@ -94,13 +97,55 @@ public class InspectorMaster : MonoBehaviour
         }
     }
 
+    private void CloseInspector() 
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            TileConstruction getCS = FindObjectOfType<TileConstruction>();
+
+            if (!getCS.isOverUI)
+            {
+                InspectorUI.SetActive(false);
+            }
+        }
+    }
+
     private void SetButtons() 
     {
         InspectMachine_B.onClick.AddListener(OpenInterface);
+        SellMachine_B.onClick.AddListener(SellEntity);
+    }
+
+    private void SellEntity() 
+    {
+        Grid.Destroy(selectedEntity);
     }
 
     private void OpenInterface()
     {
-        RoasteryUI.SetActive(true);
+        if (selectedEntity is EntityRoasteryMachineOne)
+        {
+            RoasteryUI.SetActive(true);
+            InspectorUI.SetActive(false);
+        }
+        if (selectedEntity is EntityBrewingMachineOne)
+        {
+            BrewerUI.SetActive(true);
+            InspectorUI.SetActive(false);
+
+
+        }
+        if (selectedEntity is EntityEspressoMachineOne)
+        {
+            EspressoUI.SetActive(true);
+            InspectorUI.SetActive(false);
+
+        }
+        if (selectedEntity is EntityGrinderMachineOne)
+        {
+            GrinderUI.SetActive(true);
+            InspectorUI.SetActive(false);
+
+        }
     }
 }

@@ -17,6 +17,7 @@ public class RoasterInterfaceSystem : MonoBehaviour
     public int TemperatureMin = 175;
     public Slider TemperatureSlider;
     public Slider BitternessSlider;
+    public Slider CoffeeBagsSlider;
 
     [Header("Coffee Attributes")]
     public int AmountOfCoffeeBags;
@@ -62,6 +63,7 @@ public class RoasterInterfaceSystem : MonoBehaviour
     {
         CoffeeBagsText.text = currentRoaster.AmountOfCoffeeBags.ToString() + " / " + currentRoaster.CoffeeBagLimit.ToString();
         currentRoaster.Temperature = Temperature;
+        CoffeeBagsSlider.value = currentRoaster.AmountOfCoffeeBags;
     }
 
     private void SetButtons() 

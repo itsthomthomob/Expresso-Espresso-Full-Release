@@ -10,7 +10,8 @@ public class EntityBarista : EntityBase
     private float WageAmount;
     private float SkillModifier;
     private float EfficiencyModifier;
-    private string PersonalityType;
+    private string PersonalityType = "N/A";
+    public string GetEmployeeRole() { return "Barista"; }
 
     public void SetWageAmount(float wageOffer) { WageAmount = wageOffer; }
     public float GetWageAmount(){ return WageAmount; }

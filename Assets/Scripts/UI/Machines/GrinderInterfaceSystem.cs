@@ -13,7 +13,6 @@ public class GrinderInterfaceSystem : MonoBehaviour
     public Button PreviousFine;
     public TMP_Text SettingsText;
     public RectTransform Turner;
-    public RectTransform BitternessFill;
     public float fillAmount;
 
     [Header("Attributes")]
@@ -24,7 +23,6 @@ public class GrinderInterfaceSystem : MonoBehaviour
     {
         //GrinderUI.SetActive(false);
         SetButtons();
-        fillAmount = BitternessFill.sizeDelta.y;
     }
 
     private void Update()
