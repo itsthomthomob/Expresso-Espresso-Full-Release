@@ -37,7 +37,7 @@ public class EntitySupport : EntityBase
         TravelToRoaster, FillRoaster, TravelToBrewer, FillBrewer, TravelToEspresso, FillEspresso
     }
 
-    public State CurrentState = State.TravelToRoaster;
+    [SerializeField] private State CurrentState = State.TravelToRoaster;
 
     public EntityRoasteryMachineOne Roaster;
     public EntityBrewingMachineOne Brewer;
@@ -45,7 +45,8 @@ public class EntitySupport : EntityBase
 
     public override void OnEntityAwake()
     {
-        SetEntitySprite(Resources.Load<Sprite>("Sprites/Characters/Character001"));
+        EmployeeUserIntSystem GetEmployeeSystem = FindObjectOfType<EmployeeUserIntSystem>();
+        SetEntitySprite(GetEmployeeSystem.CurrentCharacterImage);
         SetEntityPriority(EntityPriority.Characters);
         SetEntityName("Support");
     }
@@ -80,8 +81,7 @@ public class EntitySupport : EntityBase
     private bool IsPassable(Vector2Int position)
     {
         if (Grid.HasPriority(position, EntityPriority.Furniture) ||
-            Grid.HasPriority(position, EntityPriority.Characters) ||
-            Grid.HasPriority(position, EntityPriority.Foundations))
+            Grid.HasPriority(position, EntityPriority.Characters))
         {
             return false;
         }

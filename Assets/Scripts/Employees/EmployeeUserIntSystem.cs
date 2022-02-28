@@ -73,6 +73,7 @@ public class EmployeeUserIntSystem : MonoBehaviour
     public TMP_Text WageOffer;
     public float MinimumWage;
     public string currentCharImage;
+    public Sprite CurrentCharacterImage;
 
     [Header("Character Info Card")]
     public GameObject CharacterCard;
@@ -80,6 +81,21 @@ public class EmployeeUserIntSystem : MonoBehaviour
     public GameObject FirstObj;
 
     public EmployeeTypeButtons currentEmployeeType;
+
+    public Object[] LoadSprites;
+    public List<Sprite> CharacterSprites;
+
+    private void Awake()
+    {
+        LoadSprites = Resources.LoadAll("Sprites/Characters", typeof(Sprite));
+        for (int i = 0; i < LoadSprites.Length; i++)
+        {
+            if (!CharacterSprites.Contains(LoadSprites[i] as Sprite))
+            {
+                CharacterSprites.Add(LoadSprites[i] as Sprite);
+            }
+        }
+    }
 
     private void Start()
     {
@@ -149,6 +165,11 @@ public class EmployeeUserIntSystem : MonoBehaviour
         {
             GameObject HireableEmployee = Instantiate(HireablePrefab);
             Hireables.Add(HireableEmployee);
+
+            int spriteIndex = Random.Range(0, CharacterSprites.Count);
+
+            string SelectedSprite = CharacterSprites[spriteIndex].name;
+
             int InfoAmount = HireableEmployee.transform.childCount;
             for (int j = 0; j < InfoAmount; j++)
             {
@@ -172,7 +193,8 @@ public class EmployeeUserIntSystem : MonoBehaviour
                 }
                 if (child.name == "Pinup")
                 {
-                    var SR = child.GetComponent<Sprite>();
+                    Image GetImg = child.GetComponent<Image>();
+                    GetImg.sprite = Resources.Load<Sprite>("Sprites/Characters/" + SelectedSprite);
                 }
                 if (child.name == "Experience-Bar-Background")
                 {
@@ -192,6 +214,11 @@ public class EmployeeUserIntSystem : MonoBehaviour
         for (int i = 0; i < HireableAmount; i++)
         {
             GameObject HireableEmployee = Instantiate(HireablePrefab);
+            Hireables.Add(HireableEmployee);
+            int spriteIndex = Random.Range(0, CharacterSprites.Count);
+
+            string SelectedSprite = CharacterSprites[spriteIndex].name;
+
             int InfoAmount = HireableEmployee.transform.childCount;
             for (int j = 0; j < InfoAmount; j++)
             {
@@ -215,7 +242,8 @@ public class EmployeeUserIntSystem : MonoBehaviour
                 }
                 if (child.name == "Pinup")
                 {
-                    var SR = child.GetComponent<Sprite>();
+                    Image GetImg = child.GetComponent<Image>();
+                    GetImg.sprite = Resources.Load<Sprite>("Sprites/Characters/" + SelectedSprite);
                 }
                 if (child.name == "Experience-Bar-Background")
                 {
@@ -235,6 +263,11 @@ public class EmployeeUserIntSystem : MonoBehaviour
         for (int i = 0; i < HireableAmount; i++)
         {
             GameObject HireableEmployee = Instantiate(HireablePrefab);
+            Hireables.Add(HireableEmployee);
+            int spriteIndex = Random.Range(0, CharacterSprites.Count);
+
+            string SelectedSprite = CharacterSprites[spriteIndex].name;
+
             int InfoAmount = HireableEmployee.transform.childCount;
             for (int j = 0; j < InfoAmount; j++)
             {
@@ -258,7 +291,8 @@ public class EmployeeUserIntSystem : MonoBehaviour
                 }
                 if (child.name == "Pinup")
                 {
-                    var SR = child.GetComponent<Sprite>();
+                    Image GetImg = child.GetComponent<Image>();
+                    GetImg.sprite = Resources.Load<Sprite>("Sprites/Characters/" + SelectedSprite);
                 }
                 if (child.name == "Experience-Bar-Background")
                 {
@@ -277,7 +311,7 @@ public class EmployeeUserIntSystem : MonoBehaviour
     private void GenerateInfoCard() 
     {
         int childAmount = CharacterCard.transform.childCount;
-        // if currently selected object is an employee container
+
         if (EventSystem.current.currentSelectedGameObject != null)
         {
             if (EventSystem.current.currentSelectedGameObject.name == "Character-Container-Small")
@@ -309,9 +343,12 @@ public class EmployeeUserIntSystem : MonoBehaviour
                         }
                         if (InfoCardChild.name == "Pinup")
                         {
-                            //Debug.Log("Getting image...");
-                            Sprite childSprite = InfoCardChild.GetComponent<Image>().sprite;
-                            currentCharImage = childSprite.name;
+                            CurrentCharacterImage = InfoCardChild.GetComponent<Image>().sprite;
+                            if (CharacterCard.transform.GetChild(i).name == "CharacterSprite")
+                            {
+                                Transform child = CharacterCard.transform.GetChild(i);
+                                child.GetComponent<Image>().sprite = CurrentCharacterImage;
+                            }
                         }
                         if (CharCardChild.name == "Skill-EXP-BG")
                         {
@@ -385,7 +422,22 @@ public class EmployeeUserIntSystem : MonoBehaviour
         {
             case EmployeeTypeButtons.onBaristas:
                 EntityBarista newBarista = grid.Create<EntityBarista>(new Vector2Int(0, 0));
-
+                newBarista.SetEmployeeID(CurrentNewEmployeeID);
+                CurrentNewEmployeeID += 1;
+                newBarista.SetEmployeeName(employeeName);
+                //newEmployee.SetSpriteName(currentCharImage);
+                newBarista.SetWageAmount(CurrentWageOffer);
+                newBarista.SetSkillModifier(skillAmount);
+                newBarista.SetEfficiencyModifier(skillAmount / 2);
+                switch (currentTrait)
+                {
+                    case "Extrovert":
+                        newBarista.SetEmployeePersonality("Extrovert");
+                        break;
+                    case "Introvert":
+                        newBarista.SetEmployeePersonality("Introvert");
+                        break;
+                }
 
                 break;
             case EmployeeTypeButtons.onSupport:
@@ -410,6 +462,22 @@ public class EmployeeUserIntSystem : MonoBehaviour
                 break;
             case EmployeeTypeButtons.onFront:
                 EntityFront newFront = grid.Create<EntityFront>(new Vector2Int(0, 0));
+                newFront.SetEmployeeID(CurrentNewEmployeeID);
+                CurrentNewEmployeeID += 1;
+                newFront.SetEmployeeName(employeeName);
+                //newEmployee.SetSpriteName(currentCharImage);
+                newFront.SetWageAmount(CurrentWageOffer);
+                newFront.SetSkillModifier(skillAmount);
+                newFront.SetEfficiencyModifier(skillAmount / 2);
+                switch (currentTrait)
+                {
+                    case "Extrovert":
+                        newFront.SetEmployeePersonality("Extrovert");
+                        break;
+                    case "Introvert":
+                        newFront.SetEmployeePersonality("Introvert");
+                        break;
+                }
                 break;
         }
     }

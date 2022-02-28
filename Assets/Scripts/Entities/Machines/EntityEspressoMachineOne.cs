@@ -18,8 +18,14 @@ public class EntityEspressoMachineOne : EntityBase
 	public Stopwatch EspressoWatch = new Stopwatch();
 	public Stopwatch MilkWatch = new Stopwatch();
 
+	EntityBarista myBarista;
 
-    public override void OnEntityAwake()
+    private void Awake()
+    {
+        gameObject.AddComponent<InspectorHelper>();
+	}
+
+	public override void OnEntityAwake()
 	{
 		SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Machines/Espresso-machine-1-front"));
 		SetEntityPriority(EntityPriority.Appliances);
@@ -28,17 +34,11 @@ public class EntityEspressoMachineOne : EntityBase
 
     private void FixedUpdate()
     {
-		UnityEngine.Debug.Log("Calling fixed update, ");
-		UnityEngine.Debug.Log("isFillingMilk: " + isFillingMilk);
-		UnityEngine.Debug.Log("isFillingEspresso: " + isFillingEspresso);
-
 		if (isFillingMilk)
 		{
-            UnityEngine.Debug.Log("Filling milk..");
 			if (MilkUnits >= MilkUnitsLimit)
 			{
 				isFillingMilk = false;
-				UnityEngine.Debug.Log("Stopped filling milk");
 
 				MilkWatch.Reset();
 				MilkWatch.Stop();
@@ -55,12 +55,10 @@ public class EntityEspressoMachineOne : EntityBase
 
 		if (isFillingEspresso)
 		{
-			UnityEngine.Debug.Log("Filling espresso..");
 
 			if (EspressoUnits >= EspressoUnitsLimit)
 			{
 				isFillingEspresso = false;
-				UnityEngine.Debug.Log("Stopped filling espresso");
 
 				EspressoWatch.Reset();
 				EspressoWatch.Stop();
@@ -73,6 +71,25 @@ public class EntityEspressoMachineOne : EntityBase
 				EspressoWatch.Start();
 			}
 		}
+	}
+
+	public void SetMyBarista(EntityBarista barista) 
+	{
+		myBarista = barista;
+	}
+
+	public EntityBarista GetMyBarista() 
+	{
+		return myBarista;
+	}
+
+	public void MakeDrink() 
+	{
+        if (EspressoUnits > 1 && MilkUnits > 2)
+        {
+			EspressoUnits -= 1;
+			MilkUnits -= 2; // lattes take up a lot of milk
+        }
 	}
 
 	public bool IsEspressoBelowFillThreshold()

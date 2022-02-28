@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EntityFront : EntityBase
 {
@@ -34,8 +37,167 @@ public class EntityFront : EntityBase
 
     public override void OnEntityAwake()
     {
-        SetEntitySprite(Resources.Load<Sprite>("Sprites/Characters/Character001"));
+        EmployeeUserIntSystem GetEmployeeSystem = FindObjectOfType<EmployeeUserIntSystem>();
+        SetEntitySprite(GetEmployeeSystem.CurrentCharacterImage);
         SetEntityPriority(EntityPriority.Characters);
         SetEntityName("Front");
+    }
+
+    public enum State 
+    { 
+        TravelToRegister, WaitForCustomer, TakeOrder, DisplayText
+    }
+
+    [SerializeField] private State CurrentState = State.TravelToRegister;
+    EntityRegister myRegister;
+    List<Sprite> AllFrontTexts = new List<Sprite>();
+    GameObject MyTextBubble;
+    Stopwatch TextWatch = new Stopwatch();
+    private void Awake()
+    {
+        UnityEngine.Object[] LoadFrontTexts = Resources.LoadAll("Sprites/UI/TextBubbles/Front");
+        for (int i = 0; i < LoadFrontTexts.Length; i++)
+        {
+            AllFrontTexts.Add(LoadFrontTexts[i] as Sprite);
+        }
+    }
+    private void FixedUpdate()
+    {
+        switch (CurrentState)
+        {
+            case State.TravelToRegister:
+                OnTravelToRegister();
+                break;
+            case State.WaitForCustomer:
+                OnWaitForCustomer();
+                break;
+            case State.TakeOrder:
+                OnTakeOrder();
+                break;
+            case State.DisplayText:
+                OnDisplayText();
+                break;
+        }
+    }
+
+    private void OnTravelToRegister()
+    {
+        if (!IsMoving)
+        {
+            myRegister = Grid.FindNearestEntity<EntityRegister>(Position);
+
+            if (myRegister == null)
+            {
+                // Do nothing, wait
+            }
+            else if ((Position - myRegister.Position).magnitude < 1.5f)
+            {
+                CurrentState = State.WaitForCustomer;
+                UnityEngine.Debug.LogWarning("At register");
+            }
+            else
+            {
+                bool found = Grid.Pathfind(Position, myRegister.Position, IsPassable, out Vector2Int next);
+                if (found)
+                {
+                    Move(next, 0.25f);
+                }
+                else
+                {
+                    UnityEngine.Debug.LogWarning("Finished State");
+
+                    CurrentState = State.WaitForCustomer;
+                }
+            }
+        }
+    }
+
+    private void OnWaitForCustomer()
+    {
+        if (myRegister != null)
+        {
+            if (myRegister.GetCustomer() == null)
+            {
+                // Wait for customer or until customer is at register
+            }
+            else if ((myRegister.GetCustomer().Position - myRegister.Position).magnitude < 1.5f)
+            {
+                CurrentState = State.TakeOrder;
+            }
+        }
+    }
+
+    private void OnTakeOrder()
+    {
+        if (myRegister != null)
+        {
+            if (myRegister.GetCustomer() != null)
+            {
+                EmployeeCommunicationSystem GetCOMMS = FindObjectOfType<EmployeeCommunicationSystem>();
+
+                if (!GetCOMMS.NoDrinkCustomers.Contains(myRegister.GetCustomer()))
+                {
+                    GetCOMMS.NoDrinkCustomers.Add(myRegister.GetCustomer());
+                }
+
+                if ((myRegister.GetCustomer().Position - myRegister.Position).magnitude < 1.5f)
+                {
+                    CurrentState = State.DisplayText;
+                }
+            }
+            else
+            {
+                // wait for customer
+            }
+        }
+    }
+
+    private void OnDisplayText()
+    {
+        if (myRegister != null)
+        {
+            if (!TextWatch.IsRunning)
+            {
+                TextWatch.Start();
+            }
+
+            // spawn text bubble
+            if (MyTextBubble == null)
+            {
+                GameObject textBubble = Instantiate(Resources.Load<GameObject>("Sprites/UI/TextBubbles/TextBubble"));
+                MyTextBubble = textBubble;
+                textBubble.transform.position = new Vector3(transform.position.x, transform.position.y + 5, -10);
+                textBubble.transform.SetParent(this.transform);
+
+                // get random customer text
+                int index = UnityEngine.Random.Range(0, (AllFrontTexts.Count - 1));
+
+                textBubble.transform.GetChild(0).GetComponent<Image>().sprite = AllFrontTexts[index];
+
+            }
+            else
+            {
+                if (TextWatch.Elapsed >= new TimeSpan(0, 0, 2))
+                {
+                    // Wait for next customer
+                    Destroy(MyTextBubble);
+                    CurrentState = State.WaitForCustomer;
+                    TextWatch.Reset();
+                }
+            }
+        }
+    }
+
+    private bool IsPassable(Vector2Int position)
+    {
+        if (Grid.HasPriority(position, EntityPriority.Furniture) ||
+            Grid.HasPriority(position, EntityPriority.Characters))
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }

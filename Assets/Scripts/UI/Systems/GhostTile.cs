@@ -84,10 +84,10 @@ public class GhostTile : MonoBehaviour
                 GhostTileObj.SetActive(true);
 
                 return Resources.Load<Sprite>("Sprites/Tiles/Building/Wall3");
+
             case ConstructionSystemUI.SelectedTile.Table1:
                 GhostTileObj.SetActive(true);
-
-                return Resources.Load<Sprite>("Sprites/Tiles/Building/Table");
+                return Resources.Load<Sprite>("Sprites/Tiles/Furniture/Table");
             case ConstructionSystemUI.SelectedTile.Chair1:
                 GhostTileObj.SetActive(true);
 
