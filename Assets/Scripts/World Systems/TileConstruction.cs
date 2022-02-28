@@ -66,11 +66,14 @@ public class TileConstruction : MonoBehaviour
 
     private void Update()
     {
+        FindBlocker();
+
         currentResolution = new Vector2(Screen.width, Screen.height);
         if (GetPause.isPaused)
         {
             return;
         }
+
 
         IsUIActive = FindObjectOfType<MasterUIController>().isActive;
         selectedTile = GetConstruction.currentTile;
@@ -107,6 +110,15 @@ public class TileConstruction : MonoBehaviour
         destroyOn = false;
         selectionMode = false;
 	}
+
+    public void FindBlocker() 
+    {
+        GameObject blocker = GameObject.Find("Blocker");
+        if (blocker != null)
+        {
+            Destroy(blocker);
+        }
+    }
 
     public void ManageMode() 
     {

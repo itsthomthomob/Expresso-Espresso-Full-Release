@@ -49,16 +49,25 @@ public class EntityFront : EntityBase
     }
 
     [SerializeField] private State CurrentState = State.TravelToRegister;
+    [SerializeField] private float Range = 3.0f;
+
     EntityRegister myRegister;
-    List<Sprite> AllFrontTexts = new List<Sprite>();
+
+    List<Sprite> FrontTexts = new List<Sprite>();
     GameObject MyTextBubble;
+
     Stopwatch TextWatch = new Stopwatch();
     private void Awake()
     {
-        UnityEngine.Object[] LoadFrontTexts = Resources.LoadAll("Sprites/UI/TextBubbles/Front");
-        for (int i = 0; i < LoadFrontTexts.Length; i++)
+        string[] FileNames = new string[] {"Front-Text1", "Front-Text2", "Front-Text3" };
+        UnityEngine.Debug.Log(FileNames[0]);
+        for (int i = 0; i < FileNames.Length; i++)
         {
-            AllFrontTexts.Add(LoadFrontTexts[i] as Sprite);
+            Sprite LoadSprite = Resources.Load("Sprites/UI/TextBubbles/Front/" + FileNames[i]) as Sprite;
+            if (!FrontTexts.Contains(LoadSprite))
+            {
+                FrontTexts.Add(LoadSprite);
+            }
         }
     }
     private void FixedUpdate()
@@ -90,7 +99,7 @@ public class EntityFront : EntityBase
             {
                 // Do nothing, wait
             }
-            else if ((Position - myRegister.Position).magnitude < 1.5f)
+            else if ((Position - myRegister.Position).magnitude < Range)
             {
                 CurrentState = State.WaitForCustomer;
                 UnityEngine.Debug.LogWarning("At register");
@@ -120,7 +129,7 @@ public class EntityFront : EntityBase
             {
                 // Wait for customer or until customer is at register
             }
-            else if ((myRegister.GetCustomer().Position - myRegister.Position).magnitude < 1.5f)
+            else if ((myRegister.GetCustomer().Position - myRegister.Position).magnitude < Range)
             {
                 CurrentState = State.TakeOrder;
             }
@@ -140,7 +149,7 @@ public class EntityFront : EntityBase
                     GetCOMMS.NoDrinkCustomers.Add(myRegister.GetCustomer());
                 }
 
-                if ((myRegister.GetCustomer().Position - myRegister.Position).magnitude < 1.5f)
+                if ((myRegister.GetCustomer().Position - myRegister.Position).magnitude < Range)
                 {
                     CurrentState = State.DisplayText;
                 }
@@ -166,14 +175,15 @@ public class EntityFront : EntityBase
             {
                 GameObject textBubble = Instantiate(Resources.Load<GameObject>("Sprites/UI/TextBubbles/TextBubble"));
                 MyTextBubble = textBubble;
-                textBubble.transform.position = new Vector3(transform.position.x, transform.position.y + 5, -10);
+                textBubble.transform.position = new Vector3(transform.position.x, transform.position.y + 50, -10);
                 textBubble.transform.SetParent(this.transform);
 
                 // get random customer text
-                int index = UnityEngine.Random.Range(0, (AllFrontTexts.Count - 1));
+                int index = UnityEngine.Random.Range(0, (FrontTexts.Count));
 
-                textBubble.transform.GetChild(0).GetComponent<Image>().sprite = AllFrontTexts[index];
-
+                var TextImage = textBubble.transform.GetChild(0).GetComponent<Image>();
+                TextImage.sprite = FrontTexts[index];
+                UnityEngine.Debug.Log("Front: " + FrontTexts[index].name);
             }
             else
             {

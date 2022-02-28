@@ -24,19 +24,28 @@ public class EntityCustomer : EntityBase
     private bool OrderedDrink;
 
     [SerializeField] private EntityCoffee MyCoffee;
+    [SerializeField] private float Range = 3.0f;
+
     EntityBase MyChair;
     EntityRegister Register;
     EntityRegister[] AllRegisters;
-    List<Sprite> AllOrderingTexts = new List<Sprite>();
+
+    List<Sprite> OrderedTexts = new List<Sprite>();
     GameObject MyTextBubble;
+
     Stopwatch TextWatch = new Stopwatch();
 
     private void Awake()
     {
-        UnityEngine.Object[] LoadOrderingTexts = Resources.LoadAll("Sprites/UI/TextBubbles/Ordered");
-        for (int i = 0; i < LoadOrderingTexts.Length; i++)
+        string[] FileNames = new string[] { "Customer-Ordered0", "Customer-Ordered1"};
+        UnityEngine.Debug.Log(FileNames[0]);
+        for (int i = 0; i < FileNames.Length; i++)
         {
-            AllOrderingTexts.Add(LoadOrderingTexts[i] as Sprite);
+            Sprite LoadSprite = Resources.Load("Sprites/UI/TextBubbles/Customer/Ordered" + FileNames[i]) as Sprite;
+            if (!OrderedTexts.Contains(LoadSprite))
+            {
+                OrderedTexts.Add(LoadSprite);
+            }
         }
     }
 
@@ -91,7 +100,7 @@ public class EntityCustomer : EntityBase
             {
                 // Do nothing, wait for register
             }
-            else if ((Position - Register.Position).magnitude < 2.5f)
+            else if ((Position - Register.Position).magnitude < Range)
             {
                 CurrentState = State.DisplayText;
                 UnityEngine.Debug.LogWarning("At register");
@@ -118,14 +127,14 @@ public class EntityCustomer : EntityBase
         {
             GameObject textBubble = Instantiate(Resources.Load<GameObject>("Sprites/UI/TextBubbles/TextBubble"));
             MyTextBubble = textBubble;
-            textBubble.transform.position = new Vector3(transform.position.x, transform.position.y + 5, -10);
+            textBubble.transform.position = new Vector3(transform.position.x, transform.position.y + 50, -10);
             textBubble.transform.SetParent(this.transform);
 
             // get random customer text
-            int index = UnityEngine.Random.Range(0, (AllOrderingTexts.Count - 1));
+            int index = UnityEngine.Random.Range(0, (OrderedTexts.Count));
 
-            textBubble.transform.GetChild(0).GetComponent<Image>().sprite = AllOrderingTexts[index];
-
+            textBubble.transform.GetChild(0).GetComponent<Image>().sprite = OrderedTexts[index];
+            UnityEngine.Debug.Log("Customer: " + index + "Max: " + (OrderedTexts.Count));
         }
         else
         {
@@ -236,7 +245,7 @@ public class EntityCustomer : EntityBase
                     }
                 }
             }
-            else if ((Position - MyChair.Position).magnitude < 2.0f)
+            else if ((Position - MyChair.Position).magnitude < Range)
             {
                 // At chair
                 CurrentState = State.SitDown;
@@ -245,7 +254,7 @@ public class EntityCustomer : EntityBase
             else 
             {
                 // Chair found
-                bool found = Grid.Pathfind(Position, MyChair.Position, IsPassable, out Vector2Int next);
+                bool found = Grid.Pathfind(Position, MyChair.Position, IsChairPassable, out Vector2Int next);
                 if (found)
                 {
                     Move(next, 0.25f);
@@ -263,10 +272,14 @@ public class EntityCustomer : EntityBase
                 // Find chair
                 CurrentState = State.GoingToEmptyChair;
             }
-            else if ((Position - MyChair.Position).magnitude < 1.5f)
+            else if ((Position - MyChair.Position).magnitude < Range)
             {
                 // Near chair, sit down
-                Move(MyChair.Position, 0.25f);
+                bool found = Grid.Pathfind(Position, MyChair.Position, IsChairPassable, out Vector2Int next);
+                if (found)
+                {
+                    Move(next, 0.25f);
+                }
             }
             else
             {
@@ -316,7 +329,7 @@ public class EntityCustomer : EntityBase
         {
             CurrentState = State.WaitAtChair;
         }
-        else if ((Position - MyCoffee.Position).magnitude < 1.5f)
+        else if ((Position - MyCoffee.Position).magnitude < Range)
         {
             MyCoffee.transform.position = gameObject.transform.position;
             MyCoffee.transform.SetParent(this.transform);
@@ -343,6 +356,17 @@ public class EntityCustomer : EntityBase
     {
         if (Grid.HasPriority(position, EntityPriority.Furniture) ||
             Grid.HasPriority(position, EntityPriority.Characters))
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    private bool IsChairPassable(Vector2Int position) 
+    {
+        if (Grid.HasPriority(position, EntityPriority.Characters))
         {
             return false;
         }
