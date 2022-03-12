@@ -10,19 +10,22 @@ public class EntityEspressoMachineOne : EntityBase
 	public int MilkUnitsLimit = 10;
 	public int EspressoUnits;
 	public int EspressoUnitsLimit = 10;
-	private TimeSpan ForEachUnit = new TimeSpan(0, 0, 1);
+	private float ForEachUnit = 3.0f;
 	public bool isFillingMilk;
 	public bool isFillingEspresso;
 	public float StartTime;
 
-	public Stopwatch EspressoWatch = new Stopwatch();
-	public Stopwatch MilkWatch = new Stopwatch();
+	public TimeManager GetTime;
+	public float StartTimeMilk;
+	public float StartTimeEspresso;
 
 	EntityBarista myBarista;
 
     private void Awake()
     {
         gameObject.AddComponent<InspectorHelper>();
+		GetTime = FindObjectOfType<TimeManager>();
+
 	}
 
 	public override void OnEntityAwake()
@@ -34,22 +37,19 @@ public class EntityEspressoMachineOne : EntityBase
 
     private void FixedUpdate()
     {
+		float CurrentTimeMilk = Time.time * GetTime.scale;
+		float CurrentTimeEspresso = Time.time * GetTime.scale;
+
 		if (isFillingMilk)
 		{
 			if (MilkUnits >= MilkUnitsLimit)
 			{
 				isFillingMilk = false;
-
-				MilkWatch.Reset();
-				MilkWatch.Stop();
-
 			}
-			else if (MilkWatch.Elapsed > ForEachUnit)
+			else if (CurrentTimeMilk - StartTimeMilk > ForEachUnit)
 			{
 				MilkUnits += 1;
-
-				MilkWatch.Reset();
-				MilkWatch.Start();
+				StartTimeMilk = CurrentTimeMilk;
 			}
 		}
 
@@ -59,16 +59,11 @@ public class EntityEspressoMachineOne : EntityBase
 			if (EspressoUnits >= EspressoUnitsLimit)
 			{
 				isFillingEspresso = false;
-
-				EspressoWatch.Reset();
-				EspressoWatch.Stop();
 			}
-			else if (EspressoWatch.Elapsed > ForEachUnit)
+			else if (CurrentTimeEspresso - StartTimeEspresso > ForEachUnit)
 			{
 				EspressoUnits += 1;
-
-				EspressoWatch.Reset();
-				EspressoWatch.Start();
+				StartTimeEspresso = CurrentTimeEspresso;
 			}
 		}
 	}
@@ -142,12 +137,12 @@ public class EntityEspressoMachineOne : EntityBase
 
 	public void StartFillingEspresso()
 	{
-		EspressoWatch.Start();
+		StartTimeEspresso = Time.time * GetTime.scale;
 		isFillingEspresso = true;
 	}
 	public void StartFillingMilk()
 	{
-		MilkWatch.Start();
+		StartTimeMilk = Time.time * GetTime.scale;
 		isFillingMilk = true;
 	}
 
@@ -162,12 +157,10 @@ public class EntityEspressoMachineOne : EntityBase
 
 	public void StopFillingEspresso()
 	{
-		EspressoWatch.Stop();
 		isFillingEspresso = false;
 	}
 	public void StopFillingMilk()
 	{
-		EspressoWatch.Stop();
 		isFillingMilk = false;
 	}
 }

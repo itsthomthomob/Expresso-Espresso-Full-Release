@@ -20,15 +20,17 @@ public class EntityRoasteryMachineOne : EntityBase
     public float TimeForBag = 0.01f;
     public float TimeNeeded = 5.0f;
     public bool isFilling;
+    public TimeManager GetTime;
 
     private void Awake()
     {
         gameObject.AddComponent<InspectorHelper>();
+        GetTime = FindObjectOfType<TimeManager>();
     }
 
     private void FixedUpdate()
     {
-        float CurrentTime = Time.time;
+        float CurrentTime = Time.time * GetTime.scale;
         if (isFilling)
         {
             if (AmountOfCoffeeBags == CoffeeBagLimit)
@@ -48,7 +50,7 @@ public class EntityRoasteryMachineOne : EntityBase
 
     public void StartFilling()
     {
-        StartTime = Time.time;
+        StartTime = Time.time * GetTime.scale;
         isFilling = true;
     }
 

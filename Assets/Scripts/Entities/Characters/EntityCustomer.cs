@@ -21,10 +21,14 @@ public class EntityCustomer : EntityBase
 
     [SerializeField] private State CurrentState = State.GoingToRegister;
 
-    private bool OrderedDrink;
-
     [SerializeField] private EntityCoffee MyCoffee;
     [SerializeField] private float Range = 3.0f;
+    [SerializeField] private MenuItem MyItem;
+    MenuManagementSystem GetMenu;
+    MenuItem[] ScanMenu;
+
+    CafeEconomySystem GetECO;
+    bool didReview;
 
     EntityBase MyChair;
     EntityRegister Register;
@@ -35,8 +39,18 @@ public class EntityCustomer : EntityBase
 
     Stopwatch TextWatch = new Stopwatch();
 
+    public TimeManager GetTime;
+    public float Speed;
     private void Awake()
     {
+        GetTime = FindObjectOfType<TimeManager>();
+        // Get coffee menu
+        GetMenu = FindObjectOfType<MenuManagementSystem>();
+        ScanMenu = FindObjectsOfType<MenuItem>();
+        GetECO = FindObjectOfType<CafeEconomySystem>();
+        didReview = false;
+
+        // Load text bubbles
         string[] FileNames = new string[] { "Customer-Ordered0", "Customer-Ordered1"};
         UnityEngine.Debug.Log(FileNames[0]);
         for (int i = 0; i < FileNames.Length; i++)
@@ -51,6 +65,7 @@ public class EntityCustomer : EntityBase
 
     private void FixedUpdate()
     {
+        Speed = GetTime.scale * 0.25f;
         AllRegisters = FindObjectsOfType<EntityRegister>();
         switch (CurrentState)
         {
@@ -110,7 +125,7 @@ public class EntityCustomer : EntityBase
                 bool found = Grid.Pathfind(Position, Register.Position, IsPassable, out Vector2Int next);
                 if (found)
                 {
-                    Move(next, 0.25f);
+                    Move(next, Speed);
                 }
             }
         }
@@ -140,16 +155,26 @@ public class EntityCustomer : EntityBase
         {
             if (TextWatch.Elapsed >= new TimeSpan(0, 0, 2))
             {
-                OrderedDrink = true;
+                if (MyItem == null)
+                {
+                    int ChooseItem = UnityEngine.Random.Range(0, GetMenu.MenuItems.Count);
+                    MyItem = GetMenu.MenuItems[ChooseItem];
+                    GetECO.CurrentProfits = GetECO.CurrentProfits + MyItem.GetPrice();
+                    GetECO.CurrentExpenses = GetECO.CurrentExpenses + MyItem.GetExpense();
+                }
+                else 
+                { 
+                    // Unlink register
+                    Register.SetCustomerToNone();
+                    Register = null;
 
-                // Unlink register
-                Register.SetCustomerToNone();
-                Register = null;
+                    // Go to chair
+                    Destroy(MyTextBubble);
 
-                // Go to chair
-                Destroy(MyTextBubble);
-                CurrentState = State.GoingToEmptyChair;
-                TextWatch.Reset();
+
+                    CurrentState = State.GoingToEmptyChair;
+                    TextWatch.Reset();
+                }
             }
         }
     }
@@ -257,7 +282,7 @@ public class EntityCustomer : EntityBase
                 bool found = Grid.Pathfind(Position, MyChair.Position, IsChairPassable, out Vector2Int next);
                 if (found)
                 {
-                    Move(next, 0.25f);
+                    Move(next, Speed);
                 }
             }
         }
@@ -278,7 +303,7 @@ public class EntityCustomer : EntityBase
                 bool found = Grid.Pathfind(Position, MyChair.Position, IsChairPassable, out Vector2Int next);
                 if (found)
                 {
-                    Move(next, 0.25f);
+                    Move(next, Speed);
                 }
             }
             else
@@ -342,13 +367,28 @@ public class EntityCustomer : EntityBase
             bool found = Grid.Pathfind(Position, MyCoffee.Position, IsPassable, out Vector2Int next);
             if (found)
             {
-                Move(next, 0.25f);
+                Move(next, Speed);
             }
         }
     }
 
     private void OnLeavingCafe()
     {
+        if (didReview == false)
+        {
+            int Opinion = UnityEngine.Random.Range(0, 1);
+            if (Opinion == 0)
+            {
+                GetECO.CurrentReviews = GetECO.CurrentReviews + 1;
+                GetECO.NegativeReviews = GetECO.NegativeReviews + 1;
+            }
+            else if (Opinion == 1)
+            {
+                GetECO.CurrentReviews = GetECO.CurrentReviews + 1;
+                GetECO.NegativeReviews = GetECO.PositiveReviews + 1;
+            }
+            didReview = true;
+        }
         Destroy(this.gameObject);
     }
 

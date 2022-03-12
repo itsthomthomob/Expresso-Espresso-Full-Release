@@ -17,15 +17,17 @@ public class EntityBrewingMachineOne : EntityBase
     public float ForEachUnit = 0.25f;
     public bool isFilling;
     public float StartTime;
+    public TimeManager GetTime;
 
     private void Awake()
     {
         gameObject.AddComponent<InspectorHelper>();
+        GetTime = FindObjectOfType<TimeManager>();
     }
 
     private void FixedUpdate()
     {
-        float CurrentTime = Time.time;
+        float CurrentTime = Time.time * GetTime.scale;
         if (isFilling)
         {
             if (BrewedCoffeeUnits >= BrewedCoffeeLimit)
@@ -47,7 +49,7 @@ public class EntityBrewingMachineOne : EntityBase
 
     public void StartFilling()
     {
-        StartTime = Time.time;
+        StartTime = Time.time * GetTime.scale;
         isFilling = true;
     }
 

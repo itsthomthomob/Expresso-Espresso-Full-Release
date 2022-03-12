@@ -3,12 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ShopSystemUI : MonoBehaviour
 {
     [Header("Shop UI Object")]
     public GameObject ShopUI;
     public MasterUIController GetUI;
+    public RenderTexture SatelliteView;
+    public Image SatelliteImg;
 
     [Header("Shop UI")]
     public Button shopButton;
@@ -19,18 +22,15 @@ public class ShopSystemUI : MonoBehaviour
         GetUI = FindObjectOfType<MasterUIController>();
         LoadButtons();
     }
-
     private void LoadButtons() 
     {
         shopButton.onClick.AddListener(OpenShop);
         closeShopButton.onClick.AddListener(CloseShop);
     }
-
     private void OpenShop() 
     {
         ShopUI.SetActive(true);
     }
-
     private void CloseShop()
     {
         MasterUIController GetUI = FindObjectOfType<MasterUIController>();

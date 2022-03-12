@@ -119,6 +119,7 @@ public class InspectorMaster : MonoBehaviour
     private void SellEntity() 
     {
         Grid.Destroy(selectedEntity);
+        RoasteryUI.SetActive(false);
     }
 
     private void OpenInterface()

@@ -17,9 +17,29 @@ public class CoffeeCreationSystem : MonoBehaviour
     [Header("Items")]
     public ItemDetails[] AllItems;
     public List<ItemDetails> SelectedItems = new List<ItemDetails>();
+    public List<ItemDetails> CurrentSyrups = new List<ItemDetails>();
     public ItemDetails SelectedItem;
     public GameObject prefabItemMenu;
 
+    [Header("Coffee Building Images")]
+    public GameObject CoffeeCup;
+    public Sprite EmptyCup;
+    public Sprite HasMilk;
+    public Sprite HasSyrup;
+    public Sprite HasSyrups;
+
+    [Header("Calculate Coffee Expenses")]
+    public TMP_Text DairyCost;
+    public TMP_Text SyrupCosts;
+    public TMP_Text TimeCosts;
+    public TMP_Text TotalCosts;
+    public float CurrentExpense;
+    public float SyrupExpense;
+    public float CoffeeExpense;
+    public float DairyExpense;
+    public bool hasCoffee;
+    public bool hasDairy;
+    
     private void Start()
     {
         AddItemButton.onClick.AddListener(CreateNewItem);
@@ -28,12 +48,87 @@ public class CoffeeCreationSystem : MonoBehaviour
     }
     private void Update()
     {
+        TrackCurrentItems();
         FindSelectedItems();
         ManageItemCategories();
         UpdateItemImage();
-        ItemCostText.text = "$" + ItemCostInput.value.ToString() +".00";
+        BuildCoffeeSprites();
+        UpdateCostTexts();
     }
 
+    private void TrackCurrentItems() 
+    {
+        if (SelectedItem != null && SelectedItem.checkedItems == false)
+        {
+            if (!SelectedItems.Contains(SelectedItem))
+            {
+                Debug.Log("Checking Items");
+                for (int i = 0; i < SelectedItems.Count; i++)
+                {
+                    if (SelectedItems[i].myCategory == ItemCategory.CoffeeType &&
+                        SelectedItem.myCategory == ItemCategory.CoffeeType)
+                    {
+                        // There's already a coffee type and the selected item is a coffee type
+                        CoffeeExpense -= 0.20f;
+                        CurrentExpense -= 0.20f;
+                        SelectedItem.checkedItems = true;
+                        break;
+                    }
+                    if (SelectedItems[i].myCategory == ItemCategory.Dairy &&
+                        SelectedItem.myCategory == ItemCategory.Dairy)
+                    {
+                        DairyExpense -= 0.20f;
+                        CurrentExpense -= 0.20f;
+                        SelectedItem.checkedItems = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    private void UpdateCostTexts() 
+    {
+        if (SelectedItems.Count == 0)
+        {
+            DairyExpense = 0.0f;
+            SyrupExpense = 0.0f;
+            CoffeeExpense = 0.0f;
+            CurrentExpense = 0.0f;
+        }
+        if (SelectedItems.Count == 1)
+        {
+            if (SelectedItems[0].myCategory == ItemCategory.CoffeeType)
+            {
+                DairyExpense = 0.0f;
+                SyrupExpense = 0.0f;
+                CoffeeExpense = 0.20f;
+                CurrentExpense = 0.20f;
+            }
+            else if (SelectedItems[0].myCategory == ItemCategory.Dairy) 
+            {
+                DairyExpense = 0.20f;
+                SyrupExpense = 0.0f;
+                CoffeeExpense = 0.00f;
+                CurrentExpense = 0.20f;
+            }
+            else if (SelectedItems[0].myCategory == ItemCategory.Syrups)
+            {
+                DairyExpense = 0.00f;
+                SyrupExpense = 0.0f;
+                CoffeeExpense = 0.80f;
+                CurrentExpense = 0.80f;
+            }
+        }
+        
+        SyrupExpense = 0.80f * CurrentSyrups.Count;
+        CurrentExpense = SyrupExpense + CoffeeExpense + DairyExpense;
+
+        DairyCost.text = "$" + DairyExpense.ToString();
+        SyrupCosts.text = "$" + SyrupExpense.ToString();
+        TimeCosts.text = "$" + CoffeeExpense.ToString();
+        TotalCosts.text = "$" + CurrentExpense.ToString();
+    }
     private void UpdateItemImage() 
     {
         for (int i = 0; i < AllItems.Length; i++)
@@ -62,7 +157,10 @@ public class CoffeeCreationSystem : MonoBehaviour
                     {
                         // Already selected a dairy type
                         SelectedItems[i].isSelected = false;
-                        SelectedItems.Remove(SelectedItems[i]);
+                        if (SelectedItems.Contains(SelectedItems[i]))
+                        {
+                            SelectedItems.Remove(SelectedItems[i]);
+                        }
                         if (!SelectedItems.Contains(SelectedItem))
                         {
                             SelectedItems.Add(SelectedItem);
@@ -93,6 +191,7 @@ public class CoffeeCreationSystem : MonoBehaviour
     private void FindSelectedItems() 
     {
         AllItems = FindObjectsOfType<ItemDetails>();
+
         for (int i = 0; i < AllItems.Length; i++)
         {
             if (AllItems[i].isSelected == true)
@@ -104,14 +203,13 @@ public class CoffeeCreationSystem : MonoBehaviour
             }
         }
     }
-
-
     private void CreateNewItem() 
     {
         GameObject newItem = Instantiate(prefabItemMenu);
         MenuItem menuItem = newItem.AddComponent<MenuItem>();
         menuItem.SetMyObject(newItem);
-
+        menuItem.SetPrice(ItemCostInput.value);
+        menuItem.SetExpense(CurrentExpense);
         Transform getTF = newItem.transform;
 
         for (int i = 0; i < getTF.childCount; i++)
@@ -129,13 +227,6 @@ public class CoffeeCreationSystem : MonoBehaviour
                 contents.text = SelectedItems[0].ItemName;
                 int ContentAmount = SelectedItems.Count;
                 int index = 0;
-                //for (int j = 0; j < SelectedItems.Count; j++)
-                //{
-                //    if (SelectedItems[j].myCategory != ItemCategory.CoffeeType || SelectedItems[j].myCategory != ItemCategory.Dairy)
-                //    {
-                //        contents.text = SelectedItems[i].ItemName + contents.text;
-                //    }
-                //}
 
             }
             else if (getChild.name == "ItemPrice")
@@ -184,7 +275,6 @@ public class CoffeeCreationSystem : MonoBehaviour
         newItem.name = menuItem.ItemName;
         AddToPhysicalMenu(newItem, menuItem);
     }
-
     private void AddToPhysicalMenu(GameObject item, MenuItem itemDetails) 
     {
         switch (itemDetails.GetDrinkType())
@@ -231,6 +321,41 @@ public class CoffeeCreationSystem : MonoBehaviour
                 break;
         }
         CoffeeCreationUI.SetActive(false);
+    }
+    private void BuildCoffeeSprites() 
+    {
+        Image GetImage = CoffeeCup.GetComponent<Image>();
+
+        if (SelectedItems.Count == 0)
+        {
+            GetImage.sprite = EmptyCup;
+        }
+        else if (SelectedItems.Count > 0)
+        { 
+            for (int i = 0; i < SelectedItems.Count; i++)
+            {
+                if (SelectedItems[i].myCategory == ItemCategory.CoffeeType ||
+                    SelectedItems[i].myCategory == ItemCategory.Dairy)
+                {
+                    GetImage.sprite = HasMilk;
+                }
+                if (SelectedItems[i].myCategory == ItemCategory.Syrups)
+                {
+                    if (!CurrentSyrups.Contains(SelectedItems[i]))
+                    {
+                        CurrentSyrups.Add(SelectedItems[i]);
+                    }
+                }
+            }
+            if (CurrentSyrups.Count == 1)
+            {
+                GetImage.sprite = HasSyrup;
+            }
+            if (CurrentSyrups.Count > 1)
+            {
+                GetImage.sprite = HasSyrups;
+            }
+        }
     }
     private void GoBackToMenu() 
     {

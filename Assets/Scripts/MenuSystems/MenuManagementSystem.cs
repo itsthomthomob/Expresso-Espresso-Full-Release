@@ -37,6 +37,8 @@ public class MenuManagementSystem : MonoBehaviour
     public List<GameObject> FlatWhiteItems = new List<GameObject>();
     public List<GameObject> IrishCoffeeItems = new List<GameObject>();
 
+    [Header("All Menu Items")]
+    public List<MenuItem> MenuItems = new List<MenuItem>();
     private void Start()
     {
         LoadButtons();
@@ -49,8 +51,20 @@ public class MenuManagementSystem : MonoBehaviour
     private void Update()
     {
         UpdateDropDownChanges();
+        GetMenuItems();
     }
 
+    private void GetMenuItems() 
+    {
+        MenuItem[] ActiveMenuItems = FindObjectsOfType<MenuItem>();
+        for (int i = 0; i < ActiveMenuItems.Length; i++)
+        {
+            if (!MenuItems.Contains(ActiveMenuItems[i]))
+            {
+                MenuItems.Add(ActiveMenuItems[i]);
+            }
+        }
+    }
     private void ClearSectionObjects(int value) 
     {
         try
@@ -438,6 +452,8 @@ public class MenuManagementSystem : MonoBehaviour
     }
     private void CloseMenuUI() 
     {
+        MasterUIController GetUI = FindObjectOfType<MasterUIController>();
+        GetUI.isActive = false;
         CoffeeUI.SetActive(false);
     }
     private void OpenMenuUI()

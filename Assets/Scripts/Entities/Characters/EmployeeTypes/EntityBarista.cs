@@ -32,6 +32,8 @@ public class EntityBarista : EntityBase
     public void SetEfficiencyModifier(float newEff) { EfficiencyModifier = newEff; }
     public float GetEfficiencyModifier() { return EfficiencyModifier; }
 
+    public TimeManager GetTime;
+    private float Speed;
     public enum State 
     { 
         TravelToEspresso, WaitForDrink, EspressoMakeDrink, TravelToCounter
@@ -42,8 +44,14 @@ public class EntityBarista : EntityBase
     [SerializeField] private EntityBase myCounter;
     Stopwatch DrinkTimer = new Stopwatch();
 
+    private void Awake()
+    {
+        GetTime = FindObjectOfType<TimeManager>();
+
+    }
     private void FixedUpdate()
     {
+        Speed = GetTime.scale * 0.25f;
         switch (CurrentState)
         {
             case State.TravelToEspresso:
@@ -79,7 +87,7 @@ public class EntityBarista : EntityBase
                 bool found = Grid.Pathfind(Position, myEspresso.Position, IsPassable, out Vector2Int next);
                 if (found)
                 {
-                    Move(next, 0.25f);
+                    Move(next, Speed);
                 }
                 else
                 {
@@ -195,7 +203,7 @@ public class EntityBarista : EntityBase
                 bool found = Grid.Pathfind(Position, myCounter.Position, IsPassable, out Vector2Int next);
                 if (found)
                 {
-                    Move(next, 0.20f);
+                    Move(next, Speed);
                 }
                 else 
                 {

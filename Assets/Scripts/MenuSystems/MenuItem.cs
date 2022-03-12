@@ -6,6 +6,7 @@ public class MenuItem : MonoBehaviour
 {
     [Header("Attributes")]
     float price;
+    float expense;
     int menuID;
     public string ItemName;
     List<string> contents = new List<string>();
@@ -13,6 +14,14 @@ public class MenuItem : MonoBehaviour
     GameObject myObject;
     MenuSection mySection;
 
+    public void SetExpense(float newExpense) 
+    {
+        expense = newExpense;
+    }
+    public float GetExpense()
+    {
+        return expense;
+    }
     public void SetDrinkType(ItemType newType) 
     {
         DrinkType = newType;

@@ -34,7 +34,7 @@ public class EntityFront : EntityBase
     public float GetWageAmount() { return WageAmount; }
     public void SetWageAmount(float wageOffer) { WageAmount = wageOffer; }
 
-
+    public TimeManager GetTime;
     public override void OnEntityAwake()
     {
         EmployeeUserIntSystem GetEmployeeSystem = FindObjectOfType<EmployeeUserIntSystem>();
@@ -50,6 +50,7 @@ public class EntityFront : EntityBase
 
     [SerializeField] private State CurrentState = State.TravelToRegister;
     [SerializeField] private float Range = 3.0f;
+    [SerializeField] private float Speed = 0.25f;
 
     EntityRegister myRegister;
 
@@ -59,6 +60,7 @@ public class EntityFront : EntityBase
     Stopwatch TextWatch = new Stopwatch();
     private void Awake()
     {
+        GetTime = FindObjectOfType<TimeManager>();
         string[] FileNames = new string[] {"Front-Text1", "Front-Text2", "Front-Text3" };
         UnityEngine.Debug.Log(FileNames[0]);
         for (int i = 0; i < FileNames.Length; i++)
@@ -72,6 +74,7 @@ public class EntityFront : EntityBase
     }
     private void FixedUpdate()
     {
+        Speed = 0.25f * GetTime.scale;
         switch (CurrentState)
         {
             case State.TravelToRegister:
@@ -109,7 +112,7 @@ public class EntityFront : EntityBase
                 bool found = Grid.Pathfind(Position, myRegister.Position, IsPassable, out Vector2Int next);
                 if (found)
                 {
-                    Move(next, 0.25f);
+                    Move(next, Speed);
                 }
                 else
                 {

@@ -42,6 +42,13 @@ public class EntitySupport : EntityBase
     public EntityRoasteryMachineOne Roaster;
     public EntityBrewingMachineOne Brewer;
     public EntityEspressoMachineOne Espresso;
+    public TimeManager GetTime;
+    public float Speed = 0.25f;
+
+    private void Awake()
+    {
+        GetTime = FindObjectOfType<TimeManager>();
+    }
 
     public override void OnEntityAwake()
     {
@@ -51,8 +58,12 @@ public class EntitySupport : EntityBase
         SetEntityName("Support");
     }
 
+    
+    
     private void FixedUpdate()
     {
+        
+        Speed = 0.25f / GetTime.scale;
         switch (CurrentState)
         {
             case State.TravelToRoaster:
@@ -112,7 +123,7 @@ public class EntitySupport : EntityBase
                 bool found = Grid.Pathfind(Position, Roaster.Position, IsPassable, out Vector2Int next);
                 if (found)
                 {
-                    Move(next, 0.25f);
+                    Move(next, Speed);
                 }
                 else
                 {
@@ -174,7 +185,7 @@ public class EntitySupport : EntityBase
                 bool found = Grid.Pathfind(Position, Brewer.Position, IsPassable, out Vector2Int next);
                 if (found)
                 {
-                    Move(next, 0.25f);
+                    Move(next, Speed);
                 }
                 else
                 {
@@ -236,7 +247,7 @@ public class EntitySupport : EntityBase
                 bool found = Grid.Pathfind(Position, Espresso.Position, IsPassable, out Vector2Int next);
                 if (found)
                 {
-                    Move(next, 0.25f);
+                    Move(next, Speed);
                 }
                 else
                 {
