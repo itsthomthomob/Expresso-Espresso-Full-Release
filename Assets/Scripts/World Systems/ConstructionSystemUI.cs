@@ -44,6 +44,8 @@ public class ConstructionSystemUI : MonoBehaviour
 
     [Header("Master UI Obj")]
     public GameObject ConstructionUI;
+    public AudioSource GetAudio;
+    public AudioClip multiTile;
 
     [Header("Selected Tiles")]
     public SelectedTileType currentTileType;
@@ -301,6 +303,8 @@ public class ConstructionSystemUI : MonoBehaviour
                 GameObject currentEntity = FindObjectOfType<TileConstruction>().selectedEntities[i].gameObject;
                 currentEntity.GetComponent<Image>().material = null;
             }
+            GetAudio.PlayOneShot(multiTile);
+
             FindObjectOfType<TileConstruction>().selectedEntities = new EntityBase[0];
         }
     }
@@ -327,6 +331,7 @@ public class ConstructionSystemUI : MonoBehaviour
                 GameObject currentEntity = FindObjectOfType<TileConstruction>().selectedEntities[i].gameObject;
                 currentEntity.GetComponent<Image>().material = null;
             }
+            GetAudio.PlayOneShot(multiTile);
             FindObjectOfType<TileConstruction>().selectedEntities = new EntityBase[0];
         }
     }
@@ -353,6 +358,8 @@ public class ConstructionSystemUI : MonoBehaviour
                 GameObject currentEntity = FindObjectOfType<TileConstruction>().selectedEntities[i].gameObject;
                 currentEntity.GetComponent<Image>().material = null;
             }
+            GetAudio.PlayOneShot(multiTile);
+
             FindObjectOfType<TileConstruction>().selectedEntities = new EntityBase[0];
         }
     }
@@ -377,6 +384,8 @@ public class ConstructionSystemUI : MonoBehaviour
                     grid.Create<EntityFloorFour>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
                 }
             }
+            GetAudio.PlayOneShot(multiTile);
+
             FindObjectOfType<TileConstruction>().selectedEntities = new EntityBase[0];
         }
     }
@@ -403,6 +412,8 @@ public class ConstructionSystemUI : MonoBehaviour
                 GameObject currentEntity = FindObjectOfType<TileConstruction>().selectedEntities[i].gameObject;
                 currentEntity.GetComponent<Image>().material = null;
             }
+            GetAudio.PlayOneShot(multiTile);
+
             FindObjectOfType<TileConstruction>().selectedEntities = new EntityBase[0];
         }
     }
@@ -429,6 +440,8 @@ public class ConstructionSystemUI : MonoBehaviour
                 GameObject currentEntity = FindObjectOfType<TileConstruction>().selectedEntities[i].gameObject;
                 currentEntity.GetComponent<Image>().material = null;
             }
+            GetAudio.PlayOneShot(multiTile);
+
             FindObjectOfType<TileConstruction>().selectedEntities = new EntityBase[0];
         }
     }
@@ -455,6 +468,8 @@ public class ConstructionSystemUI : MonoBehaviour
                 GameObject currentEntity = FindObjectOfType<TileConstruction>().selectedEntities[i].gameObject;
                 currentEntity.GetComponent<Image>().material = null;
             }
+            GetAudio.PlayOneShot(multiTile);
+
             FindObjectOfType<TileConstruction>().selectedEntities = new EntityBase[0];
         }
     }
@@ -481,6 +496,8 @@ public class ConstructionSystemUI : MonoBehaviour
                 GameObject currentEntity = FindObjectOfType<TileConstruction>().selectedEntities[i].gameObject;
                 currentEntity.GetComponent<Image>().material = null;
             }
+            GetAudio.PlayOneShot(multiTile);
+
             FindObjectOfType<TileConstruction>().selectedEntities = new EntityBase[0];
         }
     }
@@ -507,6 +524,8 @@ public class ConstructionSystemUI : MonoBehaviour
                 GameObject currentEntity = FindObjectOfType<TileConstruction>().selectedEntities[i].gameObject;
                 currentEntity.GetComponent<Image>().material = null;
             }
+            GetAudio.PlayOneShot(multiTile);
+
             FindObjectOfType<TileConstruction>().selectedEntities = new EntityBase[0];
         }
     }
@@ -533,6 +552,8 @@ public class ConstructionSystemUI : MonoBehaviour
                 GameObject currentEntity = FindObjectOfType<TileConstruction>().selectedEntities[i].gameObject;
                 currentEntity.GetComponent<Image>().material = null;
             }
+            GetAudio.PlayOneShot(multiTile);
+
             FindObjectOfType<TileConstruction>().selectedEntities = new EntityBase[0];
         }
     }
@@ -559,6 +580,8 @@ public class ConstructionSystemUI : MonoBehaviour
                 GameObject currentEntity = FindObjectOfType<TileConstruction>().selectedEntities[i].gameObject;
                 currentEntity.GetComponent<Image>().material = null;
             }
+            GetAudio.PlayOneShot(multiTile);
+
             FindObjectOfType<TileConstruction>().selectedEntities = new EntityBase[0];
         }
     }

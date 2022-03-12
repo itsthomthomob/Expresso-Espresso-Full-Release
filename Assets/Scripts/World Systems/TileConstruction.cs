@@ -59,6 +59,12 @@ public class TileConstruction : MonoBehaviour
     public EntityTypeSelected currentTypeSelected;
     public EntityBase[] selectedEntities;
 
+    [Header("Audio")]
+    public AudioSource CameraAudio;
+    public AudioClip singleTile;
+    public AudioClip multiTile;
+    public AudioClip machineTile;
+
     private void Start()
     {
 		SetStates();
@@ -148,6 +154,14 @@ public class TileConstruction : MonoBehaviour
                     Vector2Int gridPoint = Vector2Int.RoundToInt(new Vector2(localPoint.x / root.sizeDelta.x + root.pivot.x, localPoint.y / root.sizeDelta.y + root.pivot.y));
                     if (destroyOn)
                     {
+                        if (selectedEntities.Length > 0)
+                        {
+                            for (int i = 0; i < selectedEntities.Length; i++)
+                            {
+                                selectedEntities[i].GetComponent<Image>().material = null;
+                            }
+                            selectedEntities = new EntityBase[0];
+                        }
                         Debug.Log("Destroying: " + Grid.GetLastEntity<EntityBase>(gridPoint));
                         if (Grid.GetLastEntity<EntityBase>(gridPoint).Priority == EntityPriority.Characters) { }
                         else if (Grid.GetLastEntity<EntityBase>(gridPoint).Priority == EntityPriority.Terrain) { }
@@ -171,43 +185,78 @@ public class TileConstruction : MonoBehaviour
         {
             case ConstructionSystemUI.SelectedTile.Floor1:
                 Grid.Create<EntityFloor>(atPos);
+                CameraAudio.PlayOneShot(singleTile, 1.0f);
                 break;
             case ConstructionSystemUI.SelectedTile.Floor2:
                 Grid.Create<EntityFloorTwo>(atPos);
+                CameraAudio.PlayOneShot(singleTile, 1.0f);
+
+
                 break;
             case ConstructionSystemUI.SelectedTile.Floor3:
                 Grid.Create<EntityFloorThree>(atPos);
+                CameraAudio.PlayOneShot(singleTile, 1.0f);
+
+
                 break;
             case ConstructionSystemUI.SelectedTile.Floor4:
                 Grid.Create<EntityFloorFour>(atPos);
+                CameraAudio.PlayOneShot(singleTile, 1.0f);
+
+
                 break;
             case ConstructionSystemUI.SelectedTile.Floor5:
                 Grid.Create<EntityFloorFive>(atPos);
+                CameraAudio.PlayOneShot(singleTile, 1.0f);
+
+
                 break;
             case ConstructionSystemUI.SelectedTile.Floor6:
                 Grid.Create<EntityFloorSix>(atPos);
+                CameraAudio.PlayOneShot(singleTile, 1.0f);
+
+
                 break;
             case ConstructionSystemUI.SelectedTile.Floor7:
                 Grid.Create<EntityFloorSeven>(atPos);
+                CameraAudio.PlayOneShot(singleTile, 1.0f);
+
+
                 break;
             case ConstructionSystemUI.SelectedTile.Wall1:
                 Grid.Create<EntityWallBrick>(atPos);
+                CameraAudio.PlayOneShot(singleTile, 1.0f);
+
+
                 break;
             case ConstructionSystemUI.SelectedTile.Wall2:
                 Grid.Create<EntityWallPlaster>(atPos);
+                CameraAudio.PlayOneShot(singleTile, 1.0f);
+
+
                 break;
             case ConstructionSystemUI.SelectedTile.Wall3:
                 Grid.Create<EntityWallPale>(atPos);
+                CameraAudio.PlayOneShot(singleTile, 1.0f);
+
+
                 break;
             case ConstructionSystemUI.SelectedTile.Wall4:
                 Grid.Create<EntityWallGreyBrick>(atPos);
+                CameraAudio.PlayOneShot(singleTile, 1.0f);
+
+
                 break;
             case ConstructionSystemUI.SelectedTile.Register:
                 Grid.Create<EntityRegister>(atPos);
+                CameraAudio.PlayOneShot(machineTile, 1.0f);
+
 
                 break;
             case ConstructionSystemUI.SelectedTile.Barstool1:
                 Grid.Create<EntityBarstool>(atPos);
+                CameraAudio.PlayOneShot(singleTile, 1.0f);
+
 
                 break;
             case ConstructionSystemUI.SelectedTile.Counter1:
@@ -216,6 +265,9 @@ public class TileConstruction : MonoBehaviour
                     return;
                 }
                 Grid.Create<EntityCounterMarble>(atPos);
+                CameraAudio.PlayOneShot(singleTile, 1.0f);
+
+
                 break;
             case ConstructionSystemUI.SelectedTile.Table1:
                 if (Grid.GetLastEntity<EntityBase>(atPos).Priority == EntityPriority.Furniture)
@@ -223,13 +275,17 @@ public class TileConstruction : MonoBehaviour
                     return;
                 }
                 Grid.Create<EntityTableSmooth>(atPos);
+                CameraAudio.PlayOneShot(singleTile, 1.0f);
+
+
                 break;
             case ConstructionSystemUI.SelectedTile.Chair1:
                 if (Grid.GetLastEntity<EntityBase>(atPos).Priority == EntityPriority.Furniture)
                 {
                     return;
                 }
-                Grid.Create<EntityChairSmooth>(atPos);
+                CameraAudio.PlayOneShot(singleTile, 1.0f);
+
 
                 break;
             case ConstructionSystemUI.SelectedTile.Brewing1:
@@ -238,6 +294,8 @@ public class TileConstruction : MonoBehaviour
                     return;
                 }
                 Grid.Create<EntityBrewingMachineOne>(atPos);
+                CameraAudio.PlayOneShot(machineTile, 1.0f);
+
 
                 break;
             case ConstructionSystemUI.SelectedTile.Espresso1:
@@ -246,6 +304,8 @@ public class TileConstruction : MonoBehaviour
                     return;
                 }
                 Grid.Create<EntityEspressoMachineOne>(atPos);
+                CameraAudio.PlayOneShot(machineTile, 1.0f);
+
 
                 break;
             case ConstructionSystemUI.SelectedTile.Roastery:
@@ -254,6 +314,8 @@ public class TileConstruction : MonoBehaviour
                     return;
                 }
                 Grid.Create<EntityRoasteryMachineOne>(atPos);
+                CameraAudio.PlayOneShot(machineTile, 1.0f);
+
 
                 break;
             default:
@@ -385,12 +447,13 @@ public class TileConstruction : MonoBehaviour
             }
         }
             // Clear selected entities, exit selection mode
-            if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             if (GetConstruction.currentTile != ConstructionSystemUI.SelectedTile.none)
             {
                 GetConstruction.currentTile = ConstructionSystemUI.SelectedTile.none;
                 ghostTile.SetActive(false);
+
             }
 
             if (selectedEntities.Length > 0)
