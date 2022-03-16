@@ -74,7 +74,8 @@ public class EntityFront : EntityBase
     }
     private void FixedUpdate()
     {
-        Speed = 0.25f * GetTime.scale;
+        Speed = 0.25f / GetTime.scale;
+
         switch (CurrentState)
         {
             case State.TravelToRegister:

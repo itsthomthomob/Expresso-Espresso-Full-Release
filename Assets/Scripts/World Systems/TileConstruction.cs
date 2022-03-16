@@ -165,7 +165,9 @@ public class TileConstruction : MonoBehaviour
                         Debug.Log("Destroying: " + Grid.GetLastEntity<EntityBase>(gridPoint));
                         if (Grid.GetLastEntity<EntityBase>(gridPoint).Priority == EntityPriority.Characters) { }
                         else if (Grid.GetLastEntity<EntityBase>(gridPoint).Priority == EntityPriority.Terrain) { }
-                        else if (Grid.GetLastEntity<EntityBase>(gridPoint).Priority == EntityPriority.Buildings) 
+                        else if (Grid.GetLastEntity<EntityBase>(gridPoint).Priority == EntityPriority.Buildings
+                                || Grid.GetLastEntity<EntityBase>(gridPoint).Priority == EntityPriority.Furniture
+                                || Grid.GetLastEntity<EntityBase>(gridPoint).Priority == EntityPriority.Foundations) 
                         {
                             Grid.Destroy(Grid.GetLastEntity<EntityBase>(gridPoint));
                         }
@@ -285,6 +287,7 @@ public class TileConstruction : MonoBehaviour
                     return;
                 }
                 CameraAudio.PlayOneShot(singleTile, 1.0f);
+                Grid.Create<EntityChairSmooth>(atPos);
 
 
                 break;

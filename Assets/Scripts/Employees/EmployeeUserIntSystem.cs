@@ -181,7 +181,6 @@ public class EmployeeUserIntSystem : MonoBehaviour
                 if (child.name == "Personality")
                 {
                     float index = Random.Range(0, 2);
-                    Debug.Log(index);
                     if (index == 0)
                     {
                         child.GetComponent<TMP_Text>().text = "Introvert";
@@ -230,7 +229,6 @@ public class EmployeeUserIntSystem : MonoBehaviour
                 if (child.name == "Personality")
                 {
                     float index = Random.Range(0, 2);
-                    Debug.Log(index);
                     if (index == 0)
                     {
                         child.GetComponent<TMP_Text>().text = "Introvert";
@@ -279,7 +277,6 @@ public class EmployeeUserIntSystem : MonoBehaviour
                 if (child.name == "Personality")
                 {
                     float index = Random.Range(0, 2);
-                    Debug.Log(index);
                     if (index == 0)
                     {
                         child.GetComponent<TMP_Text>().text = "Introvert";

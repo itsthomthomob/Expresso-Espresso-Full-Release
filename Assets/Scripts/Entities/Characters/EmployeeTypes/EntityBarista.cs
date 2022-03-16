@@ -51,7 +51,8 @@ public class EntityBarista : EntityBase
     }
     private void FixedUpdate()
     {
-        Speed = GetTime.scale * 0.25f;
+        Speed = 0.25f / GetTime.scale;
+
         switch (CurrentState)
         {
             case State.TravelToEspresso:
