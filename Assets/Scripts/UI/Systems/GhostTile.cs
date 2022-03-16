@@ -95,7 +95,7 @@ public class GhostTile : MonoBehaviour
             case ConstructionSystemUI.SelectedTile.Counter1:
                 GhostTileObj.SetActive(true);
 
-                return Resources.Load<Sprite>("Sprites/Tiles/Furniture/Counter");
+                return Resources.Load<Sprite>("Sprites/Tiles/Furniture/Counter1");
             case ConstructionSystemUI.SelectedTile.Barstool1:
                 GhostTileObj.SetActive(true);
 

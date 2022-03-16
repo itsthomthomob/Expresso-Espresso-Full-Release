@@ -76,16 +76,23 @@ public class ObjectivesManager : MonoBehaviour
 
     private void ManageUI() 
     {
-        if (NewObjectives.Count < 4)
+        if (NewObjectives.Count > 0)
         {
-            for (int i = 0; i < Containers.Length; i++)
+            if (Containers[0].transform.childCount == 0)
             {
-                if (Containers[i].transform.childCount == 0)
-                {
-                    SpawnNewObj(Containers[i].transform);
-                    Debug.Log(Containers[i].name);
-                    break;
-                }
+                SpawnNewObj(Containers[0].transform);
+            }
+            if (Containers[1].transform.childCount == 0)
+            {
+                SpawnNewObj(Containers[1].transform);
+            }
+            if (Containers[2].transform.childCount == 0)
+            {
+                SpawnNewObj(Containers[2].transform);
+            }
+            if (Containers[3].transform.childCount == 0)
+            {
+                SpawnNewObj(Containers[3].transform);
             }
         }
     }
@@ -94,45 +101,56 @@ public class ObjectivesManager : MonoBehaviour
     {
         if (NewObjectives.Count > 0) 
         {
-            if (NewObjectives[0].GetSpawned() == false)
+            for (int i = 0; i < NewObjectives.Count; i++)
             {
-                ObjectiveObject OBJ = NewObjectives[0];
-                GameObject newObjective = Instantiate(ObjUIPrefab);
-                newObjective.transform.position = spawner.position;
-                newObjective.transform.SetParent(spawner.transform);
-                OBJ.SetSpawner(newObjective);
-                Debug.Log(OBJ.GetID() + " Spawner: " + OBJ.GetSpawner().name);
-                for (int i = 0; i < newObjective.transform.childCount; i++)
+                if (NewObjectives[i].GetSpawned() == false)
                 {
-                    Transform GetChild = newObjective.transform.GetChild(i);
-                    if (GetChild.name == "Obj-Text")
+                    ObjectiveObject OBJ = NewObjectives[i];
+                    GameObject newObjective = Instantiate(ObjUIPrefab);
+                    newObjective.transform.position = spawner.position;
+                    newObjective.transform.SetParent(spawner.transform);
+                    Debug.Log(spawner.childCount);
+                    OBJ.SetSpawner(newObjective);
+                    for (int j = 0; j < newObjective.transform.childCount; j++)
                     {
-                        TMP_Text GetText = GetChild.GetComponent<TMP_Text>();
-                        GetText.text = "• " + OBJ.GetObj();
-                        Debug.Log("Changed Objective text");
-                    }
-                    else if (GetChild.name == "Obj-Min")
-                    {
-                        TMP_Text GetText = GetChild.GetComponent<TMP_Text>();
-                        GetText.text = OBJ.GetMinimum().ToString();
-                        Debug.Log("Changed Minimum text");
+                        Transform GetChild = newObjective.transform.GetChild(j);
+                        if (GetChild.name == "Obj-Text")
+                        {
+                            TMP_Text GetText = GetChild.GetComponent<TMP_Text>();
+                            GetText.text = "• " + OBJ.GetObj();
+                        }
+                        else if (GetChild.name == "Obj-Min")
+                        {
+                            TMP_Text GetText = GetChild.GetComponent<TMP_Text>();
+                            GetText.text = OBJ.GetMinimum().ToString();
+                        }
+                        else if (GetChild.name == "Obj-Max")
+                        {
+                            TMP_Text GetText = GetChild.GetComponent<TMP_Text>();
+                            GetText.text = OBJ.GetMaximum().ToString();
 
+                        }
                     }
-                    else if (GetChild.name == "Obj-Max")
+                    // Check types
+                    if (OBJ is Objective001)
                     {
-                        TMP_Text GetText = GetChild.GetComponent<TMP_Text>();
-                        GetText.text = OBJ.GetMaximum().ToString();
-                        Debug.Log("Changed Maximum text");
-
+                        NewObjsGO.AddComponent<Objective001>();
                     }
+                    if (OBJ is Objective002)
+                    {
+                        NewObjsGO.AddComponent<Objective002>();
+                    }
+                    if (OBJ is Objective003)
+                    {
+                        NewObjsGO.AddComponent<Objective003>();
+                    }
+                    if (OBJ is Objective004)
+                    {
+                        NewObjsGO.AddComponent<Objective004>();
+                    }
+                    OBJ.SetSpawned(true);
+                    return;
                 }
-                // Check types
-                if (OBJ is Objective001)
-                {
-                    NewObjsGO.AddComponent<Objective001>();
-                }
-
-                OBJ.SetSpawned(true);
             }
         }
     }
@@ -160,6 +178,36 @@ public class ObjectivesManager : MonoBehaviour
                         GetOBJ.Despawn();
                         Destroy(NewObjsGO.GetComponent<Objective001>());
                         FinishedObjsGO.AddComponent<Objective001>();
+                    }
+                }
+                else if (AllObjectives[i] is Objective002)
+                {
+                    Objective002 GetOBJ = AllObjectives[i] as Objective002;
+                    if (GetOBJ.GetSpawner() != null)
+                    {
+                        GetOBJ.Despawn();
+                        Destroy(NewObjsGO.GetComponent<Objective002>());
+                        FinishedObjsGO.AddComponent<Objective002>();
+                    }
+                }
+                else if (AllObjectives[i] is Objective003)
+                {
+                    Objective003 GetOBJ = AllObjectives[i] as Objective003;
+                    if (GetOBJ.GetSpawner() != null)
+                    {
+                        GetOBJ.Despawn();
+                        Destroy(NewObjsGO.GetComponent<Objective003>());
+                        FinishedObjsGO.AddComponent<Objective003>();
+                    }
+                }
+                else if (AllObjectives[i] is Objective004)
+                {
+                    Objective004 GetOBJ = AllObjectives[i] as Objective004;
+                    if (GetOBJ.GetSpawner() != null)
+                    {
+                        GetOBJ.Despawn();
+                        Destroy(NewObjsGO.GetComponent<Objective004>());
+                        FinishedObjsGO.AddComponent<Objective004>();
                     }
                 }
             }
