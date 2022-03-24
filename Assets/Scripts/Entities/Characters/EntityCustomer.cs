@@ -161,6 +161,9 @@ public class EntityCustomer : EntityBase
                     MyItem = GetMenu.MenuItems[ChooseItem];
                     GetECO.CurrentProfits = GetECO.CurrentProfits + MyItem.GetPrice();
                     GetECO.CurrentExpenses = GetECO.CurrentExpenses + MyItem.GetExpense();
+
+                    StoreLevelManager LevelManager = FindObjectOfType<StoreLevelManager>();
+                    LevelManager.CustomerAddXP();
                 }
                 else 
                 { 
@@ -386,6 +389,9 @@ public class EntityCustomer : EntityBase
             {
                 GetECO.CurrentReviews = GetECO.CurrentReviews + 1;
                 GetECO.NegativeReviews = GetECO.PositiveReviews + 1;
+
+                StoreLevelManager LevelManager = FindObjectOfType<StoreLevelManager>();
+                LevelManager.CustomerAddXP();
             }
             didReview = true;
         }

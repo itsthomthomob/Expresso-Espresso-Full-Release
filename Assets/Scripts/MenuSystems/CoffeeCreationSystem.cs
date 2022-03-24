@@ -226,8 +226,6 @@ public class CoffeeCreationSystem : MonoBehaviour
                 TMP_Text contents = getChild.GetComponent<TMP_Text>();
                 contents.text = SelectedItems[0].ItemName;
                 int ContentAmount = SelectedItems.Count;
-                int index = 0;
-
             }
             else if (getChild.name == "ItemPrice")
             {
@@ -275,8 +273,9 @@ public class CoffeeCreationSystem : MonoBehaviour
         newItem.name = menuItem.ItemName;
         AddToPhysicalMenu(newItem, menuItem);
     }
-    private void AddToPhysicalMenu(GameObject item, MenuItem itemDetails) 
+    public void AddToPhysicalMenu(GameObject item, MenuItem itemDetails) 
     {
+        Debug.Log("Added: " + itemDetails.GetDrinkType().ToString());
         switch (itemDetails.GetDrinkType())
         {
             case ItemType.Lattes:

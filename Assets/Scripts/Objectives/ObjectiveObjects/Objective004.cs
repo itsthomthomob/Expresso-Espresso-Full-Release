@@ -22,7 +22,7 @@ public class Objective004 : ObjectiveObject
         EntityRegister GetRegister = FindObjectOfType<EntityRegister>();
         if (GetRegister != null) 
         {
-            SetMinimum(1);
+            SetMinimum(1 + loadedMin);
         }
     }
 

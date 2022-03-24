@@ -20,7 +20,7 @@ public class Objective003 : ObjectiveObject
     {
         CheckRequirements();
         RequirementsMet();
-        SetMinimum(AllCounters.Count);
+        SetMinimum(AllCounters.Count + loadedMin);
     }
 
     private void CheckRequirements() 

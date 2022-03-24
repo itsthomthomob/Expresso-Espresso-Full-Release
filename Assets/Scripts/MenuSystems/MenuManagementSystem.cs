@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
+[Serializable]
 public class MenuManagementSystem : MonoBehaviour
 {
     [Header("Master UI Objects")]
@@ -11,6 +13,8 @@ public class MenuManagementSystem : MonoBehaviour
     public GameObject CoffeeCreationUI;
     public Button CloseMenu;
     public Button OpenMenu;
+    public GameObject prefabItemMenu;
+    CoffeeCreationSystem GetCoffeeSystem;
 
     [Header("Menu Section Dropdowns")]
     public TMP_Dropdown DropDownOne;
@@ -39,6 +43,9 @@ public class MenuManagementSystem : MonoBehaviour
 
     [Header("All Menu Items")]
     public List<MenuItem> MenuItems = new List<MenuItem>();
+    public MenuItem[] AllMenuItems;
+    public List<MenuItem> NewLoadedMenuItems = new List<MenuItem>();
+
     private void Start()
     {
         LoadButtons();
@@ -46,12 +53,171 @@ public class MenuManagementSystem : MonoBehaviour
         AddItemSectionOne.onClick.AddListener(GoToCoffeeCreation);
         AddItemSectionThree.onClick.AddListener(GoToCoffeeCreation);
         DropDownOne.onValueChanged.AddListener(ClearSectionObjects);
+        GetCoffeeSystem = FindObjectOfType<CoffeeCreationSystem>();
     }
 
     private void Update()
     {
         UpdateDropDownChanges();
         GetMenuItems();
+        UpdateMenuItems();
+        SetLoadedItems();
+    }
+
+    private void SetLoadedItems() 
+    {
+        GameObject LoadedObjects = GameObject.Find("LoadedObjects");
+        Component[] GetLoadedComponents = LoadedObjects.GetComponents(typeof(Component));
+
+        for (int i = 0; i < GetLoadedComponents.Length; i++)
+        {
+            if (GetLoadedComponents[i] is MenuItem)
+            {
+                if (!NewLoadedMenuItems.Contains(GetLoadedComponents[i] as MenuItem))
+                {
+                    NewLoadedMenuItems.Add(GetLoadedComponents[i] as MenuItem);
+                }
+            }
+        }
+
+        if (NewLoadedMenuItems.Count > 0)
+        {
+            for (int k = 0; k < NewLoadedMenuItems.Count; k++)
+            {
+                // Get LoadedObject game object
+                // Get components
+                // Find MenuItem components
+                // Register values
+                if (NewLoadedMenuItems[k].GetMyObject() == null)
+                {
+                    GameObject newItem = Instantiate(prefabItemMenu);
+                    NewLoadedMenuItems[k].SetMyObject(newItem);
+                    Transform getTF = newItem.transform;
+
+                    for (int j = 0; j < getTF.childCount; j++)
+                    {
+                        Transform getChild = getTF.GetChild(j);
+                        if (getChild.name == "ItemName")
+                        {
+                            TMP_Text ItemName = getChild.GetComponent<TMP_Text>();
+                            ItemName.text = NewLoadedMenuItems[k].GetItemName();
+                        }
+                        else if (getChild.name == "ItemContents")
+                        {
+                            TMP_Text contents = getChild.GetComponent<TMP_Text>();
+                            contents.text = NewLoadedMenuItems[k].GetDrinkType().ToString();
+                        }
+                        else if (getChild.name == "ItemPrice")
+                        {
+                            TMP_Text ItemPrice = getChild.GetComponent<TMP_Text>();
+                            ItemPrice.text = NewLoadedMenuItems[k].GetPrice().ToString();
+                        }
+                    }
+                    Debug.Log("Adding Item: " + NewLoadedMenuItems[k].GetDrinkType().ToString());
+                    GetCoffeeSystem.AddToPhysicalMenu(newItem, NewLoadedMenuItems[k]);
+                }
+            }
+        }
+    }
+
+    private void UpdateMenuItems() 
+    {
+        AllMenuItems = new MenuItem[MenuItems.Count];
+        for (int i = 0; i < MenuItems.Count; i++)
+        {
+            AllMenuItems[i] = MenuItems[i];
+
+        }
+    }
+
+    public int GetTotalMenuItems() 
+    {
+        return AllMenuItems.Length;
+    }
+
+    public string[] GetSpawnObjectsData()
+    {
+        string[] AllMenuItemPriceData = new string[AllMenuItems.Length];
+
+        for (int i = 0; i < AllMenuItems.Length; i++)
+        {
+            AllMenuItemPriceData[i] = AllMenuItems[i].GetMyObject().name;
+        }
+
+        return AllMenuItemPriceData;
+    }
+
+    public float[] GetMenuItemsPriceData() 
+    {
+        float[] AllMenuItemPriceData = new float[AllMenuItems.Length];
+
+        for (int i = 0; i < AllMenuItems.Length; i++)
+        {
+            AllMenuItemPriceData[i] = AllMenuItems[i].GetPrice();
+        }
+
+        return AllMenuItemPriceData;
+    }
+
+    public float[] GetMenuItemsExpenseData()
+    {
+        float[] AllMenuItemPriceData = new float[AllMenuItems.Length];
+
+        for (int i = 0; i < AllMenuItems.Length; i++)
+        {
+            AllMenuItemPriceData[i] = AllMenuItems[i].GetExpense();
+        }
+
+        return AllMenuItemPriceData;
+    }
+
+    public int[] GetMenuItemIDsData()
+    {
+        int[] AllMenuItemPriceData = new int[AllMenuItems.Length];
+
+        for (int i = 0; i < AllMenuItems.Length; i++)
+        {
+            AllMenuItemPriceData[i] = AllMenuItems[i].GetMenuID();
+        }
+
+        return AllMenuItemPriceData;
+    }
+
+    public string[] GetMenuItemsNamesData()
+    {
+        string[] AllMenuItemPriceData = new string[AllMenuItems.Length];
+
+        for (int i = 0; i < AllMenuItems.Length; i++)
+        {
+            AllMenuItemPriceData[i] = AllMenuItems[i].GetItemName();
+            Debug.Log("Setting Names: " + AllMenuItems[i].GetItemName());
+        }
+
+        return AllMenuItemPriceData;
+    }
+
+    public string[] GetMenuItemsTypeData()
+    {
+        string[] AllMenuItemPriceData = new string[AllMenuItems.Length];
+
+        for (int i = 0; i < AllMenuItems.Length; i++)
+        {
+            AllMenuItemPriceData[i] = AllMenuItems[i].GetDrinkType().ToString();
+        }
+
+        return AllMenuItemPriceData;
+    }
+
+    public bool[] GetMenuItemsActiveData()
+    {
+        bool[] AllMenuItemPriceData = new bool[AllMenuItems.Length];
+
+        for (int i = 0; i < AllMenuItems.Length; i++)
+        {
+            AllMenuItemPriceData[i] = AllMenuItems[i].GetIsActive();
+        }
+
+        return AllMenuItemPriceData;
     }
 
     private void GetMenuItems() 
@@ -432,13 +598,6 @@ public class MenuManagementSystem : MonoBehaviour
         {
 
         }
-        /// TO-DO:
-        /// - On drop down change
-        ///   - Get dropdown value
-        ///   - Change children of ItemSpawns <--
-        ///     - Destroy all children of ItemSpawns
-        ///     - Add all children from selected dropdown gameobject list
-        ///     
     }
 
     private void GoToCoffeeCreation() 

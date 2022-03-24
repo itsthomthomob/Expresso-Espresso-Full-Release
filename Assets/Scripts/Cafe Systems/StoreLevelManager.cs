@@ -15,15 +15,37 @@ public class StoreLevelManager : MonoBehaviour
     public int StoreLevel;
     public int CurrentEXP;
     public int EXPPerLevel = 100;
+    public int CustomerEXP = 10;
 
     private void Update()
     {
-        UpdateText();   
+        ManageLevels();
+        UpdateText();
+        UpdateSlider();
+    }
+
+    private void UpdateSlider() 
+    {
+        EXPSlider.value = CurrentEXP;
     }
 
     private void UpdateText() 
     {
         StoreLevelText.text = "Level: " + StoreLevel;
+    }
+
+    private void ManageLevels() 
+    {
+        if (CurrentEXP == EXPPerLevel)
+        {
+            StoreLevel += 1;
+            CurrentEXP = 0;
+        }
+    }
+
+    public void CustomerAddXP() 
+    {
+        CurrentEXP += CustomerEXP;
     }
 
 }

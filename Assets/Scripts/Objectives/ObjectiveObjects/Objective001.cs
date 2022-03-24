@@ -29,7 +29,7 @@ public class Objective001 : ObjectiveObject
     {
         CheckRequirements();
         RequirementsMet();
-        SetMinimum(AllFloors.Count);
+        SetMinimum(AllFloors.Count + loadedMin);
     }
 
     void CheckRequirements() 

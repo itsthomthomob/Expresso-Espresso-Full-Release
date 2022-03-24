@@ -1,12 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
+[Serializable]
 public class MenuSection : MonoBehaviour
 {
     ItemType MyType;
     public List<MenuItem> MyItems = new List<MenuItem>();
     public GameObject[] MySpawns;
+
+    public string GetMyType() 
+    { 
+        return MyType.ToString();
+    }
 
     public GameObject FindEmptySpawnItem() 
     {

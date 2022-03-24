@@ -16,11 +16,11 @@ public class ObjectivesManager : MonoBehaviour
     public GameObject FinishedObjsGO;
     public GameObject NewObjsGO;
 
-    List<ObjectiveObject> AllObjectives = new List<ObjectiveObject>();
+    public List<ObjectiveObject> AllObjectives = new List<ObjectiveObject>();
 
-    List<ObjectiveObject> UnfinishedObjectives = new List<ObjectiveObject>();
-    List<ObjectiveObject> NewObjectives = new List<ObjectiveObject>();
-    List<ObjectiveObject> FinishedObjectives = new List<ObjectiveObject>();
+    public List<ObjectiveObject> UnfinishedObjectives = new List<ObjectiveObject>();
+    public List<ObjectiveObject> NewObjectives = new List<ObjectiveObject>();
+    public List<ObjectiveObject> FinishedObjectives = new List<ObjectiveObject>();
 
     private void Awake()
     {
@@ -35,11 +35,6 @@ public class ObjectivesManager : MonoBehaviour
         }
 
         Debug.Log("Registered: " + AllObjectives.Count + " Objectives");
-
-        for (int i = 0; i < AllObjectives.Count; i++) 
-        {
-            Debug.Log(AllObjectives[i].GetObj());
-        }
     }
 
     private void Update()
@@ -97,6 +92,21 @@ public class ObjectivesManager : MonoBehaviour
         }
     }
 
+    public void SetNewSpawner(ObjectiveObject GetOBJ) 
+    {
+        if (GetOBJ.GetSpawner() == null)
+        {
+            for (int i = 0; i < Containers.Length; i++)
+            {
+                if (Containers[i].transform.childCount == 1)
+                {
+                    // Still in the frame before child is destroyed, but added child
+                    GetOBJ.SetSpawner(Containers[i].transform.gameObject);
+                }
+            }
+        }
+    }
+
     private void SpawnNewObj(Transform spawner)
     {
         if (NewObjectives.Count > 0) 
@@ -109,7 +119,6 @@ public class ObjectivesManager : MonoBehaviour
                     GameObject newObjective = Instantiate(ObjUIPrefab);
                     newObjective.transform.position = spawner.position;
                     newObjective.transform.SetParent(spawner.transform);
-                    Debug.Log(spawner.childCount);
                     OBJ.SetSpawner(newObjective);
                     for (int j = 0; j < newObjective.transform.childCount; j++)
                     {
@@ -161,7 +170,10 @@ public class ObjectivesManager : MonoBehaviour
         {
             if (AllObjectives[i].GetStatus() == Status.New)
             {
-                NewObjectives.Add(AllObjectives[i]);
+                if (!NewObjectives.Contains(AllObjectives[i])) 
+                {
+                    NewObjectives.Add(AllObjectives[i]);
+                }
             }
             else if (AllObjectives[i].GetStatus() == Status.Finished)
             {

@@ -11,8 +11,35 @@ public class ObjectiveObject : MonoBehaviour
     int OBJEXP;
     int minimum;
     int maximum;
+    public int loadedMin;
     bool hasSpawned;
     Status status = Status.New;
+
+    public void LoadStatus(string newStatus) 
+    {
+        switch (newStatus)
+        {
+            case "New":
+                status = Status.New;
+                break;
+            case "InProgress":
+                status = Status.InProgress;
+                break;
+            case "Finished":
+                status = Status.Finished;
+                break;
+        }
+    }
+
+    public void SetLoadedMin(int newLoaded) 
+    { 
+        loadedMin = newLoaded;
+    }
+
+    public void SetEXP(int newXP) 
+    {
+        OBJEXP= newXP;
+    }
 
     public GameObject GetSpawner() 
     {

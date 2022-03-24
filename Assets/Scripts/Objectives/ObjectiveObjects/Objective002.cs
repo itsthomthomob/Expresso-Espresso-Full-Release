@@ -19,7 +19,7 @@ public class Objective002 : ObjectiveObject
     {
         CheckRequirements();
         RequirementsMet();
-        SetMinimum(AllWalls.Count);
+        SetMinimum(AllWalls.Count + loadedMin);
     }
 
     private void CheckRequirements() 

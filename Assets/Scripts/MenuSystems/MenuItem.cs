@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
+[Serializable]
 public class MenuItem : MonoBehaviour
 {
     [Header("Attributes")]
@@ -9,10 +11,83 @@ public class MenuItem : MonoBehaviour
     float expense;
     int menuID;
     public string ItemName;
+    public bool isItemActive;
     List<string> contents = new List<string>();
-    ItemType DrinkType;
+    public ItemType DrinkType;
     GameObject myObject;
     MenuSection mySection;
+
+    public void LoadDrinkType(string newType) 
+    {
+        switch (newType)
+        {
+            case "Black":
+                DrinkType = ItemType.Black;
+                break;
+            case "Lattes":
+                DrinkType = ItemType.Lattes;
+                break;
+            case "Mochas":
+                DrinkType = ItemType.Mochas;
+
+                break;
+            case "Americanos":
+                DrinkType = ItemType.Americanos;
+
+                break;
+            case "Espresso":
+                DrinkType = ItemType.Espresso;
+
+                break;
+            case "Cappoccino":
+                DrinkType = ItemType.Cappoccino;
+
+                break;
+            case "Macchiato":
+                DrinkType = ItemType.Macchiato;
+
+                break;
+            case "Mocha":
+                DrinkType = ItemType.Mocha;
+
+                break;
+            case "FlatWhite":
+                DrinkType = ItemType.FlatWhite;
+
+                break;
+            case "IrishCoffee":
+                DrinkType = ItemType.IrishCoffee;
+
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void SetName(string newName) 
+    { 
+        ItemName = newName;
+    }
+
+    public int GetMenuID() 
+    { 
+        return menuID;
+    }
+
+    public string GetItemName() 
+    {
+        return ItemName;
+    }
+
+    public bool GetIsActive() 
+    {
+        return isItemActive;
+    }
+
+    public void SetIsActive(bool newActive) 
+    { 
+        isItemActive = newActive;
+    }
 
     public void SetExpense(float newExpense) 
     {
@@ -47,6 +122,14 @@ public class MenuItem : MonoBehaviour
     public void SetMyObject(GameObject newObj) 
     {
         myObject = newObj;
+    }
+    public GameObject LoadMyObject(string newObj) 
+    {
+        MenuManagementSystem menu = FindObjectOfType<MenuManagementSystem>();
+        menu.CoffeeUI.SetActive(true);
+        GameObject findOBJ = GameObject.Find(newObj);
+        menu.CoffeeUI.SetActive(false);
+        return findOBJ;
     }
     public float GetPrice()
     {
@@ -87,5 +170,5 @@ public class MenuItem : MonoBehaviour
     {
         contents.Remove(content);
     }
-
+    
 }
