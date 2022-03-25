@@ -16,6 +16,9 @@ public abstract class EntityBase : MonoBehaviour
 
 	private bool MovingCache = false;
 
+	public virtual string OnSerialize() { return null; }
+	public virtual void OnDeserialize(string state) { }
+
 	public EntityGrid Grid
 	{
 		get => CacheGrid;

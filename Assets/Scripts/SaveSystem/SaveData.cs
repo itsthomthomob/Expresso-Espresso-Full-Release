@@ -11,6 +11,7 @@ public class JsonConfigurationFile
     public MenuItemsData ItemsData;
     public ObjectivesData ObjData;
     public StoreLevelData StoreData;
+    public EntityData entityData;
 }
 
 [Serializable]
@@ -64,4 +65,16 @@ public class StoreLevelData
 {
     public int CurrentLevelData;
     public int CurrentEXPData;
+}
+
+[Serializable]
+public class EntityElement
+{
+    public string json;
+    public string type;
+    public Vector2Int position;
+}
+public class EntityData
+{
+    public EntityElement[] entities;
 }

@@ -19,6 +19,8 @@ public class SaveGameSystem : MonoBehaviour
     public MenuManagementSystem GetMenu;
     public StoreLevelManager GetStoreLevel;
     public ObjectivesManager GetObjectives;
+    public Grid GameGrid;
+
 
     private void Start()
     {
@@ -34,6 +36,27 @@ public class SaveGameSystem : MonoBehaviour
     private void SaveGameData()
     {
         JsonConfigurationFile NewSaveData = new JsonConfigurationFile();
+
+        // Save entity data
+        NewSaveData.entityData = new EntityData();
+        EntityBase[] AllEntities = FindObjectsOfType<EntityBase>();
+        Debug.Log("AllEntities Saved: " + AllEntities.Length);
+        List<EntityElement> Entities = new List<EntityElement>();
+
+        foreach (EntityBase entity in AllEntities) 
+        { 
+            EntityElement entityElement = new EntityElement();
+            entityElement.json = entity.OnSerialize();
+            entityElement.type = entity.Name;
+            entityElement.position = entity.Position;
+            Entities.Add(entityElement);
+        }
+        Debug.Log("EntityElements: " + Entities.Count);
+        NewSaveData.entityData.entities = new EntityElement[Entities.Count];
+        for (int i = 0; i < Entities.Count; i++)
+        {
+            NewSaveData.entityData.entities[i] = Entities[i];
+        }
 
         // Get time data
         NewSaveData.TimeData = new TimeManagerData();
