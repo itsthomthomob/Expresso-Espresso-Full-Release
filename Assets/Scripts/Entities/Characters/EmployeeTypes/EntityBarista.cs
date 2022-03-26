@@ -4,6 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Diagnostics;
 
+[Serializable]
+public class BaristaData 
+{
+    public int MyEmployeeID;
+    public string MyNameData;
+    public float MyWage;
+    public float MySkill;
+    public float MyFast;
+    public string MyState;
+}
+
 public class EntityBarista : EntityBase
 {
     private int EmployeeID;
@@ -232,5 +243,42 @@ public class EntityBarista : EntityBase
         {
             return true;
         }
+    }
+
+    public override string OnSerialize()
+    {
+        BaristaData vars = new BaristaData();
+        vars.MyState = CurrentState.ToString();
+        vars.MyFast = GetEfficiencyModifier();
+        vars.MySkill = GetSkillModifier();
+        vars.MyWage = GetWageAmount();
+        vars.MyEmployeeID = GetEmployeeID();
+        vars.MyNameData = EmployeeName;
+        return JsonUtility.ToJson(vars);
+    }
+
+    public override void OnDeserialize(string json)
+    {
+        BaristaData vars = JsonUtility.FromJson<BaristaData>(OnSerialize());
+        switch (vars.MyState)
+        {
+            case "TravelToEspresso":
+                CurrentState = State.TravelToEspresso;
+                break;
+            case "WaitForDrink":
+                CurrentState = State.WaitForDrink;
+                break;
+            case "EspressoMakeDrink":
+                CurrentState = State.EspressoMakeDrink;
+                break;
+            case "TravelToCounter":
+                CurrentState = State.TravelToCounter;
+                break;
+        }
+        SetSkillModifier(vars.MySkill);
+        SetWageAmount(vars.MyWage);
+        SetEfficiencyModifier(vars.MyFast);
+        SetEmployeeID(vars.MyEmployeeID);
+        SetEmployeeName(vars.MyNameData);
     }
 }

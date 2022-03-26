@@ -3,6 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
+public class SupportData 
+{
+    public int MyEmployeeID;
+    public float MyWage;
+    public string MyName;
+    public string MyState;
+    public float MySkill;
+    public float MyFast;
+}
+
 public class EntitySupport : EntityBase
 {
     private int EmployeeID;
@@ -286,5 +297,48 @@ public class EntitySupport : EntityBase
                 CurrentState = State.TravelToRoaster;
             }
         }
+    }
+
+    public override string OnSerialize()
+    {
+        SupportData vars = new SupportData();
+        vars.MyState = CurrentState.ToString();
+        vars.MyFast = GetEfficiencyModifier();
+        vars.MySkill = GetSkillModifier();
+        vars.MyWage = GetWageAmount();
+        vars.MyEmployeeID = GetEmployeeID();
+        vars.MyName = GetEmployeeName();
+        return JsonUtility.ToJson(vars);
+    }
+
+    public override void OnDeserialize(string json)
+    {
+        SupportData vars = JsonUtility.FromJson<SupportData>(OnSerialize());
+        switch (vars.MyState)
+        {
+            case "TravelToRoaster":
+                CurrentState = State.TravelToRoaster;
+                break;
+            case "FillRoaster":
+                CurrentState= State.FillRoaster;
+                break;
+            case "TravelToBrewer":
+                CurrentState = State.TravelToBrewer;
+                break;
+            case "FillBrewer":
+                CurrentState = State.FillBrewer;
+                break;
+            case "TravelToEspresso":
+                CurrentState = State.TravelToEspresso;
+                break;
+            case "FillEspresso":
+                CurrentState = State.FillEspresso;
+                break;
+        }
+        SetSkillModifier(vars.MySkill);
+        SetWageAmount(vars.MyWage);
+        SetEfficiencyModifier(vars.MyFast);
+        SetEmployeeID(vars.MyEmployeeID);
+        SetEmployeeName(vars.MyName);
     }
 }

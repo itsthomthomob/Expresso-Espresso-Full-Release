@@ -8,6 +8,12 @@ public class EntityFloor : EntityBase
 	{
 		SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Building/Floor"));
 		SetEntityPriority(EntityPriority.Foundations);
-		SetEntityName("Checkered Floor");
+		SetEntityName("Rough Pale Wooden Floor");
 	}
+
+	public override string OnSerialize()
+	{
+		return "mystate";
+	}
+
 }

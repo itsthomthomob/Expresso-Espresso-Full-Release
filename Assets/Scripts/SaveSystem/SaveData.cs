@@ -74,6 +74,7 @@ public class EntityElement
     public string type;
     public Vector2Int position;
 }
+[Serializable]
 public class EntityData
 {
     public EntityElement[] entities;

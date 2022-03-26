@@ -1,11 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
+public class RoasterVars 
+{ 
+    public int AmountOfCoffeeBagsData;
+    public int TemperatureData;
+    public float StartTimeData;
+    public bool FillingData;
+}
 
 public class EntityRoasteryMachineOne : EntityBase
 {
-	private int Cost = 5000;
+    private int Cost = 5000;
 
 	// Temperature attributes
 	public int Temperature;
@@ -90,6 +99,25 @@ public class EntityRoasteryMachineOne : EntityBase
         {
             return true;
         }
+    }
+
+    public override string OnSerialize()
+    {
+        RoasterVars vars = new RoasterVars();
+        vars.AmountOfCoffeeBagsData = AmountOfCoffeeBags;
+        vars.TemperatureData = Temperature;
+        vars.StartTimeData = StartTime;
+        vars.FillingData = isFilling;
+        return JsonUtility.ToJson(vars);
+    }
+
+    public override void OnDeserialize(string json)
+    {
+        RoasterVars vars = JsonUtility.FromJson<RoasterVars>(OnSerialize());
+        AmountOfCoffeeBags = vars.AmountOfCoffeeBagsData;
+        Temperature = vars.TemperatureData;
+        StartTime = vars.StartTimeData;
+        isFilling = vars.FillingData;
     }
 
     public override void OnEntityAwake()

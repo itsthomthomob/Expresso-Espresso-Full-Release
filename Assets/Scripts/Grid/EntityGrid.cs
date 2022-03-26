@@ -56,6 +56,16 @@ public class EntityGrid : MonoBehaviour
 		}
 	}
 
+	public List<EntityBase> GetAllEntities()
+	{
+		List<EntityBase> list = new List<EntityBase>();
+		foreach (List<EntityBase> entities in Grid.Values)
+		{
+			list.AddRange(entities);
+		}
+		return list;
+	}
+
 	public T Create<T>(Vector2Int position) where T : EntityBase
 	{
 

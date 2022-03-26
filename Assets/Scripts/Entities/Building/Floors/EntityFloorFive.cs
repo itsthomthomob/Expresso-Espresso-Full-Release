@@ -9,6 +9,6 @@ public class EntityFloorFive : EntityBase
 	{
 		SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Building/Floor4"));
 		SetEntityPriority(EntityPriority.Foundations);
-		SetEntityName("Checkered Floor");
+		SetEntityName("Warm Wooden Floor");
 	}
 }

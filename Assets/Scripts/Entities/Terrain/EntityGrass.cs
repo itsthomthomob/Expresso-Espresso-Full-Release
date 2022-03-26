@@ -10,8 +10,4 @@ public class EntityGrass : EntityBase
         SetEntityPriority(EntityPriority.Terrain);
         SetEntityName("Grass");
     }
-    public override string OnSerialize()
-    {
-        return "mystate";
-    }
 }

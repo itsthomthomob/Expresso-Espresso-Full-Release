@@ -8,6 +8,6 @@ public class EntityFloorSeven : EntityBase
 	{
 		SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Building/Floor6"));
 		SetEntityPriority(EntityPriority.Foundations);
-		SetEntityName("Checkered Floor");
+		SetEntityName("Pale Wooden Floor");
 	}
 }

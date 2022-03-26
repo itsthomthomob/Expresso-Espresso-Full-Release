@@ -5,6 +5,14 @@ using UnityEngine;
 using System.Diagnostics;
 using UnityEngine.UI;
 
+[Serializable]
+public class CustomerVars
+{
+    public int MyCustomerIDData;
+    public string MyStateData;
+    public string MyItemData;
+}
+
 public class EntityCustomer : EntityBase
 {
     public override void OnEntityAwake()
@@ -20,7 +28,7 @@ public class EntityCustomer : EntityBase
     }
 
     [SerializeField] private State CurrentState = State.GoingToRegister;
-
+    [SerializeField] public int MyCustomerID;
     [SerializeField] private EntityCoffee MyCoffee;
     [SerializeField] private float Range = 3.0f;
     [SerializeField] private MenuItem MyItem;
@@ -421,4 +429,57 @@ public class EntityCustomer : EntityBase
             return true;
         }
     }
+
+    public override string OnSerialize()
+    {
+        CustomerVars vars = new CustomerVars();
+        vars.MyStateData = CurrentState.ToString();
+        vars.MyItemData = MyItem.GetItemName();
+        vars.MyCustomerIDData = MyCustomerID;
+
+        return JsonUtility.ToJson(vars);
+    }
+
+    public override void OnDeserialize(string json)
+    {
+        CustomerVars vars = JsonUtility.FromJson<CustomerVars>(OnSerialize());
+        switch (vars.MyStateData)
+        {
+            case "GoingToRegister":
+                CurrentState = State.GoingToRegister;
+                break;
+            case "DisplayText":
+                CurrentState = State.DisplayText;
+                break;
+            case "GoingToEmptyChair":
+                CurrentState = State.GoingToEmptyChair;
+                break;
+            case "SitDown":
+                CurrentState = State.SitDown;
+                break;
+            case "WaitAtChair":
+                CurrentState = State.WaitAtChair;
+                break;
+            case "WaitAtRandomLocation":
+                CurrentState = State.WaitAtRandomLocation;
+                break;
+            case "GoingToDrink":
+                CurrentState = State.GoingToDrink;
+                break;
+            case "LeavingCafe":
+                CurrentState = State.LeavingCafe;
+                break;
+        }
+        MenuItem[] AllMenuItems = FindObjectsOfType<MenuItem>();
+        for (int i = 0; i < AllMenuItems.Length; i++)
+        {
+            if (AllMenuItems[i].GetItemName() == vars.MyItemData)
+            {
+                MyItem = AllMenuItems[i];
+                break;
+            }
+        }
+        MyCustomerID = vars.MyCustomerIDData;
+    }
+
 }

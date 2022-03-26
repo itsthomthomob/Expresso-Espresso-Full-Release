@@ -4,6 +4,18 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 
+[Serializable]
+public class EspressoVars
+{
+	public int MilkData;
+	public bool MilkFillingData;
+	public float MilkStartTimeData;
+	public int EspressoData;
+	public bool EspressoFillingData;
+	public float EspressoStartTimeData;
+	public int MyBaristasID;
+}
+
 public class EntityEspressoMachineOne : EntityBase
 {
 	public int MilkUnits;
@@ -163,4 +175,44 @@ public class EntityEspressoMachineOne : EntityBase
 	{
 		isFillingMilk = false;
 	}
+
+	public override string OnSerialize()
+	{
+		EspressoVars vars = new EspressoVars();
+
+		vars.EspressoFillingData = isFillingEspresso;
+		vars.EspressoData = EspressoUnits;
+		vars.EspressoStartTimeData = StartTimeEspresso;
+
+		vars.MilkFillingData = isFillingMilk;
+		vars.MilkData = MilkUnits;
+		vars.MilkStartTimeData = StartTimeMilk;
+
+		vars.MyBaristasID = GetMyBarista().GetEmployeeID();
+		return JsonUtility.ToJson(vars);
+	}
+
+	public override void OnDeserialize(string json)
+	{
+		EspressoVars vars = JsonUtility.FromJson<EspressoVars>(OnSerialize());
+		
+		isFillingEspresso = vars.EspressoFillingData;
+		EspressoUnits = vars.EspressoData;
+		StartTimeEspresso = vars.EspressoStartTimeData;
+
+		isFillingMilk = vars.MilkFillingData;
+		MilkUnits = vars.MilkData;
+		StartTimeMilk = vars.MilkStartTimeData;
+
+		EntityBarista[] AllBarista = FindObjectsOfType<EntityBarista>();
+        for (int i = 0; i < AllBarista.Length; i++)
+        {
+            if (AllBarista[i].GetEmployeeID() == vars.MyBaristasID)
+            {
+				SetMyBarista(AllBarista[i]);
+            }
+        }
+
+	}
+
 }

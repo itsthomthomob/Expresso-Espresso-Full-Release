@@ -8,6 +8,7 @@ public class CustomerSpawnSystem : MonoBehaviour
 {
     //public Button SpawnCustomer;
     public EntityGrid Grid;
+    public int totalCustomers;
 
     [Header("All Chairs")]
     List<EntityBase> AllChairs = new List<EntityBase>();
@@ -195,7 +196,9 @@ public class CustomerSpawnSystem : MonoBehaviour
                                 DelaySpawning();
                                 if (DelayCustomerSpawning == false)
                                 {
-                                    Grid.Create<EntityCustomer>(GetRandomTile.Position);
+                                    EntityCustomer Customer = Grid.Create<EntityCustomer>(GetRandomTile.Position);
+                                    totalCustomers += 1;
+                                    Customer.MyCustomerID = totalCustomers + 100;
                                 }
                             }
                         }

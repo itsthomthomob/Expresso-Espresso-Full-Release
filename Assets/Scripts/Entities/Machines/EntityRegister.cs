@@ -1,11 +1,50 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+[Serializable]
+public class RegisterVars
+{
+    public int MyFrontsID; // Employee ID
+    public int MyCustomersID;
+}
 
 public class EntityRegister : EntityBase
 {
     [SerializeField] private EntityFront MyFront;
     [SerializeField] private EntityCustomer MyCustomer;
+
+    public override string OnSerialize()
+    {
+        RegisterVars vars = new RegisterVars();
+        vars.MyFrontsID = GetCustomer().MyCustomerID;
+        vars.MyFrontsID = GetFront().GetEmployeeID();
+        return JsonUtility.ToJson(vars);
+    }
+
+    public override void OnDeserialize(string json)
+    {
+        RegisterVars vars = JsonUtility.FromJson<RegisterVars>(OnSerialize());
+        // Characters spawn before machines
+        EntityFront[] AllFronts = FindObjectsOfType<EntityFront>();
+        for (int i = 0; i < AllFronts.Length; i++)
+        {
+            if (AllFronts[i].GetEmployeeID() == vars.MyFrontsID)
+            {
+                SetFront(AllFronts[i]);
+            }
+        }
+        EntityCustomer[] AllCustomers = FindObjectsOfType<EntityCustomer>();
+        for (int i = 0; i < AllCustomers.Length; i++)
+        {
+            if (AllCustomers[i].MyCustomerID == vars.MyCustomersID)
+            {
+                SetCustomer(AllCustomers[i]);
+            }
+        }
+    }
+
 
     public override void OnEntityAwake()
     {

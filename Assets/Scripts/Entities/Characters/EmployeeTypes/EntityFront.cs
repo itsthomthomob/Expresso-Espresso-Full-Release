@@ -5,6 +5,17 @@ using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
 
+[Serializable]
+public class FrontData 
+{
+    public int MyEmployeeID;
+    public float MyWage;
+    public string MyName;
+    public string MyState;
+    public float MySkill;
+    public float MyFast;
+}
+
 public class EntityFront : EntityBase
 {
     private int EmployeeID;
@@ -213,5 +224,42 @@ public class EntityFront : EntityBase
         {
             return true;
         }
+    }
+
+    public override string OnSerialize()
+    {
+        FrontData vars = new FrontData();
+        vars.MyState = CurrentState.ToString();
+        vars.MyFast = GetEfficiencyModifier();
+        vars.MySkill = GetSkillModifier();
+        vars.MyWage = GetWageAmount();
+        vars.MyEmployeeID = GetEmployeeID();
+        vars.MyName = GetEmployeeName();
+        return JsonUtility.ToJson(vars);
+    }
+
+    public override void OnDeserialize(string json)
+    {
+        FrontData vars = JsonUtility.FromJson<FrontData>(OnSerialize());
+        switch (vars.MyState)
+        {
+            case "TravelToRegister":
+                CurrentState = State.TravelToRegister;
+                break;
+            case "WaitForCustomer":
+                CurrentState = State.WaitForCustomer;
+                break;
+            case "TakeOrder":
+                CurrentState = State.TakeOrder;
+                break;
+            case "DisplayText":
+                CurrentState = State.DisplayText;
+                break;
+        }
+        SetSkillModifier(vars.MySkill);
+        SetWageAmount(vars.MyWage);
+        SetEfficiencyModifier(vars.MyFast);
+        SetEmployeeID(vars.MyEmployeeID);
+        SetEmployeeName(vars.MyName);
     }
 }

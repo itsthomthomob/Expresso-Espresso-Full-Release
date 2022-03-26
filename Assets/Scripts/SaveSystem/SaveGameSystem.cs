@@ -19,7 +19,7 @@ public class SaveGameSystem : MonoBehaviour
     public MenuManagementSystem GetMenu;
     public StoreLevelManager GetStoreLevel;
     public ObjectivesManager GetObjectives;
-    public Grid GameGrid;
+    public EntityGrid GameGrid;
 
 
     private void Start()
@@ -39,8 +39,10 @@ public class SaveGameSystem : MonoBehaviour
 
         // Save entity data
         NewSaveData.entityData = new EntityData();
+
         EntityBase[] AllEntities = FindObjectsOfType<EntityBase>();
         Debug.Log("AllEntities Saved: " + AllEntities.Length);
+
         List<EntityElement> Entities = new List<EntityElement>();
 
         foreach (EntityBase entity in AllEntities) 
@@ -51,8 +53,11 @@ public class SaveGameSystem : MonoBehaviour
             entityElement.position = entity.Position;
             Entities.Add(entityElement);
         }
+
         Debug.Log("EntityElements: " + Entities.Count);
+
         NewSaveData.entityData.entities = new EntityElement[Entities.Count];
+
         for (int i = 0; i < Entities.Count; i++)
         {
             NewSaveData.entityData.entities[i] = Entities[i];
@@ -140,6 +145,96 @@ public class SaveGameSystem : MonoBehaviour
     {
         string GetJSON = File.ReadAllText(Application.persistentDataPath + "/" + "SaveData" + ".json");
         JsonConfigurationFile NewSaveData = JsonUtility.FromJson<JsonConfigurationFile>(GetJSON);
+
+        // Reset tile construction script
+        TileConstruction GetConstruction = FindObjectOfType<TileConstruction>();
+        GetConstruction.selectedEntities = new EntityBase[0];
+
+        // Load Entities
+        List<EntityBase>  AllCurrentEntities = new List<EntityBase>();
+        GameGrid = FindObjectOfType<EntityGrid>();
+        AllCurrentEntities = GameGrid.GetAllEntities();
+
+        EntityData GetEntityData = NewSaveData.entityData;
+
+        EntityElement[] AllStoredEntities = new EntityElement[GetEntityData.entities.Length];
+
+        for (int i = 0; i < AllStoredEntities.Length; i++)
+        {
+            // Sets all entity data
+            AllStoredEntities[i] = GetEntityData.entities[i];
+        }
+
+        for (int i = 0; i < AllCurrentEntities.Count; i++)
+        {   
+            // Destroys all entities
+            GameGrid.Destroy(AllCurrentEntities[i]);
+        }
+
+        for (int i = 0; i < AllStoredEntities.Length; i++)
+        {
+            EntityBase curEntity = null;
+            // Creates all entities, sets values
+            switch (AllStoredEntities[i].type)
+            {
+                // Terrain
+                case "Grass":
+                    curEntity = GameGrid.Create<EntityGrass>(AllStoredEntities[i].position);
+                    break; 
+                // Floors
+                case "Checkered Floor":
+                    curEntity = GameGrid.Create<EntityFloorThree>(AllStoredEntities[i].position);
+                    break;
+                case "Rough Pale Wooden Floor":
+                    curEntity = GameGrid.Create<EntityFloor>(AllStoredEntities[i].position);
+                    break;
+                case "Tile Wooden Floor":
+                    curEntity = GameGrid.Create<EntityFloorTwo>(AllStoredEntities[i].position);
+                    break;
+                case "Pale Diagnal Floor":
+                    curEntity = GameGrid.Create<EntityFloorFour>(AllStoredEntities[i].position);
+                    break;
+                case "Warm Wooden Floor":
+                    curEntity = GameGrid.Create<EntityFloorFive>(AllStoredEntities[i].position);
+                    break;
+                case "Warm-Light Wooden Floor":
+                    curEntity = GameGrid.Create<EntityFloorSix>(AllStoredEntities[i].position);
+                    break;
+                case "Pale Wooden Floor":
+                    curEntity = GameGrid.Create<EntityFloorSeven>(AllStoredEntities[i].position);
+                    break;
+                // Walls
+                case "Brick Wall":
+                    curEntity = GameGrid.Create<EntityWallBrick>(AllStoredEntities[i].position);
+                    break;
+                case "Grey Brick Wall":
+                    curEntity = GameGrid.Create<EntityWallGreyBrick>(AllStoredEntities[i].position);
+                    break;
+                case "Pale Wall":
+                    curEntity = GameGrid.Create<EntityWallPale>(AllStoredEntities[i].position);
+                    break;
+                case "Plaster Wall":
+                    curEntity = GameGrid.Create<EntityWallPlaster>(AllStoredEntities[i].position);
+                    break;
+                // Machines
+                case "RoasterLvl1":
+                    curEntity = GameGrid.Create<EntityRoasteryMachineOne>(AllStoredEntities[i].position);
+                    break;
+                case "Register":
+                    curEntity = GameGrid.Create<EntityRegister>(AllStoredEntities[i].position);
+                    break;
+                case "Espresso-Machine":
+                    curEntity = GameGrid.Create<EntityEspressoMachineOne>(AllStoredEntities[i].position);
+                    break;
+                case "Brewer":
+                    curEntity = GameGrid.Create<EntityBrewingMachineOne>(AllStoredEntities[i].position);
+                    break;
+            }
+            if (curEntity != null)
+            {
+                curEntity.OnDeserialize(AllStoredEntities[i].json);
+            }
+        }
 
         // Load time data
         TimeManagerData LoadTime = NewSaveData.TimeData;

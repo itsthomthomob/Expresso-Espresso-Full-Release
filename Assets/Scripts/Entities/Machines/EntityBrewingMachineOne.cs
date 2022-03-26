@@ -1,6 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+
+[Serializable]
+public class BrewerVars 
+{
+    public int CoffeeUnitsData;
+    public bool isFillingData;
+    public float StartTimeData;
+}
+
 
 public class EntityBrewingMachineOne : EntityBase
 {
@@ -85,6 +95,23 @@ public class EntityBrewingMachineOne : EntityBase
         {
             return true;
         }
+    }
+
+    public override string OnSerialize()
+    {
+        BrewerVars vars = new BrewerVars();
+        vars.StartTimeData = StartTime;
+        vars.CoffeeUnitsData = BrewedCoffeeUnits;
+        vars.isFillingData = isFilling;
+        return JsonUtility.ToJson(vars);
+    }
+
+    public override void OnDeserialize(string json)
+    {
+        BrewerVars vars = JsonUtility.FromJson<BrewerVars>(OnSerialize());
+        StartTime = vars.StartTimeData;
+        BrewedCoffeeUnits = vars.CoffeeUnitsData;
+        isFilling = vars.isFillingData;
     }
 
     public override void OnEntityAwake()
