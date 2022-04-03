@@ -27,6 +27,7 @@ public class EmployeeUserIntSystem : MonoBehaviour
     public EntityGrid grid;
     public Button EmployeesOpenButton;
     public Button EmployeesCloseButton;
+    public EmployeeListManager getList;
 
     [Header("Tabs")]
     public EmployeesTabs selectedTab;
@@ -304,7 +305,6 @@ public class EmployeeUserIntSystem : MonoBehaviour
             HireableEmployee.transform.SetParent(FrontParent.transform);
         }
     }
-
     private void GenerateInfoCard() 
     {
         int childAmount = CharacterCard.transform.childCount;
@@ -368,7 +368,6 @@ public class EmployeeUserIntSystem : MonoBehaviour
             }
         }
     }
-
     private void ManageWage() 
     {
         if (WageSlider.IsActive())
@@ -378,7 +377,6 @@ public class EmployeeUserIntSystem : MonoBehaviour
             CurrentWageOffer = wage;
         }
     }
-
     private void CheckHireTypes() 
     {
         switch (currentEmployeeType)
@@ -400,7 +398,6 @@ public class EmployeeUserIntSystem : MonoBehaviour
                 break;
         }
     }
-
     private void LoadButtons()
     {
         HireTab.onClick.AddListener(OnHire);
@@ -414,7 +411,6 @@ public class EmployeeUserIntSystem : MonoBehaviour
         EmployeesOpenButton.onClick.AddListener(OpenEmployeesMenu);
         ScheduleTab.onClick.AddListener(OnSchedule);
     }
-
     private void CreateEmployee() 
     {
         switch (currentEmployeeType)
@@ -438,8 +434,8 @@ public class EmployeeUserIntSystem : MonoBehaviour
                         newBarista.SetEmployeePersonality("Introvert");
                         break;
                 }
-
-                break;
+                getList.hiredBaristas.Add(newBarista);
+            break;
             case EmployeeTypeButtons.onSupport:
                 EntitySupport newSupport = grid.Create<EntitySupport>(new Vector2Int(0, 0));
                 newSupport.SetEmployeeID(CurrentNewEmployeeID);
@@ -458,8 +454,8 @@ public class EmployeeUserIntSystem : MonoBehaviour
                         newSupport.SetEmployeePersonality("Introvert");
                         break;
                 }
-
-                break;
+                getList.hiredSupports.Add(newSupport);
+            break;
             case EmployeeTypeButtons.onFront:
                 EntityFront newFront = grid.Create<EntityFront>(new Vector2Int(0, 0));
                 newFront.SetEmployeeID(CurrentNewEmployeeID);
@@ -478,7 +474,8 @@ public class EmployeeUserIntSystem : MonoBehaviour
                         newFront.SetEmployeePersonality("Introvert");
                         break;
                 }
-                break;
+                getList.hiredFronts.Add(newFront);
+            break;
         }
     }
 

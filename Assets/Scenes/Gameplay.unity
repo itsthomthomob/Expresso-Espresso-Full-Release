@@ -36183,6 +36183,10 @@ MonoBehaviour:
   singleTile: {fileID: 8300000, guid: 0a0211798c0e1a148a614bdfacb46310, type: 3}
   multiTile: {fileID: 8300000, guid: c9446b5b5a5f9b84c84c1540a9fe4712, type: 3}
   machineTile: {fileID: 8300000, guid: 26089af9497215442bcf1f0d93238d9d, type: 3}
+  AllFloors: []
+  AllWalls: []
+  AllCounters: []
+  AllRegisters: []
 --- !u!4 &837644310
 Transform:
   m_ObjectHideFlags: 0
@@ -36308,8 +36312,11 @@ MonoBehaviour:
   Grid: {fileID: 0}
   totalCustomers: 0
   spawnedCustomers: []
+  allCustomers: []
   spawnLimit: 10
   AllCustomers: 0
+  getWeather: {fileID: 0}
+  allConcrete: []
 --- !u!114 &837644317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76057,6 +76064,7 @@ MonoBehaviour:
   grid: {fileID: 0}
   EmployeesOpenButton: {fileID: 178107479}
   EmployeesCloseButton: {fileID: 1581187994}
+  getList: {fileID: 1765303361}
   selectedTab: 3
   HireUI: {fileID: 973214814}
   EmployeesUI: {fileID: 184210811}
@@ -76118,9 +76126,9 @@ MonoBehaviour:
   EmployeeInfoPrefab: {fileID: 6196759536977680653, guid: 5bc4b8ddf29b18b42a4f976a7ebc3086, type: 3}
   EmployeeList: {fileID: 106578450}
   Employees: []
-  SupportEmployees: []
-  BaristaEmployees: []
-  FrontEmployees: []
+  hiredSupports: []
+  hiredBaristas: []
+  hiredFronts: []
   GeneratedEmployeesList: []
   TotalEmployees: 0
 --- !u!114 &1765303362

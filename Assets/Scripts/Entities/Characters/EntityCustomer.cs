@@ -47,7 +47,7 @@ public class EntityCustomer : EntityBase
 
     TileConstruction getTiles;
 
-    List<Sprite> OrderedTexts = new List<Sprite>();
+    List<Image> OrderedTexts = new List<Image>();
     GameObject MyTextBubble;
 
     Stopwatch TextWatch = new Stopwatch();
@@ -66,11 +66,11 @@ public class EntityCustomer : EntityBase
         didReview = false;
 
         // Load text bubbles
-        string[] FileNames = new string[] { "Customer-Ordered0", "Customer-Ordered1"};
+        string[] FileNames = new string[] { "Customer-Ordered0.png", "Customer-Ordered1.png" };
         UnityEngine.Debug.Log(FileNames[0]);
         for (int i = 0; i < FileNames.Length; i++)
         {
-            Sprite LoadSprite = Resources.Load("Sprites/UI/TextBubbles/Customer/Ordered" + FileNames[i]) as Sprite;
+            Image LoadSprite = Resources.Load("Sprites/UI/TextBubbles/Customer/Ordered" + FileNames[i]) as Image;
             if (!OrderedTexts.Contains(LoadSprite))
             {
                 OrderedTexts.Add(LoadSprite);
@@ -239,7 +239,7 @@ public class EntityCustomer : EntityBase
             // get random customer text
             int index = UnityEngine.Random.Range(0, (OrderedTexts.Count));
 
-            textBubble.transform.GetChild(0).GetComponent<Image>().sprite = OrderedTexts[index];
+            textBubble.transform.GetChild(0).GetComponent<Image>().sprite = OrderedTexts[index].sprite;
             UnityEngine.Debug.Log("Customer: " + index + "Max: " + (OrderedTexts.Count));
         }
         else

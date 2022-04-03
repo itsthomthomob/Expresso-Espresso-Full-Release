@@ -68,18 +68,18 @@ public class EntityFront : EntityBase
 
     EntityRegister myRegister;
 
-    List<Sprite> FrontTexts = new List<Sprite>();
+    List<Image> FrontTexts = new List<Image>();
     GameObject MyTextBubble;
 
     Stopwatch TextWatch = new Stopwatch();
     private void Awake()
     {
         GetTime = FindObjectOfType<TimeManager>();
-        string[] FileNames = new string[] {"Front-Text1", "Front-Text2", "Front-Text3" };
+        string[] FileNames = new string[] {"Front-Text1.png", "Front-Text2.png", "Front-Text3.png" };
         UnityEngine.Debug.Log(FileNames[0]);
         for (int i = 0; i < FileNames.Length; i++)
         {
-            Sprite LoadSprite = Resources.Load("Sprites/UI/TextBubbles/Front/" + FileNames[i]) as Sprite;
+            Image LoadSprite = Resources.Load("Sprites/UI/TextBubbles/Front/" + FileNames[i]) as Image;
             if (!FrontTexts.Contains(LoadSprite))
             {
                 FrontTexts.Add(LoadSprite);
@@ -204,9 +204,8 @@ public class EntityFront : EntityBase
                 // get random customer text
                 int index = UnityEngine.Random.Range(0, (FrontTexts.Count));
 
-                var TextImage = textBubble.transform.GetChild(0).GetComponent<Image>();
-                TextImage.sprite = FrontTexts[index];
-                UnityEngine.Debug.Log("Front: " + FrontTexts[index].name);
+                Image TextImage = textBubble.transform.GetChild(0).GetComponent<Image>();
+                TextImage = FrontTexts[index];
             }
             else
             {

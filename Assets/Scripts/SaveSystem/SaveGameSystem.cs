@@ -434,6 +434,11 @@ public class SaveGameSystem : MonoBehaviour
                 GameGrid.Destroy(AllCurrentEntities[i]);
             }
 
+            EmployeeListManager getList = FindObjectOfType<EmployeeListManager>();
+            getList.hiredBaristas = new List<EntityBarista>();
+            getList.hiredSupports = new List<EntitySupport>();
+            getList.hiredFronts = new List<EntityFront>();
+
             for (int i = 0; i < AllStoredEntities.Length; i++)
             {
                 EntityBase curEntity = null;
@@ -531,12 +536,18 @@ public class SaveGameSystem : MonoBehaviour
                         break;
                     case "Support":
                         curEntity = GameGrid.Create<EntitySupport>(AllStoredEntities[i].position);
+                        getList.hiredSupports.Add(curEntity as EntitySupport);
+                        getList.OnGameDeserialization(curEntity);
                         break;
                     case "Front":
                         curEntity = GameGrid.Create<EntityFront>(AllStoredEntities[i].position);
+                        getList.hiredFronts.Add(curEntity as EntityFront);
+                        getList.OnGameDeserialization(curEntity);
                         break;
                     case "Barista":
                         curEntity = GameGrid.Create<EntityBarista>(AllStoredEntities[i].position);
+                        getList.hiredBaristas.Add(curEntity as EntityBarista);
+                        getList.OnGameDeserialization(curEntity);
                         break;
                     // Machines
                     case "RoasterLvl1":

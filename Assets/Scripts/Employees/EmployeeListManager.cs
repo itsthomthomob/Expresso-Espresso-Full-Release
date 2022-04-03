@@ -11,48 +11,54 @@ public class EmployeeListManager : MonoBehaviour
     public GameObject EmployeeList;
 
     [Header("Employee Management Stats")]
-    public List<EntityBase> Employees; // new employees go here
-    public EntitySupport[] SupportEmployees; // new employees go here
-    public EntityBarista[] BaristaEmployees; // new employees go here
-    public EntityFront[] FrontEmployees; // new employees go here
+    public List<EntityBase> Employees = new List<EntityBase>(); // new employees go here
+    public List<EntitySupport> hiredSupports = new List<EntitySupport>();
+    public List<EntityBarista> hiredBaristas = new List<EntityBarista>();
+    public List<EntityFront> hiredFronts = new List<EntityFront>();
     public List<EntityBase> GeneratedEmployeesList; // generated employees here
     public int TotalEmployees;
 
     private void Update()
     {
-        BaristaEmployees = FindObjectsOfType<EntityBarista>();
-        SupportEmployees = FindObjectsOfType<EntitySupport>();
-        FrontEmployees = FindObjectsOfType<EntityFront>();
-
         GetEmployees();
         GenerateNewEmployees();
     }
 
+    public void OnGameDeserialization(EntityBase loadedEmployee) 
+    {
+        // Adds employees back to list
+        // Generates prefabs again
+        GameObject newEmployeeCell = Instantiate(EmployeeInfoPrefab);
+        GeneratedEmployeesList.Add(loadedEmployee);
+
+        newEmployeeCell.transform.SetParent(EmployeeList.transform);
+        ModifyEmployeeCellContent(newEmployeeCell, loadedEmployee);
+    }
+
     private void GetEmployees()
     {
-        for (int i = 0; i < SupportEmployees.Length; i++)
+        for (int i = 0; i < hiredSupports.Count; i++)
         {
-            if (Employees.Contains(SupportEmployees[i]) == false)
+            if (!Employees.Contains(hiredSupports[i]))
             {
-                Employees.Add(SupportEmployees[i]);
+                Employees.Add(hiredSupports[i]);
             }
         }
-        for (int i = 0; i < BaristaEmployees.Length; i++)
+        for (int i = 0; i < hiredBaristas.Count; i++)
         {
-            if (Employees.Contains(BaristaEmployees[i]) == false)
+            if (!Employees.Contains(hiredBaristas[i]))
             {
-                Employees.Add(BaristaEmployees[i]);
+                Employees.Add(hiredBaristas[i]);
             }
         }
-        for (int i = 0; i < FrontEmployees.Length; i++)
+        for (int i = 0; i < hiredFronts.Count; i++)
         {
-            if (Employees.Contains(FrontEmployees[i]) == false)
+            if (!Employees.Contains(hiredFronts[i]))
             {
-                Employees.Add(FrontEmployees[i]);
+                Employees.Add(hiredFronts[i]);
             }
         }
     }
-
     private void GenerateNewEmployees()
     {
         for (int i = 0; i < Employees.Count; i++)
