@@ -14,10 +14,13 @@ public class FrontData
     public string MyState;
     public float MySkill;
     public float MyFast;
+    public string MySpriteName;
 }
 
 public class EntityFront : EntityBase
 {
+    public float maxRotation = 5f;
+    public float rotationSpeed = 6.5f;
     private int EmployeeID;
     private string EmployeeName;
     private string SpriteName;
@@ -31,7 +34,7 @@ public class EntityFront : EntityBase
     public void SetEmployeeID(int newID) { EmployeeID = newID; }
     public int GetEmployeeID() { return EmployeeID; }
 
-    public void SetSpriteName(string newSprite) { SpriteName = newSprite; }
+    public void SetSpriteName(string newSprite) { SpriteName = newSprite; UnityEngine.Debug.Log("Set Sprite Name to: " + newSprite); }
     public string GetSpriteName() { return SpriteName; }
     public void SetEmployeeName(string newName) { EmployeeName = newName; }
     public string GetEmployeeName() { return EmployeeName; }
@@ -85,6 +88,11 @@ public class EntityFront : EntityBase
     }
     private void FixedUpdate()
     {
+        if (IsMoving)
+        {
+            transform.rotation = Quaternion.Euler(0f, 0f, maxRotation * Mathf.Sin(Time.time * rotationSpeed));
+        }
+
         Speed = 0.25f / GetTime.scale;
 
         switch (CurrentState)
@@ -235,12 +243,13 @@ public class EntityFront : EntityBase
         vars.MyWage = GetWageAmount();
         vars.MyEmployeeID = GetEmployeeID();
         vars.MyName = GetEmployeeName();
+        vars.MySpriteName = GetSpriteName();
         return JsonUtility.ToJson(vars);
     }
 
     public override void OnDeserialize(string json)
     {
-        FrontData vars = JsonUtility.FromJson<FrontData>(OnSerialize());
+        FrontData vars = JsonUtility.FromJson<FrontData>(json);
         switch (vars.MyState)
         {
             case "TravelToRegister":
@@ -261,5 +270,11 @@ public class EntityFront : EntityBase
         SetEfficiencyModifier(vars.MyFast);
         SetEmployeeID(vars.MyEmployeeID);
         SetEmployeeName(vars.MyName);
+        SetSpriteName(vars.MySpriteName);
+        UnityEngine.Debug.Log("Loading: " + vars.MySpriteName);
+        SetSpriteName(vars.MySpriteName);
+        //Image myImage = GetComponent<Image>();
+        //myImage.sprite = Resources.Load<Sprite>(GetSpriteName());
+        SetEntitySprite(Resources.Load<Sprite>(GetSpriteName()));
     }
 }

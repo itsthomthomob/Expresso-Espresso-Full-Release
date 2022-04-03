@@ -14,7 +14,7 @@ public class PauseManager : MonoBehaviour
     public Button exit;
     public bool isPaused;
     public MasterUIController GetUI;
-
+    public TimeManager getTime;
     private void Start()
     {
         LoadStates();
@@ -33,6 +33,8 @@ public class PauseManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             isPaused = !isPaused;
+            getTime.scale = 0;
+            getTime.Timer.Stop();
         }
 
         if (isPaused)
@@ -51,7 +53,7 @@ public class PauseManager : MonoBehaviour
             {
                 ghost.SetActive(true);
             }
-
+            getTime.Timer.Start();
             Time.timeScale = 1;
         }
     }

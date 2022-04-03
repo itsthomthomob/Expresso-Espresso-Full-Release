@@ -345,6 +345,8 @@ public class EmployeeUserIntSystem : MonoBehaviour
                             {
                                 Transform child = CharacterCard.transform.GetChild(i);
                                 child.GetComponent<Image>().sprite = CurrentCharacterImage;
+                                currentCharImage = "Sprites/Characters/" + CurrentCharacterImage.name;
+                                //Debug.Log("Character Image Name: " + currentCharImage);
                             }
                         }
                         if (CharCardChild.name == "Skill-EXP-BG")
@@ -422,7 +424,8 @@ public class EmployeeUserIntSystem : MonoBehaviour
                 newBarista.SetEmployeeID(CurrentNewEmployeeID);
                 CurrentNewEmployeeID += 1;
                 newBarista.SetEmployeeName(employeeName);
-                //newEmployee.SetSpriteName(currentCharImage);
+                newBarista.SetSpriteName(currentCharImage);
+                Debug.Log(newBarista.GetSpriteName());
                 newBarista.SetWageAmount(CurrentWageOffer);
                 newBarista.SetSkillModifier(skillAmount);
                 newBarista.SetEfficiencyModifier(skillAmount / 2);
@@ -442,7 +445,7 @@ public class EmployeeUserIntSystem : MonoBehaviour
                 newSupport.SetEmployeeID(CurrentNewEmployeeID);
                 CurrentNewEmployeeID += 1;
                 newSupport.SetEmployeeName(employeeName);
-                //newEmployee.SetSpriteName(currentCharImage);
+                newSupport.SetSpriteName(currentCharImage);
                 newSupport.SetWageAmount(CurrentWageOffer);
                 newSupport.SetSkillModifier(skillAmount);
                 newSupport.SetEfficiencyModifier(skillAmount / 2);
@@ -462,7 +465,7 @@ public class EmployeeUserIntSystem : MonoBehaviour
                 newFront.SetEmployeeID(CurrentNewEmployeeID);
                 CurrentNewEmployeeID += 1;
                 newFront.SetEmployeeName(employeeName);
-                //newEmployee.SetSpriteName(currentCharImage);
+                newFront.SetSpriteName(currentCharImage);
                 newFront.SetWageAmount(CurrentWageOffer);
                 newFront.SetSkillModifier(skillAmount);
                 newFront.SetEfficiencyModifier(skillAmount / 2);

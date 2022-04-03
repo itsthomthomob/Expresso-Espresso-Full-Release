@@ -123,7 +123,7 @@ public class EntityRoasteryMachineOne : EntityBase
     public override void OnEntityAwake()
 	{
 		SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Machines/Roastery"));
-		SetEntityPriority(EntityPriority.Appliances);
+		SetEntityPriority(EntityPriority.Furniture);
 		SetEntityName("RoasterLvl1");
 	}
 }

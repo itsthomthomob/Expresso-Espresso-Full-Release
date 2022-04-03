@@ -15,6 +15,8 @@ public class CustomerVars
 
 public class EntityCustomer : EntityBase
 {
+    public float maxRotation = 5f;
+    public float rotationSpeed = 6.5f;
     public override void OnEntityAwake()
     {
         SetEntitySprite(Resources.Load<Sprite>("Sprites/Characters/Character002"));
@@ -24,14 +26,16 @@ public class EntityCustomer : EntityBase
 
     public enum State 
     { 
-        GoingToRegister, DisplayText, GoingToEmptyChair, SitDown, WaitAtChair, WaitAtRandomLocation, GoingToDrink, LeavingCafe
+        WaitingForCafe, GoingToRegister, DisplayText, GoingToEmptyChair, SitDown, WaitAtChair, WaitAtRandomLocation, GoingToDrink, LeavingCafe
     }
 
-    [SerializeField] private State CurrentState = State.GoingToRegister;
+    [SerializeField] private State CurrentState = State.WaitingForCafe;
     [SerializeField] public int MyCustomerID;
     [SerializeField] private EntityCoffee MyCoffee;
     [SerializeField] private float Range = 3.0f;
     [SerializeField] private MenuItem MyItem;
+    [SerializeField] private EntityConcrete MyConcrete;
+    EntityConcrete[] AllConcrete;
     MenuManagementSystem GetMenu;
     MenuItem[] ScanMenu;
 
@@ -40,7 +44,8 @@ public class EntityCustomer : EntityBase
 
     EntityBase MyChair;
     EntityRegister Register;
-    EntityRegister[] AllRegisters;
+
+    TileConstruction getTiles;
 
     List<Sprite> OrderedTexts = new List<Sprite>();
     GameObject MyTextBubble;
@@ -49,6 +54,7 @@ public class EntityCustomer : EntityBase
 
     public TimeManager GetTime;
     public float Speed;
+
     private void Awake()
     {
         GetTime = FindObjectOfType<TimeManager>();
@@ -56,6 +62,7 @@ public class EntityCustomer : EntityBase
         GetMenu = FindObjectOfType<MenuManagementSystem>();
         ScanMenu = FindObjectsOfType<MenuItem>();
         GetECO = FindObjectOfType<CafeEconomySystem>();
+        getTiles = FindObjectOfType<TileConstruction>();
         didReview = false;
 
         // Load text bubbles
@@ -71,12 +78,25 @@ public class EntityCustomer : EntityBase
         }
     }
 
+    private void Start()
+    {
+        AllConcrete = FindObjectsOfType<EntityConcrete>();
+    }
+
     private void FixedUpdate()
     {
+        if (IsMoving) 
+        { 
+            transform.rotation = Quaternion.Euler(0f, 0f, maxRotation * Mathf.Sin(Time.time * rotationSpeed));
+        }
+
         Speed = GetTime.scale * 0.25f;
-        AllRegisters = FindObjectsOfType<EntityRegister>();
+
         switch (CurrentState)
         {
+            case State.WaitingForCafe:
+                OnWaitingForCafe();
+                break;
             case State.GoingToRegister:
                 OnGoingToRegister();
                 break;
@@ -104,18 +124,81 @@ public class EntityCustomer : EntityBase
         }
     }
 
+    private void OnWaitingForCafe() 
+    {
+        if (!IsMoving)
+        {
+            int index = UnityEngine.Random.Range(0, AllConcrete.Length);
+            MenuItem findItem = FindObjectOfType<MenuItem>();
+            if (MyConcrete == null)
+            {
+                MyConcrete = AllConcrete[index];
+            }
+            else 
+            {
+                if (getTiles.AllRegisters.Count > 0 && findItem != null)
+                {
+                    // Player has register and menu item, go to register
+                    CurrentState = State.GoingToRegister;
+                }
+                else if ((Position - MyConcrete.Position).magnitude < Range)
+                {
+                    // At my concrete, choose another concrete
+                    MyConcrete = AllConcrete[index];
+                }
+                else if (findItem == null)
+                {
+                    // menu item does not exist
+                    bool found = Grid.Pathfind(Position, MyConcrete.Position, IsPassable, out Vector2Int next);
+                    if (found)
+                    {
+                        Move(next, Speed);
+                    }
+                }
+                else if (getTiles.AllRegisters.Count > 0)
+                {
+                    // a register does not exist
+                    bool found = Grid.Pathfind(Position, MyConcrete.Position, IsPassable, out Vector2Int next);
+                    if (found)
+                    {
+                        Move(next, Speed);
+                    }
+                }
+                else 
+                {
+                    bool found = Grid.Pathfind(Position, MyConcrete.Position, IsPassable, out Vector2Int next);
+                    if (found)
+                    {
+                        Move(next, Speed);
+                    }
+                }
+            }
+        }
+    }
+
     private void OnGoingToRegister()
     {
         if (!IsMoving)
         {
-
-            for (int i = 0; i < AllRegisters.Length; i++)
+            for (int i = 0; i < getTiles.AllRegisters.Count; i++)
             {
-                if (AllRegisters[i].GetCustomer() == null)
+                if (getTiles.AllRegisters[i].GetCustomer() == null)
                 {
-                    Register = AllRegisters[i];
+                    Register = getTiles.AllRegisters[i];
                     Register.SetCustomer(this);
                     break;
+                }
+                else 
+                {
+                    // Go to customer
+                    if ((getTiles.AllRegisters[i].GetCustomer().Position - getTiles.AllRegisters[i].Position).magnitude < Range)
+                    {
+                        bool found = Grid.Pathfind(Position, getTiles.AllRegisters[i].GetCustomer().Position, IsPassable, out Vector2Int next);
+                        if (found)
+                        {
+                            Move(next, Speed);
+                        }
+                    }
                 }
             }
 
@@ -367,6 +450,7 @@ public class EntityCustomer : EntityBase
         }
         else if ((Position - MyCoffee.Position).magnitude < Range)
         {
+            // In range of coffee item, pick it up
             MyCoffee.transform.position = gameObject.transform.position;
             MyCoffee.transform.SetParent(this.transform);
             CurrentState = State.LeavingCafe;
@@ -408,14 +492,18 @@ public class EntityCustomer : EntityBase
 
     private bool IsPassable(Vector2Int position)
     {
-        if (Grid.HasPriority(position, EntityPriority.Furniture) ||
-            Grid.HasPriority(position, EntityPriority.Characters))
+        // Customers can only walk on:
+        // Concrete, Foundation, Furnitures
+        if (Grid.HasPriority(position, EntityPriority.Foundations) ||
+            Grid.HasPriority(position, EntityPriority.Furniture) ||
+            Grid.HasEntity<EntityConcrete>(position)
+            )
         {
-            return false;
+            return true;
         }
         else
         {
-            return true;
+            return false;
         }
     }
     private bool IsChairPassable(Vector2Int position) 
@@ -445,6 +533,9 @@ public class EntityCustomer : EntityBase
         CustomerVars vars = JsonUtility.FromJson<CustomerVars>(OnSerialize());
         switch (vars.MyStateData)
         {
+            case "WaitingForCafe":
+                CurrentState = State.WaitingForCafe;
+                break;
             case "GoingToRegister":
                 CurrentState = State.GoingToRegister;
                 break;

@@ -205,16 +205,26 @@ public class EntityGrid : MonoBehaviour
 
 	private void SetEntityRect(EntityBase entity, Vector2 position)
 	{
-		Rect rect = entity.Sprite.rect;
-		Vector4 border = entity.Sprite.border;
-		Vector2 size = new Vector2(rect.size.x - border.x - border.z, rect.size.y - border.y - border.w);
-		Vector2 min = new Vector2((position.x - 0.5f - Center.x - border.x / size.x) * Scale.x, (position.y - 0.5f - Center.y - border.y / size.y) * Scale.y);
-		Vector2 max = new Vector2((position.x + 0.5f - Center.x + border.z / size.x) * Scale.x, (position.y + 0.5f - Center.y + border.w / size.y) * Scale.y);
-		entity.RectTransform.anchorMin = min;
-		entity.RectTransform.anchorMax = max;
-		entity.RectTransform.pivot = new Vector2(0.5f, 0.5f);
-		entity.RectTransform.offsetMin = Vector2.zero;
-		entity.RectTransform.offsetMax = Vector2.zero;
+		try
+		{
+			Rect rect = entity.Sprite.rect;
+			Vector4 border = entity.Sprite.border;
+			Vector2 size = new Vector2(rect.size.x - border.x - border.z, rect.size.y - border.y - border.w);
+			Vector2 min = new Vector2((position.x - 0.5f - Center.x - border.x / size.x) * Scale.x, (position.y - 0.5f - Center.y - border.y / size.y) * Scale.y);
+			Vector2 max = new Vector2((position.x + 0.5f - Center.x + border.z / size.x) * Scale.x, (position.y + 0.5f - Center.y + border.w / size.y) * Scale.y);
+			entity.RectTransform.anchorMin = min;
+			entity.RectTransform.anchorMax = max;
+			entity.RectTransform.pivot = new Vector2(0.5f, 0.5f);
+			entity.RectTransform.offsetMin = Vector2.zero;
+			entity.RectTransform.offsetMax = Vector2.zero;
+		}
+		catch (Exception error) 
+		{
+            if (error != null)
+            {
+				Debug.LogWarning("Error: " + error);
+            }
+		}
 	}
 
 	private void SetEntitySprite(EntityBase entity, Sprite sprite)

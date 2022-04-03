@@ -1,6 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+
+[Serializable]
+public class CoffeeVars 
+{
+    public int MyCustomersID;
+}
+
 
 public class EntityCoffee : EntityBase
 {
@@ -8,12 +16,12 @@ public class EntityCoffee : EntityBase
     [SerializeField] private EntityCustomer MyCustomer;
     public override void OnEntityAwake()
     {
-        Object[] AllCoffeeSprites = Resources.LoadAll("Sprites/Items/CoffeeTypes", typeof(Sprite));
+        UnityEngine.Object[] AllCoffeeSprites = Resources.LoadAll("Sprites/Items/CoffeeTypes", typeof(Sprite));
         for (int i = 0; i < AllCoffeeSprites.Length; i++)
         {
             CoffeeSprites.Add(AllCoffeeSprites[i] as Sprite);
         }
-        int index = Random.Range(0, CoffeeSprites.Count);
+        int index = UnityEngine.Random.Range(0, CoffeeSprites.Count);
         SetEntitySprite(CoffeeSprites[index]);
         SetEntityPriority(EntityPriority.Appliances);
         SetEntityName("Coffee Cup");
@@ -27,6 +35,26 @@ public class EntityCoffee : EntityBase
     public EntityCustomer GetCustomer() 
     {
         return MyCustomer;
+    }
+
+    public override string OnSerialize()
+    {
+        CoffeeVars vars = new CoffeeVars();
+        vars.MyCustomersID = GetCustomer().MyCustomerID;
+        return JsonUtility.ToJson(vars);
+    }
+
+    public override void OnDeserialize(string json)
+    {
+        CoffeeVars vars = JsonUtility.FromJson<CoffeeVars>(OnSerialize());
+        EntityCustomer[] AllCustomers = FindObjectsOfType<EntityCustomer>();
+        for (int i = 0; i < AllCustomers.Length; i++) 
+        {
+            if (AllCustomers[i].MyCustomerID == vars.MyCustomersID)
+            {
+                SetCustomer(AllCustomers[i]);
+            }
+        }
     }
 
 }

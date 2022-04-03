@@ -17,7 +17,8 @@ public class NewGame : MonoBehaviour
 
     void LoadNewGame() 
     {
-        SceneManager.LoadScene("Gameplay");
+        PlayerPrefs.SetString("curFilePath", "");
+        SceneManager.LoadScene("CafeCreation");
     }
     void ExitGame()
     {

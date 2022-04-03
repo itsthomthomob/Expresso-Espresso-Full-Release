@@ -18,8 +18,11 @@ public class EntityRegister : EntityBase
     public override string OnSerialize()
     {
         RegisterVars vars = new RegisterVars();
-        vars.MyFrontsID = GetCustomer().MyCustomerID;
-        vars.MyFrontsID = GetFront().GetEmployeeID();
+        if (GetCustomer() != null)
+        {
+            vars.MyCustomersID = GetCustomer().MyCustomerID;
+            vars.MyFrontsID = GetFront().GetEmployeeID();
+        }
         return JsonUtility.ToJson(vars);
     }
 

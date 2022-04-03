@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Objective003 : ObjectiveObject
 {
-    List<EntityBase> AllCounters = new List<EntityBase>();
+    TileConstruction getTiles;
 
     private void Awake()
     {
@@ -15,50 +15,23 @@ public class Objective003 : ObjectiveObject
         SetSpawned(false);
         SetStatus(Status.New);
     }
-
-    private void Update()
+    private void Start()
     {
-        CheckRequirements();
-        RequirementsMet();
-        SetMinimum(AllCounters.Count + loadedMin);
+        getTiles = FindObjectOfType<TileConstruction>();
     }
-
-    private void CheckRequirements() 
+    private void FixedUpdate()
     {
-        EntityCounterGrey[] AllCounterGreys = FindObjectsOfType<EntityCounterGrey>();
-        EntityCounterMarble[] AllCounterMarbles = FindObjectsOfType<EntityCounterMarble>();
-        EntityCounterRed[] AllCounterReds = FindObjectsOfType<EntityCounterRed>();
-
-        for (int i = 0; i < AllCounterGreys.Length; i++)
-        {
-            if (!AllCounters.Contains(AllCounterGreys[i]))
-            {
-                AllCounters.Add(AllCounterGreys[i]);
-            }
-        }
-        for (int i = 0; i < AllCounterMarbles.Length; i++)
-        {
-            if (!AllCounters.Contains(AllCounterMarbles[i]))
-            {
-                AllCounters.Add(AllCounterMarbles[i]);
-            }
-        }
-        for (int i = 0; i < AllCounterReds.Length; i++)
-        {
-            if (!AllCounters.Contains(AllCounterReds[i]))
-            {
-                AllCounters.Add(AllCounterReds[i]);
-            }
-        }
+        RequirementsMet();
+        SetMinimum(getTiles.AllCounters.Count + loadedMin);
     }
 
     private void RequirementsMet() 
     {
-        if (AllCounters.Count >= GetMaximum())
+        if (getTiles.AllCounters.Count >= GetMaximum())
         {
             SetStatus(Status.Finished);
         }
-        else if (AllCounters.Count > GetMinimum())
+        else if (getTiles.AllCounters.Count > GetMinimum())
         {
             SetStatus(Status.InProgress);
         }

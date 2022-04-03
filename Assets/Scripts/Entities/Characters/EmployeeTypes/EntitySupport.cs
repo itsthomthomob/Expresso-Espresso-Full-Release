@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [Serializable]
 public class SupportData 
@@ -12,10 +13,13 @@ public class SupportData
     public string MyState;
     public float MySkill;
     public float MyFast;
+    public string MyImageName;
 }
 
 public class EntitySupport : EntityBase
 {
+    public float maxRotation = 5f;
+    public float rotationSpeed = 6.5f;
     private int EmployeeID;
     private string EmployeeName;
     private string SpriteName;
@@ -33,7 +37,7 @@ public class EntitySupport : EntityBase
     public string GetEmployeeRole() { return "Support"; }
     public void SetEmployeePersonality(string newPers) { PersonalityType = newPers; }
     public string GetEmployeePersonality() { return PersonalityType; }
-    public void SetSpriteName(string newSprite) { SpriteName = newSprite; }
+    public void SetSpriteName(string newSprite) { SpriteName = newSprite; UnityEngine.Debug.Log("Set Sprite Name to: " + newSprite); }
     public string GetSpriteName() { return SpriteName; }
     public void SetEmployeeName(string newName) { EmployeeName = newName; }
     public string GetEmployeeName() { return EmployeeName; }
@@ -69,12 +73,23 @@ public class EntitySupport : EntityBase
         SetEntityName("Support");
     }
 
-    
-    
+    private void Start()
+    {
+        if (GetSpriteName() != "")
+        {
+            SetEntitySprite(Resources.Load<Sprite>(GetSpriteName()));
+        }
+    }
+
     private void FixedUpdate()
     {
-        
+        if (IsMoving)
+        {
+            transform.rotation = Quaternion.Euler(0f, 0f, maxRotation * Mathf.Sin(Time.time * rotationSpeed));
+        }
+
         Speed = 0.25f / GetTime.scale;
+        
         switch (CurrentState)
         {
             case State.TravelToRoaster:
@@ -308,12 +323,13 @@ public class EntitySupport : EntityBase
         vars.MyWage = GetWageAmount();
         vars.MyEmployeeID = GetEmployeeID();
         vars.MyName = GetEmployeeName();
+        vars.MyImageName = GetSpriteName();
         return JsonUtility.ToJson(vars);
     }
 
     public override void OnDeserialize(string json)
     {
-        SupportData vars = JsonUtility.FromJson<SupportData>(OnSerialize());
+        SupportData vars = JsonUtility.FromJson<SupportData>(json);
         switch (vars.MyState)
         {
             case "TravelToRoaster":
@@ -340,5 +356,11 @@ public class EntitySupport : EntityBase
         SetEfficiencyModifier(vars.MyFast);
         SetEmployeeID(vars.MyEmployeeID);
         SetEmployeeName(vars.MyName);
+        SetSpriteName(vars.MyImageName);
+        UnityEngine.Debug.Log("Loading: " + "/" + vars.MyImageName);
+        SetSpriteName(vars.MyImageName);
+        //Image myImage = GetComponent<Image>();
+        //myImage.sprite = Resources.Load<Sprite>(GetSpriteName());
+        SetEntitySprite(Resources.Load<Sprite>(GetSpriteName()));
     }
 }

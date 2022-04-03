@@ -15,7 +15,7 @@ public class Objective004 : ObjectiveObject
         SetStatus(Status.New);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         RequirementsMet();
 

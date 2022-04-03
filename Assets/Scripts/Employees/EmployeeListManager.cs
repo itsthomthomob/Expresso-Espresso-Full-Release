@@ -112,7 +112,7 @@ public class EmployeeListManager : MonoBehaviour
                 EntityBarista barista = Employee as EntityBarista;
                 if (getChild.name == "Character-Sprite")
                 {
-                    Debug.Log(barista.GetSpriteName());
+                    //Debug.Log(barista.GetSpriteName());
                     getChild.GetComponent<Image>().sprite = barista.Sprite;
                 }
                 if (getChild.name == "Name")
@@ -146,7 +146,7 @@ public class EmployeeListManager : MonoBehaviour
                 EntityFront front = Employee as EntityFront;
                 if (getChild.name == "Character-Sprite")
                 {
-                    Debug.Log(front.GetSpriteName());
+                    //Debug.Log(front.GetSpriteName());
                     getChild.GetComponent<Image>().sprite = front.Sprite;
                 }
                 if (getChild.name == "Name")

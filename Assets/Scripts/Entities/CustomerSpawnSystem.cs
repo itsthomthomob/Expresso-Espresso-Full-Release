@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,14 +10,14 @@ public class CustomerSpawnSystem : MonoBehaviour
     //public Button SpawnCustomer;
     public EntityGrid Grid;
     public int totalCustomers;
+    public List<EntityCustomer> spawnedCustomers = new List<EntityCustomer>();
+    public List<EntityCustomer> allCustomers = new List<EntityCustomer>();
 
-    [Header("All Chairs")]
-    List<EntityBase> AllChairs = new List<EntityBase>();
-    EntityBarstool[] AllChairBarstools;
-    EntityChairGrey[] AllChairGrey;
-    EntityChairRed[] AllChairRed;
-    EntityChairRough[] AllChairRough;
-    EntityChairSmooth[] AllChairSmooth;
+    [Header("Spawn Modifiers")]
+    public int spawnLimit = 10;
+    public int AllCustomers;
+    public WeatherManager getWeather;
+    public EntityConcrete[] allConcrete;
 
     [Header("Spawn Objs")]
     EntityBase GetFloor;
@@ -26,28 +27,64 @@ public class CustomerSpawnSystem : MonoBehaviour
     EntityFront GetFront;
     EntityBarista GetBarista;
     TimeManager GetTime;
-    TimeSpan CustomerDelay = new TimeSpan(0, 0, 0);
-    bool DelayCustomerSpawning = false;
+    Stopwatch CustomerTimer = new Stopwatch();
+
+    [Header("All Chairs")]
+    List<EntityBase> AllChairs = new List<EntityBase>();
+    EntityBarstool[] AllChairBarstools;
+    EntityChairGrey[] AllChairGrey;
+    EntityChairRed[] AllChairRed;
+    EntityChairRough[] AllChairRough;
+    EntityChairSmooth[] AllChairSmooth;
+
 
     private void Start()
     {
-        Grid = FindObjectOfType<EntityGrid>();
-        GetTime = FindObjectOfType<TimeManager>();
-        //SpawnCustomer.onClick.AddListener(SpawnCustomerEntity);
+        SetObjects();
     }
 
     private void Update()
+    {
+        //FindChairs();
+        if (spawnedCustomers.Count > spawnLimit)
+        {
+            if (!CustomerTimer.IsRunning)
+            {
+                CustomerTimer.Start();
+            }
+            if (FindWorkers())
+            {
+                SpawnCustomers();
+            }
+        }
+        else
+        {
+            SpawnStartingCustomers();
+        }
+    }
+
+    private void SetObjects() 
+    { 
+        Grid = FindObjectOfType<EntityGrid>();
+        GetTime = FindObjectOfType<TimeManager>();
+        allConcrete = FindObjectsOfType<EntityConcrete>();
+    }
+    private bool FindWorkers() 
     {
         GetRegister = FindObjectOfType<EntityRegister>();
         GetEspresso = FindObjectOfType<EntityEspressoMachineOne>();
         GetFront = FindObjectOfType<EntityFront>();
         GetBarista = FindObjectOfType<EntityBarista>();
-
-        FindChairs();
-        SpawnCustomers();
-        FindCafe();
+        if (GetRegister != null && GetEspresso != null &&
+            GetFront != null && GetBarista != null)
+        {
+            return true;
+        }
+        else 
+        {
+            return false;
+        }
     }
-
     private void FindChairs() 
     { 
         AllChairBarstools = FindObjectsOfType<EntityBarstool>();
@@ -93,139 +130,77 @@ public class CustomerSpawnSystem : MonoBehaviour
         }
 
     }
+    private void SpawnStartingCustomers() 
+    {
+        AllCustomers = allCustomers.Count;
 
-    // TO-DO:
-    // - Flood fill for cafe
-    //   - Find floors in at least a 8 x 8 shape
+        // Find conrete
+        // Spawn on concrete with no customer
+        // Stop spawning after 10 customers (spawnLimit)
+        // If chairs > spawn limit, continue spawning
+        // Customers can only walk on concrete, foundation, or furniture tiles (AI)
 
-    private void FindCafe() 
-    { 
-        // FloodFill for cafe
-        
-        // Find any floor tile
-        EntityFloor[] AllFloorOne = FindObjectsOfType<EntityFloor>();
-        EntityFloorTwo[] AllFloorTwo = FindObjectsOfType<EntityFloorTwo>();
-        EntityFloorThree[] AllFloorThree = FindObjectsOfType<EntityFloorThree>();
-        EntityFloorFour[] AllFloorFour = FindObjectsOfType<EntityFloorFour>();
-        EntityFloorFive[] AllFloorFive = FindObjectsOfType<EntityFloorFive>();
-        EntityFloorSix[] AllFloorSix = FindObjectsOfType<EntityFloorSix>();
-        EntityFloorSeven[] AllFloorSeven = FindObjectsOfType<EntityFloorSeven>();
-
-        if (GetFloor == null)
+        if (allConcrete.Length > 0)
         {
-            for (int i = 0; i < AllFloorOne.Length; i++)
+            // Concrete exists, choose random concrete
+            int index = UnityEngine.Random.Range(0, allConcrete.Length - 1);
+            EntityConcrete curCon = allConcrete[index];
+            if (Grid.GetLastEntity<EntityCustomer>(curCon.Position) == null)
             {
-                if (AllFloorOne[i] != null)
+                // No customer, can spawn here
+                if (spawnedCustomers.Count < spawnLimit + 1)
                 {
-                    GetFloor = AllFloorOne[i];
+                    // current amount of spawne customers is less than limit, spawn
+                    EntityCustomer newCustomer = Grid.Create<EntityCustomer>(curCon.Position);
+                    spawnedCustomers.Add(newCustomer);
+                    allCustomers.Add(newCustomer);
                 }
             }
-            for (int i = 0; i < AllFloorTwo.Length; i++)
+            else 
             {
-                if (AllFloorTwo[i] != null)
-                {
-                    GetFloor = AllFloorTwo[i];
-                }
-            }
-            for (int i = 0; i < AllFloorThree.Length; i++)
-            {
-                if (AllFloorThree[i] != null)
-                {
-                    GetFloor = AllFloorThree[i];
-                }
-            }
-            for (int i = 0; i < AllFloorFour.Length; i++)
-            {
-                if (AllFloorFour[i] != null)
-                {
-                    GetFloor = AllFloorFour[i];
-                }
-            }
-            for (int i = 0; i < AllFloorFive.Length; i++)
-            {
-                if (AllFloorFive[i] != null)
-                {
-                    GetFloor = AllFloorFive[i];
-                }
-            }
-            for (int i = 0; i < AllFloorSix.Length; i++)
-            {
-                if (AllFloorSix[i] != null)
-                {
-                    GetFloor = AllFloorSix[i];
-                }
-            }
-            for (int i = 0; i < AllFloorSeven.Length; i++)
-            {
-                if (AllFloorSeven[i] != null)
-                {
-                    GetFloor = AllFloorSeven[i];
-                }
+                return;
             }
         }
-    }
-
-    public EntityGrass NewSpawnPosition(EntityBase source) 
-    {
-        int RandomX = UnityEngine.Random.Range(source.Position.x, 5);
-        int RandomY = UnityEngine.Random.Range(source.Position.y, 5);
-
-        Vector2Int RandomPosition = new Vector2Int(RandomX, RandomY);
-
-        EntityGrass NearestOutsideTile= Grid.FindNearestEntity<EntityGrass>(RandomPosition);
-        return NearestOutsideTile;
     }
 
     private void SpawnCustomers() 
     {
-        MenuItem[] AllMenuItems = FindObjectsOfType<MenuItem>();
-        EntityCustomer[] Customers = FindObjectsOfType<EntityCustomer>();
-        if (GetFloor != null)
+        float spawnChance = UnityEngine.Random.Range(0, 1);
+        int index = UnityEngine.Random.Range(0, allConcrete.Length - 1);
+        EntityConcrete curCon = allConcrete[index];
+        if (Math.Floor(CustomerTimer.Elapsed.TotalSeconds) % 5 == 0)
         {
-            GetRandomTile = NewSpawnPosition(GetFloor);
-            if (GetRandomTile != null)
+            CustomerTimer.Restart();
+            if (getWeather.curWeather != WeatherManager.WeatherTypes.None)
             {
-                if (AllChairs.Count > 0 && Customers.Length < AllChairs.Count)
+                switch (getWeather.curWeather)
                 {
-                    if (GetRegister != null && GetFront != null)
-                    {
-                        if (GetEspresso != null && GetBarista != null)
+                    case WeatherManager.WeatherTypes.None:
+                        // do nothing
+                        break;
+                    case WeatherManager.WeatherTypes.Rain:
+                        if (spawnChance > getWeather.RainChance)
                         {
-                            if (AllMenuItems.Length > 0)
-                            {
-                                DelaySpawning();
-                                if (DelayCustomerSpawning == false)
-                                {
-                                    EntityCustomer Customer = Grid.Create<EntityCustomer>(GetRandomTile.Position);
-                                    totalCustomers += 1;
-                                    Customer.MyCustomerID = totalCustomers + 100;
-                                }
-                            }
+                            EntityCustomer newCus1 = Grid.Create<EntityCustomer>(curCon.Position);
+                            allCustomers.Add(newCus1);
                         }
-                    }
+                        break;
+                    case WeatherManager.WeatherTypes.Storm:
+                        if (spawnChance > getWeather.StormChance)
+                        {
+                            EntityCustomer newCus2 = Grid.Create<EntityCustomer>(curCon.Position);
+                            allCustomers.Add(newCus2);
+                        }
+                        break;
+                    case WeatherManager.WeatherTypes.Fog:
+                        if (spawnChance > getWeather.StormChance)
+                        {
+                            EntityCustomer newCus3 = Grid.Create<EntityCustomer>(curCon.Position);
+                            allCustomers.Add(newCus3);
+                        }
+                        break;
                 }
             }
         }
     }
-    private void DelaySpawning() 
-    {
-        if (DelayCustomerSpawning == false)
-        {
-            CustomerDelay = GetTime.GameTime;
-            DelayCustomerSpawning = true;
-        }
-        else 
-        {
-            if (GetTime.GameTime.Seconds - CustomerDelay.Seconds >= 5.0f)
-            {
-                DelayCustomerSpawning = false;
-            }
-        }
-    }
-
-    private void SpawnCustomerEntity() 
-    {
-        Grid.Create<EntityCustomer>(new Vector2Int(-8, -8));
-    }
-
 }

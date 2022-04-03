@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Diagnostics;
+using UnityEngine.UI;
 
 [Serializable]
 public class BaristaData 
@@ -13,13 +14,16 @@ public class BaristaData
     public float MySkill;
     public float MyFast;
     public string MyState;
+    public string MyImageName;
 }
 
 public class EntityBarista : EntityBase
 {
+    public float maxRotation = 5f;
+    public float rotationSpeed = 6.5f;
     private int EmployeeID;
     private string EmployeeName;
-    private string SpriteName;
+    public string SpriteName;
     private float WageAmount;
     private float SkillModifier;
     private float EfficiencyModifier;
@@ -34,7 +38,7 @@ public class EntityBarista : EntityBase
 
     public void SetEmployeePersonality(string newPers) { PersonalityType = newPers; }
     public string GetEmployeePersonality() { return PersonalityType; }
-    public void SetSpriteName(string newSprite) { SpriteName = newSprite; }
+    public void SetSpriteName(string newSprite) { SpriteName = newSprite; UnityEngine.Debug.Log("Set Sprite Name to: " + newSprite); }
     public string GetSpriteName() { return SpriteName; }
     public void SetEmployeeName(string newName) { EmployeeName = newName; }
     public string GetEmployeeName() { return EmployeeName; }
@@ -58,12 +62,17 @@ public class EntityBarista : EntityBase
     private void Awake()
     {
         GetTime = FindObjectOfType<TimeManager>();
-
     }
+
     private void FixedUpdate()
     {
-        Speed = 0.25f / GetTime.scale;
+        if (IsMoving)
+        {
+            transform.rotation = Quaternion.Euler(0f, 0f, maxRotation * Mathf.Sin(Time.time * rotationSpeed));
+        }
 
+        Speed = 0.25f / GetTime.scale;
+        
         switch (CurrentState)
         {
             case State.TravelToEspresso:
@@ -254,12 +263,15 @@ public class EntityBarista : EntityBase
         vars.MyWage = GetWageAmount();
         vars.MyEmployeeID = GetEmployeeID();
         vars.MyNameData = EmployeeName;
+        vars.MyImageName = GetSpriteName();
+        UnityEngine.Debug.Log("Saved Image: " + vars.MyImageName);
         return JsonUtility.ToJson(vars);
     }
 
     public override void OnDeserialize(string json)
     {
-        BaristaData vars = JsonUtility.FromJson<BaristaData>(OnSerialize());
+        BaristaData vars = JsonUtility.FromJson<BaristaData>(json);
+        UnityEngine.Debug.Log("Raw Json: \n" + json);
         switch (vars.MyState)
         {
             case "TravelToEspresso":
@@ -280,5 +292,10 @@ public class EntityBarista : EntityBase
         SetEfficiencyModifier(vars.MyFast);
         SetEmployeeID(vars.MyEmployeeID);
         SetEmployeeName(vars.MyNameData);
+        UnityEngine.Debug.Log("Loading: " + vars.MyImageName);
+        SetSpriteName(vars.MyImageName);
+        //Image myImage = GetComponent<Image>();
+        //myImage.sprite = Resources.Load<Sprite>(GetSpriteName());
+        SetEntitySprite(Resources.Load<Sprite>(GetSpriteName()));
     }
 }

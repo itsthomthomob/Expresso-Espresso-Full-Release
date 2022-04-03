@@ -65,6 +65,12 @@ public class TileConstruction : MonoBehaviour
     public AudioClip multiTile;
     public AudioClip machineTile;
 
+    [Header("Objectives")]
+    public List<EntityBase> AllFloors = new List<EntityBase>();
+    public List<EntityBase> AllWalls = new List<EntityBase>();
+    public List<EntityBase> AllCounters = new List<EntityBase>();
+    public List<EntityRegister> AllRegisters = new List<EntityRegister>();
+
     private void Start()
     {
 		SetStates();
@@ -186,73 +192,73 @@ public class TileConstruction : MonoBehaviour
         switch (selectedTile)
         {
             case ConstructionSystemUI.SelectedTile.Floor1:
-                Grid.Create<EntityFloor>(atPos);
+                EntityBase curEntity = Grid.Create<EntityFloor>(atPos);
                 CameraAudio.PlayOneShot(singleTile, 1.0f);
+                AllFloors.Add(curEntity);
                 break;
             case ConstructionSystemUI.SelectedTile.Floor2:
-                Grid.Create<EntityFloorTwo>(atPos);
+                EntityBase curEntity1 = Grid.Create<EntityFloorTwo>(atPos);
                 CameraAudio.PlayOneShot(singleTile, 1.0f);
-
+                AllFloors.Add(curEntity1);
 
                 break;
             case ConstructionSystemUI.SelectedTile.Floor3:
-                Grid.Create<EntityFloorThree>(atPos);
+                EntityBase curEntity2 = Grid.Create<EntityFloorThree>(atPos);
                 CameraAudio.PlayOneShot(singleTile, 1.0f);
-
+                AllFloors.Add(curEntity2);
 
                 break;
             case ConstructionSystemUI.SelectedTile.Floor4:
-                Grid.Create<EntityFloorFour>(atPos);
+                EntityBase curEntity3 = Grid.Create<EntityFloorFour>(atPos);
                 CameraAudio.PlayOneShot(singleTile, 1.0f);
-
+                AllFloors.Add(curEntity3);
 
                 break;
             case ConstructionSystemUI.SelectedTile.Floor5:
-                Grid.Create<EntityFloorFive>(atPos);
+                EntityBase curEntity4 = Grid.Create<EntityFloorFive>(atPos);
                 CameraAudio.PlayOneShot(singleTile, 1.0f);
-
+                AllFloors.Add(curEntity4);
 
                 break;
             case ConstructionSystemUI.SelectedTile.Floor6:
-                Grid.Create<EntityFloorSix>(atPos);
+                EntityBase curEntity5 = Grid.Create<EntityFloorSix>(atPos);
                 CameraAudio.PlayOneShot(singleTile, 1.0f);
-
+                AllFloors.Add(curEntity5);
 
                 break;
             case ConstructionSystemUI.SelectedTile.Floor7:
-                Grid.Create<EntityFloorSeven>(atPos);
+                EntityBase curEntity6 = Grid.Create<EntityFloorSeven>(atPos);
                 CameraAudio.PlayOneShot(singleTile, 1.0f);
-
+                AllFloors.Add(curEntity6);
 
                 break;
             case ConstructionSystemUI.SelectedTile.Wall1:
-                Grid.Create<EntityWallBrick>(atPos);
+                EntityBase curEntity7 = Grid.Create<EntityWallBrick>(atPos);
                 CameraAudio.PlayOneShot(singleTile, 1.0f);
-
-
+                AllWalls.Add(curEntity7);
                 break;
             case ConstructionSystemUI.SelectedTile.Wall2:
-                Grid.Create<EntityWallPlaster>(atPos);
+                EntityBase curEntity8 = Grid.Create<EntityWallPlaster>(atPos);
                 CameraAudio.PlayOneShot(singleTile, 1.0f);
-
+                AllWalls.Add(curEntity8);
 
                 break;
             case ConstructionSystemUI.SelectedTile.Wall3:
-                Grid.Create<EntityWallPale>(atPos);
+                EntityBase curEntity9 = Grid.Create<EntityWallPale>(atPos);
                 CameraAudio.PlayOneShot(singleTile, 1.0f);
-
+                AllWalls.Add(curEntity9);
 
                 break;
             case ConstructionSystemUI.SelectedTile.Wall4:
-                Grid.Create<EntityWallGreyBrick>(atPos);
+                EntityBase curEntity10 = Grid.Create<EntityWallGreyBrick>(atPos);
                 CameraAudio.PlayOneShot(singleTile, 1.0f);
-
+                AllWalls.Add(curEntity10);
 
                 break;
             case ConstructionSystemUI.SelectedTile.Register:
-                Grid.Create<EntityRegister>(atPos);
+                EntityRegister newReg = Grid.Create<EntityRegister>(atPos);
                 CameraAudio.PlayOneShot(machineTile, 1.0f);
-
+                AllRegisters.Add(newReg);
 
                 break;
             case ConstructionSystemUI.SelectedTile.Barstool1:
@@ -266,9 +272,9 @@ public class TileConstruction : MonoBehaviour
                 {
                     return;
                 }
-                Grid.Create<EntityCounterMarble>(atPos);
+                EntityBase curEntity11 = Grid.Create<EntityCounterMarble>(atPos);
                 CameraAudio.PlayOneShot(singleTile, 1.0f);
-
+                AllCounters.Add(curEntity11);
 
                 break;
             case ConstructionSystemUI.SelectedTile.Table1:
@@ -279,7 +285,6 @@ public class TileConstruction : MonoBehaviour
                 Grid.Create<EntityTableSmooth>(atPos);
                 CameraAudio.PlayOneShot(singleTile, 1.0f);
 
-
                 break;
             case ConstructionSystemUI.SelectedTile.Chair1:
                 if (Grid.GetLastEntity<EntityBase>(atPos).Priority == EntityPriority.Furniture)
@@ -288,7 +293,6 @@ public class TileConstruction : MonoBehaviour
                 }
                 CameraAudio.PlayOneShot(singleTile, 1.0f);
                 Grid.Create<EntityChairSmooth>(atPos);
-
 
                 break;
             case ConstructionSystemUI.SelectedTile.Brewing1:
@@ -384,7 +388,6 @@ public class TileConstruction : MonoBehaviour
         // Get tile position
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            
             if (RectTransformUtility.ScreenPointToLocalPointInRectangle(root, Input.mousePosition, null, out Vector2 localPoint))
             {
                 Vector2Int gridPoint = Vector2Int.RoundToInt(new Vector2(localPoint.x / root.sizeDelta.x + root.pivot.x, localPoint.y / root.sizeDelta.y + root.pivot.y));

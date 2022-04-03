@@ -44,10 +44,10 @@ public class EntityBrewingMachineOne : EntityBase
             {
                 isFilling = false;
             }
-            Debug.Log("Roaster: Filling... \n" + CurrentTime + " - " + StartTime);
+            //Debug.Log("Roaster: Filling... \n" + CurrentTime + " - " + StartTime);
             if (CurrentTime - StartTime > ForEachUnit)
             {
-                Debug.Log("Adding bags...");
+                //Debug.Log("Adding bags...");
                 if (BrewedCoffeeUnits < BrewedCoffeeLimit)
                 {
                     BrewedCoffeeUnits += 1;

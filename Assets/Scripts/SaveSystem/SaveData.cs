@@ -12,6 +12,8 @@ public class JsonConfigurationFile
     public ObjectivesData ObjData;
     public StoreLevelData StoreData;
     public EntityData entityData;
+    public GameSaveData gameSaveData;
+    public CafeData cafeData;
 }
 
 [Serializable]
@@ -78,4 +80,24 @@ public class EntityElement
 public class EntityData
 {
     public EntityElement[] entities;
+}
+
+[Serializable]
+public class GameSaveData 
+{
+    public string SaveName;
+    public string SaveDate;
+    public string ActualDate;
+}
+
+[Serializable]
+public class CafeData 
+{
+    public bool tookLoanData;
+    public float StartingLoanInterestData;
+    public string LoanDueDateData = default(TimeSpan).ToString();
+    public string LocationNameData;
+    public float WeatherConditionData;
+    public float PopulationRateData;
+    public float MinimumWageData;
 }

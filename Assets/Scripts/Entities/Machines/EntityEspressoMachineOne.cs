@@ -187,8 +187,11 @@ public class EntityEspressoMachineOne : EntityBase
 		vars.MilkFillingData = isFillingMilk;
 		vars.MilkData = MilkUnits;
 		vars.MilkStartTimeData = StartTimeMilk;
+        if (GetMyBarista() != null)
+        {
 
 		vars.MyBaristasID = GetMyBarista().GetEmployeeID();
+        }
 		return JsonUtility.ToJson(vars);
 	}
 
