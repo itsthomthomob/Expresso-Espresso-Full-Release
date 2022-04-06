@@ -70,7 +70,10 @@ public class EntityBarista : EntityBase
         {
             transform.rotation = Quaternion.Euler(0f, 0f, maxRotation * Mathf.Sin(Time.time * rotationSpeed));
         }
-
+        else
+        {
+            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+        }
         Speed = 0.25f / GetTime.scale;
         
         switch (CurrentState)

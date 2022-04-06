@@ -299,7 +299,10 @@ public class ConstructionSystemUI : MonoBehaviour
                 }
                 if (FindObjectOfType<TileConstruction>().selectedEntities[i].Priority == EntityPriority.Characters) { }
                 else if (FindObjectOfType<TileConstruction>().selectedEntities[i].GetComponent<EntityFloor>()) { }
-                else { grid.Create<EntityFloor>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position); }
+                else { 
+                    EntityBase newEntity = grid.Create<EntityFloor>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                    FindObjectOfType<TileConstruction>().AllFloors.Add(newEntity);
+                }
                 GameObject currentEntity = FindObjectOfType<TileConstruction>().selectedEntities[i].gameObject;
                 currentEntity.GetComponent<Image>().material = null;
             }
@@ -326,7 +329,9 @@ public class ConstructionSystemUI : MonoBehaviour
                 else if (FindObjectOfType<TileConstruction>().selectedEntities[i].GetComponent<EntityFloorTwo>()) { }
                 else
                 {
-                    grid.Create<EntityFloorTwo>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                    EntityBase newEntity = grid.Create<EntityFloorTwo>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                    FindObjectOfType<TileConstruction>().AllFloors.Add(newEntity);
+
                 }
                 GameObject currentEntity = FindObjectOfType<TileConstruction>().selectedEntities[i].gameObject;
                 currentEntity.GetComponent<Image>().material = null;
@@ -353,7 +358,9 @@ public class ConstructionSystemUI : MonoBehaviour
                 else if (FindObjectOfType<TileConstruction>().selectedEntities[i].GetComponent<EntityFloorThree>()) { }
                 else
                 {
-                    grid.Create<EntityFloorThree>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                    EntityBase newEntity = grid.Create<EntityFloorThree>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                    FindObjectOfType<TileConstruction>().AllFloors.Add(newEntity);
+
                 }
                 GameObject currentEntity = FindObjectOfType<TileConstruction>().selectedEntities[i].gameObject;
                 currentEntity.GetComponent<Image>().material = null;
@@ -381,7 +388,9 @@ public class ConstructionSystemUI : MonoBehaviour
                 else if (FindObjectOfType<TileConstruction>().selectedEntities[i].GetComponent<EntityFloorFour>()) { }
                 else
                 {
-                    grid.Create<EntityFloorFour>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                    EntityBase newEntity = grid.Create<EntityFloorFour>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                    FindObjectOfType<TileConstruction>().AllFloors.Add(newEntity);
+
                 }
             }
             GetAudio.PlayOneShot(multiTile);
@@ -407,7 +416,9 @@ public class ConstructionSystemUI : MonoBehaviour
                 else if (FindObjectOfType<TileConstruction>().selectedEntities[i].GetComponent<EntityFloorFive>()) { }
                 else 
                 { 
-                    grid.Create<EntityFloorFive>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                    EntityBase newEntity = grid.Create<EntityFloorFive>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                    FindObjectOfType<TileConstruction>().AllFloors.Add(newEntity);
+
                 }
                 GameObject currentEntity = FindObjectOfType<TileConstruction>().selectedEntities[i].gameObject;
                 currentEntity.GetComponent<Image>().material = null;
@@ -435,7 +446,9 @@ public class ConstructionSystemUI : MonoBehaviour
                 else if (FindObjectOfType<TileConstruction>().selectedEntities[i].GetComponent<EntityFloorSix>()) { }
                 else
                 {
-                    grid.Create<EntityFloorSix>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                    EntityBase newEntity = grid.Create<EntityFloorSix>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                    FindObjectOfType<TileConstruction>().AllFloors.Add(newEntity);
+
                 }
                 GameObject currentEntity = FindObjectOfType<TileConstruction>().selectedEntities[i].gameObject;
                 currentEntity.GetComponent<Image>().material = null;
@@ -463,7 +476,9 @@ public class ConstructionSystemUI : MonoBehaviour
                 else if (FindObjectOfType<TileConstruction>().selectedEntities[i].GetComponent<EntityFloorSeven>()) { }
                 else
                 {
-                    grid.Create<EntityFloorSeven>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                    EntityBase newEntity = grid.Create<EntityFloorSeven>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                    FindObjectOfType<TileConstruction>().AllFloors.Add(newEntity);
+
                 }
                 GameObject currentEntity = FindObjectOfType<TileConstruction>().selectedEntities[i].gameObject;
                 currentEntity.GetComponent<Image>().material = null;
@@ -491,7 +506,9 @@ public class ConstructionSystemUI : MonoBehaviour
                 else if (FindObjectOfType<TileConstruction>().selectedEntities[i].GetComponent<EntityWallBrick>()) { }
                 else
                 {
-                    grid.Create<EntityWallBrick>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                    EntityBase newEntity = grid.Create<EntityWallBrick>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                    FindObjectOfType<TileConstruction>().AllWalls.Add(newEntity);
+
                 }
                 GameObject currentEntity = FindObjectOfType<TileConstruction>().selectedEntities[i].gameObject;
                 currentEntity.GetComponent<Image>().material = null;
@@ -519,7 +536,9 @@ public class ConstructionSystemUI : MonoBehaviour
                 else if (FindObjectOfType<TileConstruction>().selectedEntities[i].GetComponent<EntityWallBrick>()) { }
                 else
                 {
-                    grid.Create<EntityWallBrick>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                    EntityBase newEntity = grid.Create<EntityWallBrick>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                    FindObjectOfType<TileConstruction>().AllWalls.Add(newEntity);
+
                 }
                 GameObject currentEntity = FindObjectOfType<TileConstruction>().selectedEntities[i].gameObject;
                 currentEntity.GetComponent<Image>().material = null;
@@ -547,7 +566,9 @@ public class ConstructionSystemUI : MonoBehaviour
                 else if (FindObjectOfType<TileConstruction>().selectedEntities[i].GetComponent<EntityWallBrick>()) { }
                 else
                 {
-                    grid.Create<EntityWallBrick>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                    EntityBase newEntity = grid.Create<EntityWallBrick>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                    FindObjectOfType<TileConstruction>().AllWalls.Add(newEntity);
+
                 }
                 GameObject currentEntity = FindObjectOfType<TileConstruction>().selectedEntities[i].gameObject;
                 currentEntity.GetComponent<Image>().material = null;
@@ -575,7 +596,9 @@ public class ConstructionSystemUI : MonoBehaviour
                 else if (FindObjectOfType<TileConstruction>().selectedEntities[i].GetComponent<EntityWallBrick>()) { }
                 else
                 {
-                    grid.Create<EntityWallBrick>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                    EntityBase newEntity = grid.Create<EntityWallBrick>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                    FindObjectOfType<TileConstruction>().AllWalls.Add(newEntity);
+
                 }
                 GameObject currentEntity = FindObjectOfType<TileConstruction>().selectedEntities[i].gameObject;
                 currentEntity.GetComponent<Image>().material = null;

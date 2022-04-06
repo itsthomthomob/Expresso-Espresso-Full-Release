@@ -17,11 +17,51 @@ public class StoreLevelManager : MonoBehaviour
     public int EXPPerLevel = 100;
     public int CustomerEXP = 10;
 
+    [Header("Store Name UI")]
+    public Button OpenNameChangeButton;
+    public TMP_InputField getName;
+    public Button ConfirmNameChange;
+    public GameObject NameChangeModule;
+    public TMP_Text storeName;
+    MasterCafeSystem getCafe;
+
+    private void Start()
+    {
+        getCafe = FindObjectOfType<MasterCafeSystem>();
+
+        SetButtons();
+
+        NameChangeModule.SetActive(false);
+    }
+
     private void Update()
     {
         ManageLevels();
         UpdateText();
         UpdateSlider();
+        UpdateStoreText();
+    }
+
+    private void SetButtons() 
+    { 
+        OpenNameChangeButton.onClick.AddListener(OnOpenNameChange);
+        ConfirmNameChange.onClick.AddListener(OnConfirmNameChange);
+    }
+
+    private void OnOpenNameChange() 
+    { 
+        NameChangeModule.SetActive(true);
+    }
+
+    private void OnConfirmNameChange() 
+    { 
+        NameChangeModule?.SetActive(false);
+        getCafe.CafeName = getName.text;
+    }
+
+    private void UpdateStoreText() 
+    {
+        storeName.text = getCafe.CafeName;
     }
 
     private void UpdateSlider() 
@@ -47,5 +87,4 @@ public class StoreLevelManager : MonoBehaviour
     {
         CurrentEXP += CustomerEXP;
     }
-
 }

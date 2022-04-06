@@ -93,6 +93,7 @@ public class GameSaveData
 [Serializable]
 public class CafeData 
 {
+    public string CafeNameData;
     public bool tookLoanData;
     public float StartingLoanInterestData;
     public string LoanDueDateData = default(TimeSpan).ToString();

@@ -34,6 +34,7 @@ public class SaveGameSystem : MonoBehaviour
     public EntityGrid GameGrid;
     public PauseManager getPause;
     public MasterCafeSystem getMasterCafe;
+    public CustomerSpawnSystem getCustomerSystem;
 
     [Header("Save Containers")]
     public Dictionary<JsonConfigurationFile, GameObject> AllSaves = 
@@ -51,6 +52,7 @@ public class SaveGameSystem : MonoBehaviour
     {
         LoadButtons();
         getMasterCafe = FindObjectOfType<MasterCafeSystem>();
+        getCustomerSystem = FindObjectOfType<CustomerSpawnSystem>();
     }
 
     private void InitializeSavePrefabs()
@@ -284,6 +286,7 @@ public class SaveGameSystem : MonoBehaviour
         NewSaveData.cafeData.PopulationRateData = getMasterCafe.PopulationRate;
         NewSaveData.cafeData.WeatherConditionData = getMasterCafe.WeatherCondition;
         NewSaveData.cafeData.MinimumWageData = getMasterCafe.MinimumWage;
+        NewSaveData.cafeData.CafeNameData = getMasterCafe.CafeName;
 
         // Save entity data
         NewSaveData.entityData = new EntityData();
@@ -407,7 +410,7 @@ public class SaveGameSystem : MonoBehaviour
             getMasterCafe.WeatherCondition = getCafeData.WeatherConditionData;
             getMasterCafe.PopulationRate = getCafeData.PopulationRateData;
             getMasterCafe.MinimumWage = getCafeData.MinimumWageData;
-
+            getMasterCafe.CafeName = getCafeData.CafeNameData;
 
             // Reset tile construction script
             TileConstruction GetConstruction = FindObjectOfType<TileConstruction>();
@@ -438,6 +441,8 @@ public class SaveGameSystem : MonoBehaviour
             getList.hiredBaristas = new List<EntityBarista>();
             getList.hiredSupports = new List<EntitySupport>();
             getList.hiredFronts = new List<EntityFront>();
+
+            getCustomerSystem.allCustomers = new List<EntityCustomer>();
 
             for (int i = 0; i < AllStoredEntities.Length; i++)
             {
@@ -533,6 +538,7 @@ public class SaveGameSystem : MonoBehaviour
                     // Characters come before machines, machines rely on employees
                     case "Customer":
                         curEntity = GameGrid.Create<EntityCustomer>(AllStoredEntities[i].position);
+                        getCustomerSystem.allCustomers.Add(curEntity as EntityCustomer);
                         break;
                     case "Support":
                         curEntity = GameGrid.Create<EntitySupport>(AllStoredEntities[i].position);
@@ -659,6 +665,8 @@ public class SaveGameSystem : MonoBehaviour
             StoreLevelData GetSData = NewSaveData.StoreData;
             GetStoreLevel.StoreLevel = GetSData.CurrentLevelData;
             GetStoreLevel.CurrentEXP = GetSData.CurrentEXPData;
+
+
             }
     }
 

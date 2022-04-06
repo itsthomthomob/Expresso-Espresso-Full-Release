@@ -157,6 +157,10 @@ public class ObjectivesManager : MonoBehaviour
                     {
                         NewObjsGO.AddComponent<Objective004>();
                     }
+                    if (OBJ is Objective005)
+                    {
+                        NewObjsGO.AddComponent<Objective005>();
+                    }
                     OBJ.SetSpawned(true);
                     return;
                 }
@@ -221,6 +225,17 @@ public class ObjectivesManager : MonoBehaviour
                         Destroy(NewObjsGO.GetComponent<Objective004>());
                         FinishedObjsGO.AddComponent<Objective004>();
                     }
+                }
+                else if (AllObjectives[i] is Objective005)
+                {
+                    Objective005 GetOBJ = AllObjectives[i] as Objective005;
+                    if (GetOBJ.GetSpawner() != null)
+                    {
+                        GetOBJ.Despawn();
+                        Destroy(NewObjsGO.GetComponent<Objective005>());
+                        FinishedObjsGO.AddComponent<Objective005>();
+                    }
+
                 }
             }
         }

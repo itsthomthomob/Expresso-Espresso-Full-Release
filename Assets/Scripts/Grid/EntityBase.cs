@@ -29,6 +29,8 @@ public abstract class EntityBase : MonoBehaviour
 		get => CachePosition;
 	}
 
+
+
 	public EntityPriority Priority
 	{
 		get => CachePriority;

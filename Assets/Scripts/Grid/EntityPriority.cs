@@ -7,4 +7,5 @@
 	Furniture = 4,
 	Characters = 5,
 	Appliances = 6,
+	Floating = 10
 }

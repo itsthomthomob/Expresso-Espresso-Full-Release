@@ -85,11 +85,14 @@ public class EntityCustomer : EntityBase
 
     private void FixedUpdate()
     {
-        if (IsMoving) 
-        { 
+        if (IsMoving)
+        {
             transform.rotation = Quaternion.Euler(0f, 0f, maxRotation * Mathf.Sin(Time.time * rotationSpeed));
         }
-
+        else 
+        { 
+            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+        }
         Speed = GetTime.scale * 0.25f;
 
         switch (CurrentState)
@@ -239,8 +242,16 @@ public class EntityCustomer : EntityBase
             // get random customer text
             int index = UnityEngine.Random.Range(0, (OrderedTexts.Count));
 
+            try
+            {
+
             textBubble.transform.GetChild(0).GetComponent<Image>().sprite = OrderedTexts[index].sprite;
             UnityEngine.Debug.Log("Customer: " + index + "Max: " + (OrderedTexts.Count));
+            }
+            catch (Exception e) 
+            { 
+            
+            }
         }
         else
         {
@@ -444,25 +455,28 @@ public class EntityCustomer : EntityBase
 
     private void OnGoingToDrink()
     {
-        if (MyCoffee == null)
+        if (!IsMoving)
         {
-            CurrentState = State.WaitAtChair;
-        }
-        else if ((Position - MyCoffee.Position).magnitude < Range)
-        {
-            // In range of coffee item, pick it up
-            MyCoffee.transform.position = gameObject.transform.position;
-            MyCoffee.transform.SetParent(this.transform);
-            CurrentState = State.LeavingCafe;
-            UnityEngine.Debug.LogWarning("At coffee");
-        }
-        else
-        {
-            // Go to coffee found
-            bool found = Grid.Pathfind(Position, MyCoffee.Position, IsPassable, out Vector2Int next);
-            if (found)
+            if (MyCoffee == null)
             {
-                Move(next, Speed);
+                CurrentState = State.WaitAtChair;
+            }
+            else if ((Position - MyCoffee.Position).magnitude < Range)
+            {
+                // In range of coffee item, pick it up
+                MyCoffee.transform.position = gameObject.transform.position;
+                MyCoffee.transform.SetParent(this.transform);
+                CurrentState = State.LeavingCafe;
+                UnityEngine.Debug.LogWarning("At coffee");
+            }
+            else
+            {
+                // Go to coffee found
+                bool found = Grid.Pathfind(Position, MyCoffee.Position, IsChairPassable, out Vector2Int next);
+                if (found)
+                {
+                    Move(next, Speed);
+                }
             }
         }
     }
