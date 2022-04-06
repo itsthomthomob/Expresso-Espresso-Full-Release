@@ -246,7 +246,8 @@ public class EntityBarista : EntityBase
     }
     private bool IsPassable(Vector2Int position)
     {
-        if (Grid.HasPriority(position, EntityPriority.Furniture))
+        if (Grid.HasPriority(position, EntityPriority.Furniture) ||
+            Grid.HasPriority(position, EntityPriority.Buildings))
         {
             return false;
         }

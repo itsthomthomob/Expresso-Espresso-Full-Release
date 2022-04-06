@@ -54,6 +54,7 @@ public class CoffeeCreationSystem : MonoBehaviour
         UpdateItemImage();
         BuildCoffeeSprites();
         UpdateCostTexts();
+        ItemCostText.text = (Mathf.Round(ItemCostInput.value * 10.0f) * 0.1f).ToString();
     }
 
     private void TrackCurrentItems() 

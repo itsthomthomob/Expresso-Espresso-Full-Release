@@ -373,8 +373,9 @@ public class EmployeeUserIntSystem : MonoBehaviour
         if (WageSlider.IsActive())
         {
             float wage = WageSlider.value;
-            WageOffer.text = wage.ToString();
-            CurrentWageOffer = wage;
+            float newWage = Mathf.Round(wage * 10.0f) * 0.1f;
+            WageOffer.text = newWage.ToString();
+            CurrentWageOffer = newWage;
         }
     }
     private void CheckHireTypes() 

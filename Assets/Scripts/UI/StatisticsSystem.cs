@@ -29,10 +29,12 @@ public class StatisticsSystem : MonoBehaviour
     public TMP_Text Building;
 
     CafeEconomySystem GetECO;
+    EmployeeListManager getEmployees;
 
     private void Awake()
     {
         GetECO = FindObjectOfType<CafeEconomySystem>();
+        getEmployees = FindObjectOfType<EmployeeListManager>();
     }
     private void Start()
     {
@@ -43,6 +45,7 @@ public class StatisticsSystem : MonoBehaviour
     private void Update()
     {
         UpdateTexts();
+        Employees.text = getEmployees.TotalEmployees.ToString();
     }
 
     private void UpdateTexts() 

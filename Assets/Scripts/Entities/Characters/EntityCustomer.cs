@@ -93,7 +93,7 @@ public class EntityCustomer : EntityBase
         { 
             transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         }
-        Speed = GetTime.scale * 0.25f;
+        Speed = 0.25f / GetTime.scale;
 
         switch (CurrentState)
         {
@@ -227,58 +227,61 @@ public class EntityCustomer : EntityBase
 
     private void OnDisplayText()
     {
-        if (!TextWatch.IsRunning)
-        {
-            TextWatch.Start();
-        }
-        // spawn text bubble
-        if (MyTextBubble == null)
-        {
-            GameObject textBubble = Instantiate(Resources.Load<GameObject>("Sprites/UI/TextBubbles/TextBubble"));
-            MyTextBubble = textBubble;
-            textBubble.transform.position = new Vector3(transform.position.x, transform.position.y + 50, -10);
-            textBubble.transform.SetParent(this.transform);
-
-            // get random customer text
-            int index = UnityEngine.Random.Range(0, (OrderedTexts.Count));
-
-            try
+        if (!IsMoving) 
+        { 
+            if (!TextWatch.IsRunning)
             {
-
-            textBubble.transform.GetChild(0).GetComponent<Image>().sprite = OrderedTexts[index].sprite;
-            UnityEngine.Debug.Log("Customer: " + index + "Max: " + (OrderedTexts.Count));
+                TextWatch.Start();
             }
-            catch (Exception e) 
-            { 
-            
-            }
-        }
-        else
-        {
-            if (TextWatch.Elapsed >= new TimeSpan(0, 0, 2))
+            // spawn text bubble
+            if (MyTextBubble == null)
             {
-                if (MyItem == null)
+                GameObject textBubble = Instantiate(Resources.Load<GameObject>("Sprites/UI/TextBubbles/TextBubble"));
+                MyTextBubble = textBubble;
+                textBubble.transform.position = new Vector3(transform.position.x, transform.position.y + 50, -10);
+                textBubble.transform.SetParent(this.transform);
+
+                // get random customer text
+                int index = UnityEngine.Random.Range(0, (OrderedTexts.Count));
+
+                try
                 {
-                    int ChooseItem = UnityEngine.Random.Range(0, GetMenu.MenuItems.Count);
-                    MyItem = GetMenu.MenuItems[ChooseItem];
-                    GetECO.CurrentProfits = GetECO.CurrentProfits + MyItem.GetPrice();
-                    GetECO.CurrentExpenses = GetECO.CurrentExpenses + MyItem.GetExpense();
 
-                    StoreLevelManager LevelManager = FindObjectOfType<StoreLevelManager>();
-                    LevelManager.CustomerAddXP();
+                textBubble.transform.GetChild(0).GetComponent<Image>().sprite = OrderedTexts[index].sprite;
+                UnityEngine.Debug.Log("Customer: " + index + "Max: " + (OrderedTexts.Count));
                 }
-                else 
+                catch (Exception e) 
                 { 
-                    // Unlink register
-                    Register.SetCustomerToNone();
-                    Register = null;
+            
+                }
+            }
+            else
+            {
+                if (TextWatch.Elapsed >= new TimeSpan(0, 0, 2))
+                {
+                    if (MyItem == null)
+                    {
+                        int ChooseItem = UnityEngine.Random.Range(0, GetMenu.MenuItems.Count);
+                        MyItem = GetMenu.MenuItems[ChooseItem];
+                        GetECO.CurrentProfits = GetECO.CurrentProfits + MyItem.GetPrice();
+                        GetECO.CurrentExpenses = GetECO.CurrentExpenses + MyItem.GetExpense();
 
-                    // Go to chair
-                    Destroy(MyTextBubble);
+                        StoreLevelManager LevelManager = FindObjectOfType<StoreLevelManager>();
+                        LevelManager.CustomerAddXP();
+                    }
+                    else 
+                    { 
+                        // Unlink register
+                        Register.SetCustomerToNone();
+                        Register = null;
+
+                        // Go to chair
+                        Destroy(MyTextBubble);
 
 
-                    CurrentState = State.GoingToEmptyChair;
-                    TextWatch.Reset();
+                        CurrentState = State.GoingToEmptyChair;
+                        TextWatch.Reset();
+                    }
                 }
             }
         }

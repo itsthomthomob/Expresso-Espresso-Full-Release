@@ -226,7 +226,7 @@ public class EntityFront : EntityBase
     private bool IsPassable(Vector2Int position)
     {
         if (Grid.HasPriority(position, EntityPriority.Furniture) ||
-            Grid.HasPriority(position, EntityPriority.Characters))
+            Grid.HasPriority(position, EntityPriority.Buildings))
         {
             return false;
         }
