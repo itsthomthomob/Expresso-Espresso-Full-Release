@@ -58,6 +58,7 @@ public class GhostTile : MonoBehaviour
 
     private Sprite UpdateTileImage() 
     {
+        ghostEntity.SetGhostPriority(EntityPriority.Floating);
         switch (GetConstructionUI.currentTile)
         {
             case ConstructionSystemUI.SelectedTile.none:

@@ -20,7 +20,7 @@ public class TileConstruction : MonoBehaviour
     public Camera _main;
     public GameObject destroyIcon;
     public GameObject ghostTile;
-    GhostEntity getGhost;
+    public GhostTile getGhost;
 
     [Header("Grid Objects")]
     public ConstructionSystemUI.SelectedTile selectedTile;
@@ -76,7 +76,6 @@ public class TileConstruction : MonoBehaviour
     {
 		SetStates();
         GhostTile ghostScript = FindObjectOfType<GhostTile>();
-        getGhost = ghostScript.ghostEntity;
     }
 
     private void Update()
@@ -462,7 +461,8 @@ public class TileConstruction : MonoBehaviour
             {
                 GetConstruction.currentTile = ConstructionSystemUI.SelectedTile.none;
                 ghostTile.SetActive(false);
-                getGhost.gameObject.SetActive(false);
+                getGhost.ghostEntity.SetGhostPriority(EntityPriority.Terrain);
+                getGhost.ghostEntity.gameObject.SetActive(false);
             }
 
             if (selectedEntities.Length > 0)

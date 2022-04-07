@@ -196,10 +196,18 @@ public class EntityCustomer : EntityBase
                     // Go to customer
                     if ((getTiles.AllRegisters[i].GetCustomer().Position - getTiles.AllRegisters[i].Position).magnitude < Range)
                     {
-                        bool found = Grid.Pathfind(Position, getTiles.AllRegisters[i].GetCustomer().Position, IsPassable, out Vector2Int next);
-                        if (found)
+                        if ((Position - getTiles.AllRegisters[i].GetCustomer().Position).magnitude < Range)
                         {
-                            Move(next, Speed);
+                            // Do nothing
+                            break;
+                        }
+                        else 
+                        { 
+                            bool found = Grid.Pathfind(Position, getTiles.AllRegisters[i].GetCustomer().Position, IsPassable, out Vector2Int next);
+                            if (found)
+                            {
+                                Move(next, Speed);
+                            }
                         }
                     }
                 }
@@ -263,6 +271,11 @@ public class EntityCustomer : EntityBase
                     {
                         int ChooseItem = UnityEngine.Random.Range(0, GetMenu.MenuItems.Count);
                         MyItem = GetMenu.MenuItems[ChooseItem];
+                        if (MyItem == null)
+                        {
+                            UnityEngine.Debug.Log("MyItem is null, " + MyCustomerID);
+                        }
+                        UnityEngine.Debug.Log("Chose: " + MyItem);
                         GetECO.CurrentProfits = GetECO.CurrentProfits + MyItem.GetPrice();
                         GetECO.CurrentExpenses = GetECO.CurrentExpenses + MyItem.GetExpense();
 
@@ -280,6 +293,7 @@ public class EntityCustomer : EntityBase
 
 
                         CurrentState = State.GoingToEmptyChair;
+                        TextWatch.Stop();
                         TextWatch.Reset();
                     }
                 }
@@ -488,16 +502,16 @@ public class EntityCustomer : EntityBase
     {
         if (didReview == false)
         {
-            int Opinion = UnityEngine.Random.Range(0, 1);
-            if (Opinion == 0)
+            float Opinion = UnityEngine.Random.Range(0, 1);
+            if (Opinion < 0.50f)
             {
                 GetECO.CurrentReviews = GetECO.CurrentReviews + 1;
                 GetECO.NegativeReviews = GetECO.NegativeReviews + 1;
             }
-            else if (Opinion == 1)
+            else
             {
                 GetECO.CurrentReviews = GetECO.CurrentReviews + 1;
-                GetECO.NegativeReviews = GetECO.PositiveReviews + 1;
+                GetECO.PositiveReviews = GetECO.PositiveReviews + 1;
 
                 StoreLevelManager LevelManager = FindObjectOfType<StoreLevelManager>();
                 LevelManager.CustomerAddXP();
@@ -513,6 +527,7 @@ public class EntityCustomer : EntityBase
         // Concrete, Foundation, Furnitures
         if (Grid.HasPriority(position, EntityPriority.Foundations) ||
             Grid.HasPriority(position, EntityPriority.Furniture) ||
+            Grid.HasPriority(position, EntityPriority.Characters) ||
             Grid.HasEntity<EntityConcrete>(position)
             )
         {

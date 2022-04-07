@@ -66,8 +66,30 @@ public class InspectorMaster : MonoBehaviour
             if (RectTransformUtility.ScreenPointToLocalPointInRectangle(root, Input.mousePosition, null, out Vector2 localPoint))
             {
                 Vector2Int gridPoint = Vector2Int.RoundToInt(new Vector2(localPoint.x / root.sizeDelta.x + root.pivot.x, localPoint.y / root.sizeDelta.y + root.pivot.y));
-
-                selectedEntity = Grid.GetLastEntity<EntityBase>(gridPoint);
+                if (Grid.HasEntity<GhostEntity>(gridPoint))
+                {
+                    if (Grid.HasEntity<EntityRoasteryMachineOne>(gridPoint))
+                    {
+                        EntityRoasteryMachineOne curEntity = Grid.GetEntities<EntityRoasteryMachineOne>(gridPoint)[0];
+                        selectedEntity = curEntity;
+                        MachineName.text = "Roastery";
+                        InspectorUI.SetActive(true);
+                    }
+                    if (Grid.HasEntity<EntityBrewingMachineOne>(gridPoint))
+                    {
+                        EntityBrewingMachineOne curEntity = Grid.GetEntities<EntityBrewingMachineOne>(gridPoint)[0];
+                        selectedEntity = curEntity;
+                        MachineName.text = "Brewer";
+                        InspectorUI.SetActive(true);
+                    }
+                    if (Grid.HasEntity<EntityEspressoMachineOne>(gridPoint))
+                    {
+                        EntityEspressoMachineOne curEntity = Grid.GetEntities<EntityEspressoMachineOne>(gridPoint)[0];
+                        selectedEntity = curEntity;
+                        MachineName.text = "Espresso";
+                        InspectorUI.SetActive(true);
+                    }
+                }
             }
         }
     }

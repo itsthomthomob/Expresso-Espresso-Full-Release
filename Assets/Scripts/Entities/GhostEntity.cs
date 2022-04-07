@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class GhostEntity : EntityBase
 {
+    public void SetGhostPriority(EntityPriority newP) 
+    {
+        SetEntityPriority(newP);
+    }
+
     public void SetGhostSprite(Sprite newSprite) 
     { 
         SetEntitySprite(newSprite);

@@ -193,6 +193,7 @@ public class EntityFront : EntityBase
         {
             if (!TextWatch.IsRunning)
             {
+                TextWatch.Reset();
                 TextWatch.Start();
             }
 
@@ -217,7 +218,7 @@ public class EntityFront : EntityBase
                     // Wait for next customer
                     Destroy(MyTextBubble);
                     CurrentState = State.WaitForCustomer;
-                    TextWatch.Reset();
+                    TextWatch.Stop();
                 }
             }
         }
