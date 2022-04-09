@@ -33,7 +33,7 @@ public class TileConstruction : MonoBehaviour
     public bool destroyOn;
     public bool isOverUI;
     public bool IsUIActive;
-
+    MasterUIController GetUIController;
     [Header("Selection Mode")]
     public bool selectionMode;
 
@@ -76,12 +76,12 @@ public class TileConstruction : MonoBehaviour
     {
 		SetStates();
         GhostTile ghostScript = FindObjectOfType<GhostTile>();
+        GetUIController = FindObjectOfType<MasterUIController>();
     }
 
     private void Update()
     {
         FindBlocker();
-
         currentResolution = new Vector2(Screen.width, Screen.height);
         if (GetPause.isPaused)
         {
@@ -89,15 +89,17 @@ public class TileConstruction : MonoBehaviour
         }
 
 
-        IsUIActive = FindObjectOfType<MasterUIController>().isActive;
-        selectedTile = GetConstruction.currentTile;
-
-        if (IsUIActive == true || isOverUI == true || ghostTile.activeSelf ||
-            selectedTile != ConstructionSystemUI.SelectedTile.none)
+        IsUIActive = GetUIController.isActive;
+        if (IsUIActive)
+        {
+            selectionMode = true;
+        }
+        else 
         {
             selectionMode = false;
-            selectionRect.SetActive(false);
         }
+
+        selectedTile = GetConstruction.currentTile;
 
         if (IsUIActive == false)
         {
@@ -122,7 +124,6 @@ public class TileConstruction : MonoBehaviour
         currentTypeSelected = EntityTypeSelected.All;
 
         destroyOn = false;
-        selectionMode = false;
 	}
 
     public void FindBlocker() 
@@ -413,6 +414,10 @@ public class TileConstruction : MonoBehaviour
             {
                 selectionMode = true;
             }
+            else 
+            {
+                selectionMode = false;
+            }
 
             if (RectTransformUtility.ScreenPointToLocalPointInRectangle(root, Input.mousePosition, null, out Vector2 localPoint))
             {
@@ -437,10 +442,6 @@ public class TileConstruction : MonoBehaviour
                                 currentEntity.GetComponent<Image>().material = Resources.Load<Material>("Sprites/UI/Indicators/SelectedEntity");
                             }
                         }
-                    }
-                    else 
-                    {
-                        selectionMode = false;
                     }
                 }
             }
@@ -501,7 +502,13 @@ public class TileConstruction : MonoBehaviour
                         currentEntity.GetComponent<Image>().material = null; 
                         Grid.Destroy(selectedEntities[i]); 
                     }
-                    
+                    else if (selectedEntities[i].Priority == EntityPriority.Foundations)
+                    {
+                        GameObject currentEntity = selectedEntities[i].gameObject;
+                        currentEntity.GetComponent<Image>().material = null;
+                        Grid.Destroy(selectedEntities[i]);
+                    }
+
                 }
             }
             selectedEntities = new EntityBase[0];

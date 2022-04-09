@@ -30,16 +30,17 @@ public class RoasterInterfaceSystem : MonoBehaviour
     public TMP_Text TemperatureText;
     public Image BitternessFill;
     public Image CoffeeBagsFill;
+    InspectorMaster GetInspector;
 
     private void Start()
     {
         RoasterUI.SetActive(false);
+        GetInspector = FindObjectOfType<InspectorMaster>();
         SetButtons();
     }
 
     private void Update()
     {
-        InspectorMaster GetInspector = FindObjectOfType<InspectorMaster>();
         SelectedRoaster = GetInspector.selectedEntity;
         if (SelectedRoaster != null)
         {

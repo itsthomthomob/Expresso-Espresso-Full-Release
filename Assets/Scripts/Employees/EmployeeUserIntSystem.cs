@@ -79,7 +79,7 @@ public class EmployeeUserIntSystem : MonoBehaviour
     [Header("Character Info Card")]
     public GameObject CharacterCard;
     public Button hireButton;
-    public GameObject FirstObj;
+    //public GameObject FirstObj;
 
     public EmployeeTypeButtons currentEmployeeType;
 
@@ -110,7 +110,6 @@ public class EmployeeUserIntSystem : MonoBehaviour
         GenerateSupport();
         GenerateFront();
         CharacterCard.SetActive(false);
-        FirstObj.SetActive(false);
     }
 
     private void Update()
@@ -164,7 +163,7 @@ public class EmployeeUserIntSystem : MonoBehaviour
     {
         for (int i = 0; i < HireableAmount; i++)
         {
-            GameObject HireableEmployee = Instantiate(HireablePrefab);
+            GameObject HireableEmployee = Instantiate(HireablePrefab, BaristasParent.transform, false);
             Hireables.Add(HireableEmployee);
 
             int spriteIndex = Random.Range(0, CharacterSprites.Count);
@@ -213,7 +212,7 @@ public class EmployeeUserIntSystem : MonoBehaviour
     {
         for (int i = 0; i < HireableAmount; i++)
         {
-            GameObject HireableEmployee = Instantiate(HireablePrefab);
+            GameObject HireableEmployee = Instantiate(HireablePrefab, SupportParent.transform, false);
             Hireables.Add(HireableEmployee);
             int spriteIndex = Random.Range(0, CharacterSprites.Count);
 
@@ -261,7 +260,7 @@ public class EmployeeUserIntSystem : MonoBehaviour
     {
         for (int i = 0; i < HireableAmount; i++)
         {
-            GameObject HireableEmployee = Instantiate(HireablePrefab);
+            GameObject HireableEmployee = Instantiate(HireablePrefab, FrontParent.transform, false);
             Hireables.Add(HireableEmployee);
             int spriteIndex = Random.Range(0, CharacterSprites.Count);
 

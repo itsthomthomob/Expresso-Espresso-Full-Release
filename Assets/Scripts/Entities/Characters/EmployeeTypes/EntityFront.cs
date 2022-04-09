@@ -124,24 +124,20 @@ public class EntityFront : EntityBase
             if (myRegister == null)
             {
                 // Do nothing, wait
+                myRegister = Grid.FindNearestEntity<EntityRegister>(Position);
+                UnityEngine.Debug.Log("Can't find register");
             }
-            else if ((Position - myRegister.Position).magnitude < Range)
+            else if ((Position - myRegister.Position).magnitude < 2)
             {
                 CurrentState = State.WaitForCustomer;
                 UnityEngine.Debug.LogWarning("At register");
             }
             else
             {
-                bool found = Grid.Pathfind(Position, myRegister.Position, IsPassable, out Vector2Int next);
+                bool found = Grid.Pathfind(Position, new Vector2Int(myRegister.Position.x, myRegister.Position.y + 1), IsPassable, out Vector2Int next);
                 if (found)
                 {
                     Move(next, Speed);
-                }
-                else
-                {
-                    UnityEngine.Debug.LogWarning("Finished State");
-
-                    CurrentState = State.WaitForCustomer;
                 }
             }
         }

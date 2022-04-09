@@ -20,14 +20,9 @@ public class CustomerSpawnSystem : MonoBehaviour
     public EntityConcrete[] allConcrete;
 
     [Header("Spawn Objs")]
-    EntityBase GetFloor;
-    EntityBase GetRandomTile;
-    EntityRegister GetRegister;
-    EntityEspressoMachineOne GetEspresso;
-    EntityFront GetFront;
-    EntityBarista GetBarista;
     TimeManager GetTime;
     Stopwatch CustomerTimer = new Stopwatch();
+    EmployeeListManager employees;
 
     [Header("All Chairs")]
     List<EntityBase> AllChairs = new List<EntityBase>();
@@ -52,7 +47,7 @@ public class CustomerSpawnSystem : MonoBehaviour
             {
                 CustomerTimer.Start();
             }
-            if (FindWorkers())
+            if (employees.hiredFronts.Count + employees.hiredSupports.Count + employees.hiredSupports.Count > 2)
             {
                 SpawnCustomers();
             }
@@ -68,67 +63,7 @@ public class CustomerSpawnSystem : MonoBehaviour
         Grid = FindObjectOfType<EntityGrid>();
         GetTime = FindObjectOfType<TimeManager>();
         allConcrete = FindObjectsOfType<EntityConcrete>();
-    }
-    private bool FindWorkers() 
-    {
-        GetRegister = FindObjectOfType<EntityRegister>();
-        GetEspresso = FindObjectOfType<EntityEspressoMachineOne>();
-        GetFront = FindObjectOfType<EntityFront>();
-        GetBarista = FindObjectOfType<EntityBarista>();
-        if (GetRegister != null && GetEspresso != null &&
-            GetFront != null && GetBarista != null)
-        {
-            return true;
-        }
-        else 
-        {
-            return false;
-        }
-    }
-    private void FindChairs() 
-    { 
-        AllChairBarstools = FindObjectsOfType<EntityBarstool>();
-        AllChairGrey = FindObjectsOfType<EntityChairGrey>();
-        AllChairRed = FindObjectsOfType<EntityChairRed>(); 
-        AllChairRough = FindObjectsOfType<EntityChairRough>();  
-        AllChairSmooth = FindObjectsOfType<EntityChairSmooth>();
-
-        for (int i = 0; i < AllChairBarstools.Length; i++)
-        {
-            if (!AllChairs.Contains(AllChairBarstools[i]))
-            {
-                AllChairs.Add(AllChairBarstools[i]);
-            }
-        }
-        for (int i = 0; i < AllChairGrey.Length; i++)
-        {
-            if (!AllChairs.Contains(AllChairGrey[i]))
-            {
-                AllChairs.Add(AllChairGrey[i]);
-            }
-        }
-        for (int i = 0; i < AllChairRed.Length; i++)
-        {
-            if (!AllChairs.Contains(AllChairRed[i]))
-            {
-                AllChairs.Add(AllChairRed[i]);
-            }
-        }
-        for (int i = 0; i < AllChairRough.Length; i++)
-        {
-            if (!AllChairs.Contains(AllChairRough[i]))
-            {
-                AllChairs.Add(AllChairRough[i]);
-            }
-        }
-        for (int i = 0; i < AllChairSmooth.Length; i++)
-        {
-            if (!AllChairs.Contains(AllChairSmooth[i]))
-            {
-                AllChairs.Add(AllChairSmooth[i]);
-            }
-        }
-
+        employees = FindObjectOfType<EmployeeListManager>();
     }
     private void SpawnStartingCustomers() 
     {

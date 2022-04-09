@@ -51,7 +51,7 @@ public class EspressoInterfaceSystem : MonoBehaviour
                 EntityEspressoMachineOne espresso = EspressoMachine as EntityEspressoMachineOne;
                 EspressoSlider.value = espresso.EspressoUnits;
                 MilkSlider.value = espresso.MilkUnits;
-                BitternessSlider.value = TemperatureSlider.value;
+                BitternessSlider.value = Mathf.RoundToInt(TemperatureSlider.value);
                 Espresso.text = EspressoSlider.value.ToString();
                 Milk.text = MilkSlider.value.ToString();
             }

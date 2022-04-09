@@ -116,7 +116,7 @@ public class ObjectivesManager : MonoBehaviour
                 if (NewObjectives[i].GetSpawned() == false)
                 {
                     ObjectiveObject OBJ = NewObjectives[i];
-                    GameObject newObjective = Instantiate(ObjUIPrefab);
+                    GameObject newObjective = Instantiate(ObjUIPrefab, spawner.transform, false);
                     newObjective.transform.position = spawner.position;
                     newObjective.transform.SetParent(spawner.transform);
                     OBJ.SetSpawner(newObjective);

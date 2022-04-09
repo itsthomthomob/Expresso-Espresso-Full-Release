@@ -28,7 +28,7 @@ public class EmployeeListManager : MonoBehaviour
     {
         // Adds employees back to list
         // Generates prefabs again
-        GameObject newEmployeeCell = Instantiate(EmployeeInfoPrefab);
+        GameObject newEmployeeCell = Instantiate(EmployeeInfoPrefab, EmployeeList.transform, false);
         GeneratedEmployeesList.Add(loadedEmployee);
 
         newEmployeeCell.transform.SetParent(EmployeeList.transform);
@@ -65,7 +65,7 @@ public class EmployeeListManager : MonoBehaviour
         {
             if (!GeneratedEmployeesList.Contains(Employees[i]))
             {
-                GameObject newEmployeeCell = Instantiate(EmployeeInfoPrefab);
+                GameObject newEmployeeCell = Instantiate(EmployeeInfoPrefab, EmployeeList.transform, false);
                 GeneratedEmployeesList.Add(Employees[i]);
 
                 newEmployeeCell.transform.SetParent(EmployeeList.transform);

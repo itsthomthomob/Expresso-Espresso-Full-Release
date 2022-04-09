@@ -253,7 +253,7 @@ public class ConstructionSystemUI : MonoBehaviour
     private void ClickedConstruction()
     {
         
-        onConstruction = true;
+        onConstruction = !onConstruction;
 
 
         if (onConstruction)

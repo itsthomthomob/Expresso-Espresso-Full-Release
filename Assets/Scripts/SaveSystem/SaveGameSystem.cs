@@ -68,7 +68,7 @@ public class SaveGameSystem : MonoBehaviour
 
     private void LoadSaveModules(JsonConfigurationFile newJSON, string file) 
     {
-        GameObject newModule = Instantiate(SaveModuleTemplate);
+        GameObject newModule = Instantiate(SaveModuleTemplate, SaveModuleContainer, false);
         newModule.transform.position = SaveModuleContainer.position;
         newModule.transform.SetParent(SaveModuleContainer);
         for (int i = 0; i < newModule.transform.childCount; i++)
@@ -217,7 +217,7 @@ public class SaveGameSystem : MonoBehaviour
 
     private void CreateSaveModule(string titleName, string CurrentTime, string fileName) 
     {
-        GameObject newModule = Instantiate(SaveModuleTemplate);
+        GameObject newModule = Instantiate(SaveModuleTemplate, SaveModuleContainer, false);
         newModule.transform.position = SaveModuleContainer.position;
         newModule.transform.SetParent(SaveModuleContainer);
         for (int i = 0; i < newModule.transform.childCount; i++)

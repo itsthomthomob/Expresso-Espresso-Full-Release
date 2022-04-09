@@ -172,46 +172,19 @@ public class EntityBarista : EntityBase
         {
             if (myCounter == null)
             {
-                EntityCounterGrey[] AllGreyCounters = FindObjectsOfType<EntityCounterGrey>();
-                EntityCounterMarble[] AllMarbleCounters = FindObjectsOfType<EntityCounterMarble>();
-                EntityCounterRed[] AllRedCounters = FindObjectsOfType<EntityCounterRed>();
-                
-                for (int i = 0; i < AllGreyCounters.Length; i++)
+                myCounter = Grid.FindNearestEntity<EntityCounterGrey>(Position);
+
+                if (myCounter == null)
                 {
-                    bool found = Grid.Pathfind(Position, AllGreyCounters[i].Position, IsPassable, out Vector2Int next);
-                    if (found &&
-                        myCounter == null &&
-                        AllGreyCounters[i] is EntityCounterGrey)
+                    myCounter = Grid.FindNearestEntity<EntityCounterMarble>(Position);
+
+                    if (myCounter == null)
                     {
-                        myCounter = AllGreyCounters[i];
-                        break;
+                        myCounter = Grid.FindNearestEntity<EntityCounterRed>(Position);
+                        UnityEngine.Debug.Log("Barista can not find counter.");
                     }
                 }
 
-                for (int i = 0; i < AllRedCounters.Length; i++)
-                {
-                    bool found = Grid.Pathfind(Position, AllRedCounters[i].Position, IsPassable, out Vector2Int next);
-                    if (found &&
-                        myCounter == null &&
-                        AllRedCounters[i] is EntityCounterRed)
-                    {
-                        myCounter = AllRedCounters[i];
-                        break;
-                    }
-                }
-
-                for (int i = 0; i < AllMarbleCounters.Length; i++)
-                {
-                    bool found = Grid.Pathfind(Position, AllMarbleCounters[i].Position, IsPassable, out Vector2Int next);
-                    if (found &&
-                        myCounter == null &&
-                        AllMarbleCounters[i] is EntityCounterMarble)
-                    {
-                        myCounter = AllMarbleCounters[i];
-                        break;
-                    }
-                }
-                UnityEngine.Debug.Log("Barista can not find counter.");
             }
             else if (((Position - myCounter.Position).magnitude < 1.5f)) 
             {

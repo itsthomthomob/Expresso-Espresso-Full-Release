@@ -22,7 +22,7 @@ public class EntityRoasteryMachineOne : EntityBase
 	// Coffee attributes
 	public int AmountOfCoffeeBags = 0;
 	public int LevelOneThreshold = 20;
-	public int CoffeeBagLimit = 50;
+	public int CoffeeBagLimit = 49;
 
     // Time attributes
     public float StartTime;

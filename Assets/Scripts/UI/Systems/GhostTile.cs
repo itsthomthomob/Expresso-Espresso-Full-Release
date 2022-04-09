@@ -10,6 +10,7 @@ public class GhostTile : MonoBehaviour
     public ConstructionSystemUI GetConstructionUI;
     public PauseManager GetPause;
     public GhostEntity ghostEntity;
+    public Material applyMat;
 
     [Header("UI Positioning")]
     public GameObject GhostTileObj;
@@ -34,6 +35,10 @@ public class GhostTile : MonoBehaviour
     void Update()
     {
         UpdatePos();
+        if (ghostEntity.gameObject.GetComponent<Image>().material != applyMat)
+        {
+            ghostEntity.gameObject.GetComponent<Image>().material = applyMat;
+        }
         if (GetPause.isPaused)
         {
             GhostTileObj.SetActive(false);
