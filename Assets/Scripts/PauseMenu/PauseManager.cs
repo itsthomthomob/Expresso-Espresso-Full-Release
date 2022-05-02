@@ -9,7 +9,7 @@ public class PauseManager : MonoBehaviour
     public GameObject pauseMenu;
     public GameObject pauseMenuFilter;
     public GameObject ghost;
-    public ConstructionSystemUI tile;
+    public TileConstruction tile;
     public Button resume;
     public Button exit;
     public bool isPaused;
@@ -49,7 +49,7 @@ public class PauseManager : MonoBehaviour
             pauseMenu.SetActive(false);
             pauseMenuFilter.SetActive(false);
 
-            if (tile.currentTile != ConstructionSystemUI.SelectedTile.none)
+            if (tile.curTile != TileConstruction.CurrentTileState.None)
             {
                 ghost.SetActive(true);
             }
@@ -57,7 +57,6 @@ public class PauseManager : MonoBehaviour
             Time.timeScale = 1;
         }
     }
-
     private void LoadStates()
     {
         isPaused = false;
@@ -71,5 +70,4 @@ public class PauseManager : MonoBehaviour
     }
 
     public void resumeGame() { isPaused = false; }
-
 }
