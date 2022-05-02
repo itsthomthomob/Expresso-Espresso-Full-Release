@@ -533,10 +533,10 @@ public class ConstructionSystemUI : MonoBehaviour
                 {
 
                 }
-                else if (FindObjectOfType<TileConstruction>().selectedEntities[i].GetComponent<EntityWallBrick>()) { }
+                else if (FindObjectOfType<TileConstruction>().selectedEntities[i].GetComponent<EntityWallPlaster>()) { }
                 else
                 {
-                    EntityBase newEntity = grid.Create<EntityWallBrick>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                    EntityBase newEntity = grid.Create<EntityWallPlaster>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
                     FindObjectOfType<TileConstruction>().AllWalls.Add(newEntity);
 
                 }
@@ -563,10 +563,10 @@ public class ConstructionSystemUI : MonoBehaviour
                 {
 
                 }
-                else if (FindObjectOfType<TileConstruction>().selectedEntities[i].GetComponent<EntityWallBrick>()) { }
+                else if (FindObjectOfType<TileConstruction>().selectedEntities[i].GetComponent<EntityWallPale>()) { }
                 else
                 {
-                    EntityBase newEntity = grid.Create<EntityWallBrick>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                    EntityBase newEntity = grid.Create<EntityWallPale>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
                     FindObjectOfType<TileConstruction>().AllWalls.Add(newEntity);
 
                 }
@@ -593,10 +593,10 @@ public class ConstructionSystemUI : MonoBehaviour
                 {
 
                 }
-                else if (FindObjectOfType<TileConstruction>().selectedEntities[i].GetComponent<EntityWallBrick>()) { }
+                else if (FindObjectOfType<TileConstruction>().selectedEntities[i].GetComponent<EntityWallGreyBrick>()) { }
                 else
                 {
-                    EntityBase newEntity = grid.Create<EntityWallBrick>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
+                    EntityBase newEntity = grid.Create<EntityWallGreyBrick>(FindObjectOfType<TileConstruction>().selectedEntities[i].Position);
                     FindObjectOfType<TileConstruction>().AllWalls.Add(newEntity);
 
                 }

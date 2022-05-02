@@ -28,6 +28,7 @@ public class EntityBarista : EntityBase
     private float SkillModifier;
     private float EfficiencyModifier;
     private string PersonalityType = "N/A";
+    Vector2Int oldPos = new Vector2Int();
     public string GetEmployeeRole() { return "Barista"; }
 
     public void SetWageAmount(float wageOffer) { WageAmount = wageOffer; }
@@ -64,6 +65,11 @@ public class EntityBarista : EntityBase
         GetTime = FindObjectOfType<TimeManager>();
     }
 
+    private void Start()
+    {
+        StartCoroutine(CheckIfStuck());
+    }
+
     private void FixedUpdate()
     {
         if (IsMoving)
@@ -79,17 +85,66 @@ public class EntityBarista : EntityBase
         switch (CurrentState)
         {
             case State.TravelToEspresso:
+                oldPos = Position;
                 OnTravelToEspresso();
                 break;
             case State.WaitForDrink:
+                oldPos = Position;
                 OnWaitForDrink();
                 break;
             case State.EspressoMakeDrink:
+                oldPos = Position;
                 OnEspressoMakeDrink();
                 break;
             case State.TravelToCounter:
+                oldPos = Position;
                 OnTravelToCounter();
                 break;
+        }
+    }
+
+    IEnumerator CheckIfStuck()
+    {
+        while (IsMoving)
+        {
+            // AI is moving
+            yield return new WaitForSeconds(3);
+            if (CurrentState == State.TravelToCounter ||
+                CurrentState == State.TravelToEspresso)
+            {
+                // Reset new position
+                Vector2Int newpos = new Vector2Int();
+                newpos = Position;
+
+                if (oldPos == newpos)
+                {
+                    // AI is still at position
+                    EntityRegister register = Grid.FindNearestEntity<EntityRegister>(Position);
+
+                    if (register != null)
+                    {
+                        // Has register
+                        if (!Grid.HasPriority(new Vector2Int(register.Position.x - 1, register.Position.y + 1), EntityPriority.Buildings))
+                        {
+                            Move(new Vector2Int(register.Position.x + 1, register.Position.y + 1), 0f);
+                            UnityEngine.Debug.Log("Employee unstuck");
+                        }
+                        else
+                        {
+                            if (!Grid.HasPriority(new Vector2Int(register.Position.x + 1, register.Position.y - 1), EntityPriority.Buildings))
+                            {
+                                Move(new Vector2Int(register.Position.x - 1, register.Position.y + 1), 0f);
+                            }
+                        }
+                    }
+                }
+                else if (oldPos != newpos)
+                {
+                    UnityEngine.Debug.Log("Player moved");
+                }
+
+                oldPos = newpos;
+            }
         }
     }
 

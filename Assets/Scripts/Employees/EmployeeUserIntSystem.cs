@@ -86,6 +86,8 @@ public class EmployeeUserIntSystem : MonoBehaviour
     public Object[] LoadSprites;
     public List<Sprite> CharacterSprites;
 
+    public CustomerSpawnSystem getSpawn;
+
     private void Awake()
     {
         LoadSprites = Resources.LoadAll("Sprites/Characters", typeof(Sprite));
@@ -102,7 +104,10 @@ public class EmployeeUserIntSystem : MonoBehaviour
     {
         HireableAmount = 7;
         MinimumWage = 10.00f;
+
         grid = FindObjectOfType<EntityGrid>();
+        getSpawn = FindObjectOfType<CustomerSpawnSystem>();
+
         selectedTab = EmployeesTabs.onHire;
 
         LoadButtons();
@@ -413,10 +418,13 @@ public class EmployeeUserIntSystem : MonoBehaviour
     }
     private void CreateEmployee() 
     {
+        EntityConcrete[] getConcrete = getSpawn.allConcrete;
+        int index = Random.Range(0, getConcrete.Length);
         switch (currentEmployeeType)
         {
             case EmployeeTypeButtons.onBaristas:
-                EntityBarista newBarista = grid.Create<EntityBarista>(new Vector2Int(0, 0));
+
+                EntityBarista newBarista = grid.Create<EntityBarista>(getConcrete[index].Position);
                 newBarista.SetEmployeeID(CurrentNewEmployeeID);
                 CurrentNewEmployeeID += 1;
                 newBarista.SetEmployeeName(employeeName);
@@ -437,7 +445,7 @@ public class EmployeeUserIntSystem : MonoBehaviour
                 getList.hiredBaristas.Add(newBarista);
             break;
             case EmployeeTypeButtons.onSupport:
-                EntitySupport newSupport = grid.Create<EntitySupport>(new Vector2Int(0, 0));
+                EntitySupport newSupport = grid.Create<EntitySupport>(getConcrete[index].Position);
                 newSupport.SetEmployeeID(CurrentNewEmployeeID);
                 CurrentNewEmployeeID += 1;
                 newSupport.SetEmployeeName(employeeName);
@@ -457,7 +465,7 @@ public class EmployeeUserIntSystem : MonoBehaviour
                 getList.hiredSupports.Add(newSupport);
             break;
             case EmployeeTypeButtons.onFront:
-                EntityFront newFront = grid.Create<EntityFront>(new Vector2Int(0, 0));
+                EntityFront newFront = grid.Create<EntityFront>(getConcrete[index].Position);
                 newFront.SetEmployeeID(CurrentNewEmployeeID);
                 CurrentNewEmployeeID += 1;
                 newFront.SetEmployeeName(employeeName);

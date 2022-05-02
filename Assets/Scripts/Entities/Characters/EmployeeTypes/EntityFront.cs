@@ -27,6 +27,7 @@ public class EntityFront : EntityBase
     private float WageAmount;
     private float SkillModifier;
     private string PersonalityType = "N/A";
+    Vector2Int oldPos = new Vector2Int();
 
     private float EfficiencyModifier;
     public string GetEmployeeRole() { return "Front"; }
@@ -63,7 +64,7 @@ public class EntityFront : EntityBase
     }
 
     [SerializeField] private State CurrentState = State.TravelToRegister;
-    [SerializeField] private float Range = 3.0f;
+    [SerializeField] private float Range = 4.0f;
     [SerializeField] private float Speed = 0.25f;
 
     EntityRegister myRegister;
@@ -85,6 +86,11 @@ public class EntityFront : EntityBase
                 FrontTexts.Add(LoadSprite);
             }
         }
+    }
+
+    private void Start()
+    {
+        StartCoroutine(CheckIfStuck());
     }
     private void FixedUpdate()
     {
@@ -115,6 +121,49 @@ public class EntityFront : EntityBase
         }
     }
 
+    IEnumerator CheckIfStuck()
+    {
+        while (IsMoving)
+        {
+            // AI is moving
+            yield return new WaitForSeconds(3);
+            if (CurrentState == State.TravelToRegister)
+            {
+                // Reset new position
+                Vector2Int newpos = new Vector2Int();
+                newpos = Position;
+
+                if (oldPos == newpos)
+                {
+                    // AI is still at position
+                    EntityRegister register = Grid.FindNearestEntity<EntityRegister>(Position);
+
+                    if (register != null)
+                    {
+                        // Has register
+                        if (!Grid.HasPriority(new Vector2Int(register.Position.x - 1, register.Position.y + 1), EntityPriority.Buildings))
+                        {
+                            Move(new Vector2Int(register.Position.x + 1, register.Position.y + 1), 0f);
+                            UnityEngine.Debug.Log("Employee unstuck");
+                        }
+                        else
+                        {
+                            if (!Grid.HasPriority(new Vector2Int(register.Position.x + 1, register.Position.y - 1), EntityPriority.Buildings))
+                            {
+                                Move(new Vector2Int(register.Position.x - 1, register.Position.y + 1), 0f);
+                            }
+                        }
+                    }
+                }
+                else if (oldPos != newpos)
+                {
+                    UnityEngine.Debug.Log("Player moved");
+                }
+
+                oldPos = newpos;
+            }
+        }
+    }
     private void OnTravelToRegister()
     {
         if (!IsMoving)
