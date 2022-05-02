@@ -32,11 +32,12 @@ public class EntityCustomer : EntityBase
     [SerializeField] private State CurrentState = State.WaitingForCafe;
     [SerializeField] public int MyCustomerID;
     [SerializeField] private EntityCoffee MyCoffee;
-    [SerializeField] private float Range = 3.0f;
+    [SerializeField] private float Range = 4.0f;
     [SerializeField] private MenuItem MyItem;
     [SerializeField] private EntityConcrete MyConcrete;
     EntityConcrete[] AllConcrete;
     MenuManagementSystem GetMenu;
+    EmployeeListManager GetEmployees;
     MenuItem[] ScanMenu;
 
     CafeEconomySystem GetECO;
@@ -63,6 +64,7 @@ public class EntityCustomer : EntityBase
         ScanMenu = FindObjectsOfType<MenuItem>();
         GetECO = FindObjectOfType<CafeEconomySystem>();
         getTiles = FindObjectOfType<TileConstruction>();
+        GetEmployees = FindObjectOfType<EmployeeListManager>();
         didReview = false;
 
         // Load text bubbles
@@ -185,7 +187,7 @@ public class EntityCustomer : EntityBase
         {
             for (int i = 0; i < getTiles.AllRegisters.Count; i++)
             {
-                if (getTiles.AllRegisters[i].GetCustomer() == null)
+                if (getTiles.AllRegisters[i].GetCustomer() == null && GetEmployees.hiredFronts.Count > 0)
                 {
                     Register = getTiles.AllRegisters[i];
                     Register.SetCustomer(this);
