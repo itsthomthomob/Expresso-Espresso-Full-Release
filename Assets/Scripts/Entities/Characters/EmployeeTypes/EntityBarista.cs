@@ -172,21 +172,10 @@ public class EntityBarista : EntityBase
         {
             if (myCounter == null)
             {
-                myCounter = Grid.FindNearestEntity<EntityCounterGrey>(Position);
-
-                if (myCounter == null)
-                {
-                    myCounter = Grid.FindNearestEntity<EntityCounterMarble>(Position);
-
-                    if (myCounter == null)
-                    {
-                        myCounter = Grid.FindNearestEntity<EntityCounterRed>(Position);
-                        UnityEngine.Debug.Log("Barista can not find counter.");
-                    }
-                }
-
+                EntityRegister curRegister = Grid.FindNearestEntity<EntityRegister>(Position);
+                myCounter = Grid.GetFirstEntity<EntityBase>(new Vector2Int(curRegister.Position.x, curRegister.Position.y - 1));
             }
-            else if (((Position - myCounter.Position).magnitude < 1.5f)) 
+            else if (((Position - myCounter.Position).magnitude < 2.0f)) 
             {
                 // At counter
                 EmployeeCommunicationSystem GetECS = FindObjectOfType<EmployeeCommunicationSystem>();
@@ -201,12 +190,37 @@ public class EntityBarista : EntityBase
                 if (found)
                 {
                     Move(next, Speed);
+                    UnityEngine.Debug.Log("Going To: " + next);
                 }
                 else 
                 {
                     UnityEngine.Debug.Log("Counter is not accessible.");
                 }
             }
+        }
+    }
+
+    private EntityBase FindNewCounter(EntityBase curEntity) 
+    {
+        bool found = Grid.Pathfind(Position, curEntity.Position, IsPassable, out Vector2Int next);
+        if (found)
+        {
+            return curEntity;
+        }
+        else 
+        {
+            EntityBase findNewG = Grid.FindNearestEntity<EntityCounterGrey>(Position);
+            if (findNewG == null)
+            {
+                EntityBase findNewM = Grid.FindNearestEntity<EntityCounterMarble>(Position);
+                if (findNewM == null)
+                {
+                    EntityBase findNewR = Grid.FindNearestEntity<EntityCounterRed>(Position);
+                    return FindNewCounter(findNewR);
+                }
+                return FindNewCounter(findNewM);
+            }
+            return FindNewCounter(findNewG);
         }
     }
 

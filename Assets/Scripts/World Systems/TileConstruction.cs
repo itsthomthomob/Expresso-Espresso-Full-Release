@@ -71,6 +71,7 @@ public class TileConstruction : MonoBehaviour
     public List<EntityBase> AllWalls = new List<EntityBase>();
     public List<EntityBase> AllCounters = new List<EntityBase>();
     public List<EntityRegister> AllRegisters = new List<EntityRegister>();
+    public List<EntityBase> AllChairs = new List<EntityBase>();
 
     private void Start()
     {
@@ -265,9 +266,9 @@ public class TileConstruction : MonoBehaviour
 
                 break;
             case ConstructionSystemUI.SelectedTile.Barstool1:
-                Grid.Create<EntityBarstool>(atPos);
+                EntityBase newEnt = Grid.Create<EntityBarstool>(atPos);
                 CameraAudio.PlayOneShot(singleTile, 1.0f);
-
+                AllChairs.Add(newEnt);
 
                 break;
             case ConstructionSystemUI.SelectedTile.Counter1:
@@ -295,8 +296,8 @@ public class TileConstruction : MonoBehaviour
                     return;
                 }
                 CameraAudio.PlayOneShot(singleTile, 1.0f);
-                Grid.Create<EntityChairSmooth>(atPos);
-
+                EntityBase newChair = Grid.Create<EntityChairSmooth>(atPos);
+                AllChairs.Add(newChair);
                 break;
             case ConstructionSystemUI.SelectedTile.Brewing1:
                 if (Grid.GetLastEntity<EntityBase>(atPos).Priority == EntityPriority.Furniture)

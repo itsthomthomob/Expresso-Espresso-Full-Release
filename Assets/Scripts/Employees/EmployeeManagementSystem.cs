@@ -16,6 +16,7 @@ public class EmployeeManagementSystem : MonoBehaviour
         EntitySupport[] currentSupports = FindObjectsOfType<EntitySupport>();
         EntityBarista[] currentBaristas = FindObjectsOfType<EntityBarista>();
         EntityFront[] currentFronts = FindObjectsOfType<EntityFront>();
+
         if (currentSupports.Length > 0)
         {
             for (int i = 0; i < currentSupports.Length; i++)

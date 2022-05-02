@@ -161,6 +161,26 @@ public class ObjectivesManager : MonoBehaviour
                     {
                         NewObjsGO.AddComponent<Objective005>();
                     }
+                    if (OBJ is Objective006)
+                    {
+                        NewObjsGO.AddComponent<Objective006>();
+                    }
+                    if (OBJ is Objective007)
+                    {
+                        NewObjsGO.AddComponent<Objective007>();
+                    }
+                    if (OBJ is Objective008)
+                    {
+                        NewObjsGO.AddComponent<Objective008>();
+                    }
+                    if (OBJ is Objective009)
+                    {
+                        NewObjsGO.AddComponent<Objective009>();
+                    }
+                    if (OBJ is Objective010)
+                    {
+                        NewObjsGO.AddComponent<Objective010>();
+                    }
                     OBJ.SetSpawned(true);
                     return;
                 }
@@ -236,6 +256,58 @@ public class ObjectivesManager : MonoBehaviour
                         FinishedObjsGO.AddComponent<Objective005>();
                     }
 
+                }
+                else if (AllObjectives[i] is Objective006)
+                {
+                    Objective006 GetOBJ = AllObjectives[i] as Objective006;
+                    if (GetOBJ.GetSpawner() != null)
+                    {
+                        GetOBJ.Despawn();
+                        Destroy(NewObjsGO.GetComponent<Objective006>());
+                        FinishedObjsGO.AddComponent<Objective006>();
+                    }
+
+                }
+                else if (AllObjectives[i] is Objective007)
+                {
+                    Objective007 GetOBJ = AllObjectives[i] as Objective007;
+                    if (GetOBJ.GetSpawner() != null)
+                    {
+                        GetOBJ.Despawn();
+                        Destroy(NewObjsGO.GetComponent<Objective007>());
+                        FinishedObjsGO.AddComponent<Objective007>();
+                    }
+
+                }
+                else if (AllObjectives[i] is Objective008)
+                {
+                    Objective008 GetOBJ = AllObjectives[i] as Objective008;
+                    if (GetOBJ.GetSpawner() != null)
+                    {
+                        GetOBJ.Despawn();
+                        Destroy(NewObjsGO.GetComponent<Objective008>());
+                        FinishedObjsGO.AddComponent<Objective008>();
+                    }
+                }
+                else if (AllObjectives[i] is Objective009)
+                {
+                    Objective009 GetOBJ = AllObjectives[i] as Objective009;
+                    if (GetOBJ.GetSpawner() != null)
+                    {
+                        GetOBJ.Despawn();
+                        Destroy(NewObjsGO.GetComponent<Objective009>());
+                        FinishedObjsGO.AddComponent<Objective009>();
+                    }
+                }
+                else if (AllObjectives[i] is Objective010)
+                {
+                    Objective010 GetOBJ = AllObjectives[i] as Objective010;
+                    if (GetOBJ.GetSpawner() != null)
+                    {
+                        GetOBJ.Despawn();
+                        Destroy(NewObjsGO.GetComponent<Objective010>());
+                        FinishedObjsGO.AddComponent<Objective010>();
+                    }
                 }
             }
         }

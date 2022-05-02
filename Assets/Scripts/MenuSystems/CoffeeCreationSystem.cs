@@ -10,6 +10,7 @@ public class CoffeeCreationSystem : MonoBehaviour
     public GameObject CoffeeCreationUI;
     public Button BackToMenu;
     public Button AddItemButton;
+    public Button OpenCoffeeMenu;
     public Slider ItemCostInput;
     public TMP_Text ItemCostText;
     public TMP_InputField ItemNameInput;
@@ -44,6 +45,7 @@ public class CoffeeCreationSystem : MonoBehaviour
     {
         AddItemButton.onClick.AddListener(CreateNewItem);
         BackToMenu.onClick.AddListener(GoBackToMenu);
+        OpenCoffeeMenu.onClick.AddListener(GoToCoffeeCreation);
         GetMenu = FindObjectOfType<MenuManagementSystem>();
     }
     private void Update()
@@ -360,5 +362,9 @@ public class CoffeeCreationSystem : MonoBehaviour
     private void GoBackToMenu() 
     {
         CoffeeCreationUI.SetActive(false);
+    }
+    private void GoToCoffeeCreation()
+    {
+        CoffeeCreationUI.SetActive(true);
     }
 }

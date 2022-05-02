@@ -2872,7 +2872,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: ed95edb8c2218704498d6a5ffe611a5b, type: 3}
+  m_audioClip: {fileID: 8300000, guid: fc8e57e4222df2a438bef17feb2f2f0b, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -4155,7 +4155,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1663557530}
   - component: {fileID: 1663557529}
-  - component: {fileID: 1663557531}
   - component: {fileID: 1663557532}
   - component: {fileID: 1663557533}
   m_Layer: 0
@@ -4193,24 +4192,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1663557531
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1663557528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b41437b2d06c0544809517dd94222ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ChangesUI: {fileID: 105570317}
-  ChangesBackground: {fileID: 198967823}
-  Updates_B: {fileID: 182993532}
-  CloseUpdates: {fileID: 405188470}
-  notification: {fileID: 155858147}
-  boolData: 0
 --- !u!114 &1663557532
 MonoBehaviour:
   m_ObjectHideFlags: 0

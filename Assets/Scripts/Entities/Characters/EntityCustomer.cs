@@ -191,7 +191,7 @@ public class EntityCustomer : EntityBase
                     Register.SetCustomer(this);
                     break;
                 }
-                else 
+                else
                 {
                     // Go to customer
                     if ((getTiles.AllRegisters[i].GetCustomer().Position - getTiles.AllRegisters[i].Position).magnitude < Range)
@@ -201,8 +201,8 @@ public class EntityCustomer : EntityBase
                             // Do nothing
                             break;
                         }
-                        else 
-                        { 
+                        else
+                        {
                             bool found = Grid.Pathfind(Position, getTiles.AllRegisters[i].GetCustomer().Position, IsPassable, out Vector2Int next);
                             if (found)
                             {
@@ -315,7 +315,7 @@ public class EntityCustomer : EntityBase
                 // Check all barstools
                 for (int i = 0; i < AllBarstools.Length; i++)
                 {
-                    bool found = Grid.Pathfind(Position, AllBarstools[i].Position, IsPassable, out Vector2Int next);
+                    bool found = Grid.Pathfind(Position, AllBarstools[i].Position, IsCounterPassable, out Vector2Int next);
                     if (found && 
                         MyChair == null && 
                         AllBarstools[i].GetMyCustomer() == null && 
@@ -478,7 +478,7 @@ public class EntityCustomer : EntityBase
             {
                 CurrentState = State.WaitAtChair;
             }
-            else if ((Position - MyCoffee.Position).magnitude < Range)
+            else if ((Position - (new Vector2Int(MyCoffee.Position.x, MyCoffee.Position.y - 2))).magnitude < Range)
             {
                 // In range of coffee item, pick it up
                 MyCoffee.transform.position = gameObject.transform.position;
@@ -532,6 +532,34 @@ public class EntityCustomer : EntityBase
             )
         {
             return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private bool IsCounterPassable(Vector2Int position)
+    {
+        // Customers can only walk on:
+        // Concrete, Foundation, Furnitures
+        if (Grid.HasPriority(position, EntityPriority.Foundations) ||
+            Grid.HasPriority(position, EntityPriority.Furniture) ||
+            Grid.HasPriority(position, EntityPriority.Characters) ||
+            Grid.HasEntity<EntityConcrete>(position)
+            )
+        {
+            if (Grid.HasEntity<EntityCounterRed>(position) ||
+                Grid.HasEntity<EntityCounterMarble>(position) ||
+                Grid.HasEntity<EntityCounterGrey>(position)
+                )
+            {
+                return false;
+            }
+            else 
+            {
+                return true;
+            }
         }
         else
         {

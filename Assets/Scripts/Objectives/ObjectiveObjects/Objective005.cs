@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class Objective005 : ObjectiveObject
 {
     CustomerSpawnSystem getCustomers;
+    EmployeeCommunicationSystem employeeCommunicationSystem;
     private void Awake()
     {
         SetObj("Your First Customer");
@@ -13,13 +13,16 @@ public class Objective005 : ObjectiveObject
         SetMaximum(1);
         SetSpawned(false);
         SetStatus(Status.New);
-        getCustomers = FindObjectOfType<CustomerSpawnSystem>();
+        employeeCommunicationSystem = FindObjectOfType<EmployeeCommunicationSystem>();
     }
 
     private void FixedUpdate()
     {
         RequirementsMet();
-        SetMinimum(0);
+        if (employeeCommunicationSystem.NoDrinkCustomers.Count > 0)
+        {
+            SetMinimum(employeeCommunicationSystem.NoDrinkCustomers.Count);
+        }
     }
 
     private void RequirementsMet()
