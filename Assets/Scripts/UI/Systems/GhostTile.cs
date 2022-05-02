@@ -71,99 +71,99 @@ public class GhostTile : MonoBehaviour
     //    {
     //        case TileConstruction.SelectedTile.none:
     //            return null;
-    //        case ConstructionSystemUI.SelectedTile.Floor1:
+    //        case TileConstruction.SelectedTile.Floor1:
     //            GhostTileObj.SetActive(true);
     //            ghostEntity.gameObject.SetActive(true);
     //            ghostEntity.SetGhostSprite(Resources.Load<Sprite>("Sprites/Tiles/Building/Floor"));
     //            return Resources.Load<Sprite>("Sprites/Tiles/Building/Floor");
-    //        case ConstructionSystemUI.SelectedTile.Floor2:
+    //        case TileConstruction.SelectedTile.Floor2:
     //            GhostTileObj.SetActive(true);
     //            ghostEntity.gameObject.SetActive(true);
     //            ghostEntity.SetGhostSprite(Resources.Load<Sprite>("Sprites/Tiles/Building/Floor1"));
     //            return Resources.Load<Sprite>("Sprites/Tiles/Building/Floor1");
-    //        case ConstructionSystemUI.SelectedTile.Floor3:
+    //        case TileConstruction.SelectedTile.Floor3:
     //            GhostTileObj.SetActive(true);
     //            ghostEntity.gameObject.SetActive(true);
     //            ghostEntity.SetGhostSprite(Resources.Load<Sprite>("Sprites/Tiles/Building/Floor2"));
     //            return Resources.Load<Sprite>("Sprites/Tiles/Building/Floor2");
-    //        case ConstructionSystemUI.SelectedTile.Floor4:
+    //        case TileConstruction.SelectedTile.Floor4:
     //            GhostTileObj.SetActive(true);
     //            ghostEntity.gameObject.SetActive(true);
     //            ghostEntity.SetGhostSprite(Resources.Load<Sprite>("Sprites/Tiles/Building/Floor3"));
     //            return Resources.Load<Sprite>("Sprites/Tiles/Building/Floor3");
-    //        case ConstructionSystemUI.SelectedTile.Floor5:
+    //        case TileConstruction.SelectedTile.Floor5:
     //            GhostTileObj.SetActive(true);
     //            ghostEntity.gameObject.SetActive(true);
     //            ghostEntity.SetGhostSprite(Resources.Load<Sprite>("Sprites/Tiles/Building/Floor4"));
     //            return Resources.Load<Sprite>("Sprites/Tiles/Building/Floor4");
-    //        case ConstructionSystemUI.SelectedTile.Floor6:
+    //        case TileConstruction.SelectedTile.Floor6:
     //            GhostTileObj.SetActive(true);
     //            ghostEntity.gameObject.SetActive(true);
     //            ghostEntity.SetGhostSprite(Resources.Load<Sprite>("Sprites/Tiles/Building/Floor5"));
     //            return Resources.Load<Sprite>("Sprites/Tiles/Building/Floor5");
-    //        case ConstructionSystemUI.SelectedTile.Floor7:
+    //        case TileConstruction.SelectedTile.Floor7:
     //            GhostTileObj.SetActive(true);
     //            ghostEntity.gameObject.SetActive(true);
     //            ghostEntity.SetGhostSprite(Resources.Load<Sprite>("Sprites/Tiles/Building/Floor6"));
     //            return Resources.Load<Sprite>("Sprites/Tiles/Building/Floor6");
-    //        case ConstructionSystemUI.SelectedTile.Wall1:
+    //        case TileConstruction.SelectedTile.Wall1:
     //            GhostTileObj.SetActive(true);
     //            ghostEntity.SetGhostSprite(Resources.Load<Sprite>("Sprites/Tiles/Building/Wall"));
     //            ghostEntity.gameObject.SetActive(true);
     //            return Resources.Load<Sprite>("Sprites/Tiles/Building/Wall");
-    //        case ConstructionSystemUI.SelectedTile.Wall2:
+    //        case TileConstruction.SelectedTile.Wall2:
     //            GhostTileObj.SetActive(true);
     //            ghostEntity.gameObject.SetActive(true);
     //            ghostEntity.SetGhostSprite(Resources.Load<Sprite>("Sprites/Tiles/Building/Wall1"));
     //            return Resources.Load<Sprite>("Sprites/Tiles/Building/Wall1");
-    //        case ConstructionSystemUI.SelectedTile.Wall3:
+    //        case TileConstruction.SelectedTile.Wall3:
     //            GhostTileObj.SetActive(true);
     //            ghostEntity.gameObject.SetActive(true);
     //            return Resources.Load<Sprite>("Sprites/Tiles/Building/Wall2");
-    //        case ConstructionSystemUI.SelectedTile.Wall4:
+    //        case TileConstruction.SelectedTile.Wall4:
     //            GhostTileObj.SetActive(true);
     //            ghostEntity.gameObject.SetActive(true);
     //            ghostEntity.SetGhostSprite(Resources.Load<Sprite>("Sprites/Tiles/Building/Wall3"));
     //            return Resources.Load<Sprite>("Sprites/Tiles/Building/Wall3");
 
-    //        case ConstructionSystemUI.SelectedTile.Table1:
+    //        case TileConstruction.SelectedTile.Table1:
     //            GhostTileObj.SetActive(true);
     //            ghostEntity.gameObject.SetActive(true);
     //            ghostEntity.SetGhostSprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/Table"));
     //            return Resources.Load<Sprite>("Sprites/Tiles/Furniture/Table");
-    //        case ConstructionSystemUI.SelectedTile.Chair1:
+    //        case TileConstruction.SelectedTile.Chair1:
     //            GhostTileObj.SetActive(true);
     //            ghostEntity.gameObject.SetActive(true);
     //            ghostEntity.SetGhostSprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/swood chair_left"));
     //            return Resources.Load<Sprite>("Sprites/Tiles/Furniture/swood chair_left");
-    //        case ConstructionSystemUI.SelectedTile.Counter1:
+    //        case TileConstruction.SelectedTile.Counter1:
     //            GhostTileObj.SetActive(true);
     //            ghostEntity.gameObject.SetActive(true);
     //            ghostEntity.SetGhostSprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/Counter1"));
     //            return Resources.Load<Sprite>("Sprites/Tiles/Furniture/Counter1");
-    //        case ConstructionSystemUI.SelectedTile.Barstool1:
+    //        case TileConstruction.SelectedTile.Barstool1:
     //            GhostTileObj.SetActive(true);
     //            ghostEntity.gameObject.SetActive(true);
     //            ghostEntity.SetGhostSprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/rred chair_back"));
     //            return Resources.Load<Sprite>("Sprites/Tiles/Furniture/rred chair_back");
-    //        case ConstructionSystemUI.SelectedTile.Brewing1:
+    //        case TileConstruction.SelectedTile.Brewing1:
     //            GhostTileObj.SetActive(true);
     //            ghostEntity.gameObject.SetActive(true);
     //            ghostEntity.SetGhostSprite(Resources.Load<Sprite>("Sprites/Tiles/Machines/Brewing-machine-1-front"));
     //            return Resources.Load<Sprite>("Sprites/Tiles/Machines/Brewing-machine-1-front");
-    //        case ConstructionSystemUI.SelectedTile.Espresso1:
+    //        case TileConstruction.SelectedTile.Espresso1:
     //            GhostTileObj.SetActive(true);
     //            ghostEntity.gameObject.SetActive(true);
     //            ghostEntity.SetGhostSprite(Resources.Load<Sprite>("Sprites/Tiles/Machines/Espresso-machine-1-front"));
 
     //            return Resources.Load<Sprite>("Sprites/Tiles/Machines/Espresso-machine-1-front");
-    //        case ConstructionSystemUI.SelectedTile.Roastery:
+    //        case TileConstruction.SelectedTile.Roastery:
     //            GhostTileObj.SetActive(true);
     //            ghostEntity.gameObject.SetActive(true);
     //            ghostEntity.SetGhostSprite(Resources.Load<Sprite>("Sprites/Tiles/Machines/Roastery"));
 
     //            return Resources.Load<Sprite>("Sprites/Tiles/Machines/Roastery");
-    //        case ConstructionSystemUI.SelectedTile.Register:
+    //        case TileConstruction.SelectedTile.Register:
     //            GhostTileObj.SetActive(true);
     //            ghostEntity.gameObject.SetActive(true);
     //            ghostEntity.SetGhostSprite(Resources.Load<Sprite>("Sprites/Tiles/Machines/Register"));

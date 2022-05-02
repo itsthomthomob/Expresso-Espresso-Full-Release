@@ -18,6 +18,7 @@ public class PauseManager : MonoBehaviour
     private void Start()
     {
         LoadStates();
+        tile = FindObjectOfType<TileConstruction>();
     }
 
     private void Update()

@@ -88,11 +88,14 @@ public class TileConstruction : MonoBehaviour
 
     private void OnMouseClick()
     {
-        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(root, Input.mousePosition, null, out Vector2 localPoint))
-        {
-            Vector2Int gridPoint = Vector2Int.RoundToInt(new Vector2(localPoint.x / root.sizeDelta.x + root.pivot.x, localPoint.y / root.sizeDelta.y + root.pivot.y));
-            Debug.Log(Grid.GetLastEntity<EntityBase>(gridPoint).Name);
-            //
+        if (root != null) 
+        { 
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(root, Input.mousePosition, null, out Vector2 localPoint))
+            {
+                Vector2Int gridPoint = Vector2Int.RoundToInt(new Vector2(localPoint.x / root.sizeDelta.x + root.pivot.x, localPoint.y / root.sizeDelta.y + root.pivot.y));
+                Debug.Log(Grid.GetLastEntity<EntityBase>(gridPoint).Name);
+                //
+            }
         }
     }
 

@@ -36981,6 +36981,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 837644310}
+  - component: {fileID: 837644309}
   - component: {fileID: 837644311}
   - component: {fileID: 837644312}
   - component: {fileID: 837644313}
@@ -37003,6 +37004,56 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &837644309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837644308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3ff3d06661e1814784665f938a1e584, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isConstructionOpen: 0
+  isOverUI: 0
+  B_ConstructionIcon: {fileID: 0}
+  ConstructionPanel: {fileID: 0}
+  curTile: 27
+  B_Floor1: {fileID: 0}
+  B_Floor2: {fileID: 0}
+  B_Floor3: {fileID: 0}
+  B_Floor4: {fileID: 0}
+  B_Floor5: {fileID: 0}
+  B_Floor6: {fileID: 0}
+  B_Floor7: {fileID: 0}
+  B_Wall1: {fileID: 0}
+  B_Wall2: {fileID: 0}
+  B_Wall3: {fileID: 0}
+  B_Wall4: {fileID: 0}
+  B_Table1: {fileID: 0}
+  B_Table2: {fileID: 0}
+  B_Table3: {fileID: 0}
+  B_Table4: {fileID: 0}
+  B_Chair1: {fileID: 0}
+  B_Chair2: {fileID: 0}
+  B_Chair3: {fileID: 0}
+  B_Chair4: {fileID: 0}
+  B_Counter1: {fileID: 0}
+  B_Counter2: {fileID: 0}
+  B_Counter3: {fileID: 0}
+  B_Barstool: {fileID: 0}
+  B_Espresso: {fileID: 0}
+  B_Brewer: {fileID: 0}
+  B_Roaster: {fileID: 0}
+  B_Register: {fileID: 0}
+  AllRegisters: []
+  AllChairs: []
+  AllFloors: []
+  AllWalls: []
+  AllCounters: []
+  SelectedEntities: []
 --- !u!4 &837644310
 Transform:
   m_ObjectHideFlags: 0
