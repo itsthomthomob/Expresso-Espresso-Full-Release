@@ -37277,7 +37277,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 837644310}
-  - component: {fileID: 837644309}
   - component: {fileID: 837644311}
   - component: {fileID: 837644312}
   - component: {fileID: 837644313}
@@ -37300,51 +37299,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &837644309
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 837644308}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3ff3d06661e1814784665f938a1e584, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  globalCanvas: {fileID: 875476158}
-  root: {fileID: 262216595}
-  _main: {fileID: 519420031}
-  destroyIcon: {fileID: 750384958}
-  ghostTile: {fileID: 1827071814}
-  getGhost: {fileID: 837644315}
-  selectedTile: 0
-  GetConstruction: {fileID: 0}
-  GetPause: {fileID: 837644313}
-  destroyOn: 0
-  isOverUI: 0
-  IsUIActive: 0
-  selectionMode: 0
-  currentResolution: {x: 1920, y: 1080}
-  referenceResolution: {x: 1920, y: 1080}
-  firstClick: {x: 0, y: 0}
-  min: {x: 0, y: 0}
-  max: {x: 0, y: 0}
-  minSelected: {x: 0, y: 0}
-  maxSelected: {x: 0, y: 0}
-  selectionRect: {fileID: 1473284276}
-  selectionRectImg: {fileID: 0}
-  currentTypeSelected: 0
-  selectedEntities: []
-  CameraAudio: {fileID: 908225467}
-  singleTile: {fileID: 8300000, guid: 0a0211798c0e1a148a614bdfacb46310, type: 3}
-  multiTile: {fileID: 8300000, guid: c9446b5b5a5f9b84c84c1540a9fe4712, type: 3}
-  machineTile: {fileID: 8300000, guid: 26089af9497215442bcf1f0d93238d9d, type: 3}
-  AllFloors: []
-  AllWalls: []
-  AllCounters: []
-  AllRegisters: []
-  AllChairs: []
 --- !u!4 &837644310
 Transform:
   m_ObjectHideFlags: 0
@@ -37412,7 +37366,7 @@ MonoBehaviour:
   pauseMenu: {fileID: 1984617370}
   pauseMenuFilter: {fileID: 728700206}
   ghost: {fileID: 1827071814}
-  tile: {fileID: 1765303357}
+  tile: {fileID: 0}
   resume: {fileID: 1273921827}
   exit: {fileID: 146509117}
   isPaused: 0
@@ -37447,7 +37401,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e909ab89c5a174c42994cd62f8c75737, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GetConstructionUI: {fileID: 1765303357}
+  GetConstructionUI: {fileID: 0}
   GetPause: {fileID: 837644313}
   ghostEntity: {fileID: 0}
   applyMat: {fileID: 2100000, guid: 64662e3f52143234cbb653d532426262, type: 2}
@@ -79310,7 +79264,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1765303358}
-  - component: {fileID: 1765303357}
   - component: {fileID: 1765303359}
   - component: {fileID: 1765303360}
   - component: {fileID: 1765303371}
@@ -79331,57 +79284,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1765303357
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1765303356}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 447407761a7d0bc45a8714e48895ce3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ConstructionUI: {fileID: 1191712097}
-  GetAudio: {fileID: 908225467}
-  multiTile: {fileID: 8300000, guid: c9446b5b5a5f9b84c84c1540a9fe4712, type: 3}
-  currentTileType: 0
-  currentTile: 0
-  onConstruction: 0
-  grid: {fileID: 0}
-  tileTypeDD: {fileID: 1329609379}
-  tileTypeSelector: {fileID: 1329609377}
-  tileSelector: {fileID: 3681989}
-  ttButtonBackground: {fileID: 1196701700}
-  scrollbar: {fileID: 1625864125}
-  buildingTiles: {fileID: 1035854740}
-  furnitureTiles: {fileID: 185275946}
-  machineTiles: {fileID: 844453373}
-  constructionButton: {fileID: 489498689}
-  Tile_Floor1: {fileID: 1270859159}
-  Tile_Floor2: {fileID: 1630578565}
-  Tile_Floor3: {fileID: 895950087}
-  Tile_Floor4: {fileID: 729432219}
-  Tile_Floor5: {fileID: 1158732870}
-  Tile_Floor6: {fileID: 472941834}
-  Tile_Floor7: {fileID: 1737542514}
-  Tile_Wall1: {fileID: 1222178516}
-  Tile_Wall2: {fileID: 737052369}
-  Tile_Wall3: {fileID: 1022404958}
-  Tile_Wall4: {fileID: 1627669439}
-  Table1: {fileID: 1515755062}
-  Chair1: {fileID: 2062855519}
-  Counter1: {fileID: 508782078}
-  Barstool: {fileID: 968067985}
-  Brewer1: {fileID: 414387470}
-  Brewer2: {fileID: 197264093}
-  Brewer3: {fileID: 260913224}
-  Espresso1: {fileID: 976988071}
-  Espresso2: {fileID: 2052314119}
-  Espresso3: {fileID: 1285483455}
-  Roastery: {fileID: 1160965299}
-  Register: {fileID: 538321469}
 --- !u!4 &1765303358
 Transform:
   m_ObjectHideFlags: 0
@@ -79476,6 +79378,7 @@ MonoBehaviour:
   currentEmployeeType: 0
   LoadSprites: []
   CharacterSprites: []
+  getSpawn: {fileID: 0}
 --- !u!114 &1765303361
 MonoBehaviour:
   m_ObjectHideFlags: 0
