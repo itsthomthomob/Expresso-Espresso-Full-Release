@@ -11,6 +11,7 @@ public class TileConstruction : MonoBehaviour
 
     [Header("Handle Construction Panel")]
     public bool isConstructionOpen = false;
+    public bool isOverUI;
     public Button B_ConstructionIcon;
     public GameObject ConstructionPanel;
 
@@ -25,6 +26,7 @@ public class TileConstruction : MonoBehaviour
         S_Barstool,
         None
     }
+
 
     [Header("Tile Buttons")]
     public CurrentTileState curTile = CurrentTileState.None;
@@ -59,10 +61,18 @@ public class TileConstruction : MonoBehaviour
     public Button B_Roaster;
     public Button B_Register;
 
-    [Header("Machine Buttons")]
+    [Header("AI Dependent")]
+    public List<EntityRegister> AllRegisters = new List<EntityRegister>();
+
+
+    [Header("Objective Dependent")]
+    public List<EntityBase> AllChairs = new List<EntityBase>();
+    public List<EntityBase> AllFloors = new List<EntityBase>();
+    public List<EntityBase> AllWalls = new List<EntityBase>();
+    public List<EntityBase> AllCounters = new List<EntityBase>();
 
     [Header("Selected Entities")]
-    EntityBase[] SelectedEntities;
+    public EntityBase[] SelectedEntities;
 
     private void Start()
     {
@@ -78,11 +88,11 @@ public class TileConstruction : MonoBehaviour
 
     private void OnMouseClick()
     {
-
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(root, Input.mousePosition, null, out Vector2 localPoint))
         {
             Vector2Int gridPoint = Vector2Int.RoundToInt(new Vector2(localPoint.x / root.sizeDelta.x + root.pivot.x, localPoint.y / root.sizeDelta.y + root.pivot.y));
-
+            Debug.Log(Grid.GetLastEntity<EntityBase>(gridPoint).Name);
+            //
         }
     }
 
@@ -90,12 +100,10 @@ public class TileConstruction : MonoBehaviour
     {
         Grid = GetComponent<EntityGrid>();
     }
-
     private void SetConstructionButtons() 
     {
         B_ConstructionIcon.onClick.AddListener(ControlConstructionUI);
     }
-
     private void ControlConstructionUI() 
     {
         if (isConstructionOpen == false)
@@ -109,7 +117,6 @@ public class TileConstruction : MonoBehaviour
             isConstructionOpen = false;
         }
     }
-
     private void SetTileButtons() 
     {
         B_Floor1.onClick.AddListener(FloorOne);
@@ -141,7 +148,6 @@ public class TileConstruction : MonoBehaviour
         B_Roaster.onClick.AddListener(ClickedRoaster);
         B_Brewer.onClick.AddListener(ClickedBrewer);
     }
-
     private void FloorOne() 
     {
         curTile = CurrentTileState.S_Floor1;

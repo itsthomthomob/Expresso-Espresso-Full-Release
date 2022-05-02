@@ -7,13 +7,13 @@ public class MasterUIController : MonoBehaviour
 {
     public List<GameObject> UI_Objects;
     public GameObject currentlyActiveUI;
-    public ConstructionSystemUI GetConstructionUI;
+    public TileConstruction GetConstructionUI;
 
     public bool isActive;
 
     private void Start()
     {
-        GetConstructionUI = FindObjectOfType<ConstructionSystemUI>();
+        GetConstructionUI = FindObjectOfType<TileConstruction>();
     }
 
     private void Update()
@@ -47,7 +47,7 @@ public class MasterUIController : MonoBehaviour
                 { 
                     if (currentlyActiveUI.name == "Construction-UI")
                     {
-                        GetConstructionUI.onConstruction = true;
+                        GetConstructionUI.isConstructionOpen = false;
                         currentlyActiveUI = null;
                         isActive = false;
                     }
