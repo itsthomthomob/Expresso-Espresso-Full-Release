@@ -48,8 +48,8 @@ public class EntityChairRed : EntityBase
 
     public override void OnEntityAwake()
     {
-        SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/sred chair_left"));
+        SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/rgrey chair_left"));
         SetEntityPriority(EntityPriority.Furniture);
-        SetEntityName("Red Chair");
+        SetEntityName("Rough Grey Chair");
     }
 }

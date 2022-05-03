@@ -414,7 +414,6 @@ public class SaveGameSystem : MonoBehaviour
 
             // Reset tile construction script
             TileConstruction GetConstruction = FindObjectOfType<TileConstruction>();
-            GetConstruction.SelectedEntities = new EntityBase[0];
 
             // Load Entities
             List<EntityBase>  AllCurrentEntities = new List<EntityBase>();

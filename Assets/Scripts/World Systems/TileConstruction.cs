@@ -7,7 +7,9 @@ public class TileConstruction : MonoBehaviour
 {
     [Header("Grid")]
     EntityGrid Grid;
-    RectTransform root;
+    public RectTransform root;
+    public Vector2Int firstCorner;
+    public Vector2Int lastCorner;
 
     [Header("Handle Construction Panel")]
     public bool isConstructionOpen = false;
@@ -30,6 +32,7 @@ public class TileConstruction : MonoBehaviour
 
     [Header("Tile Buttons")]
     public CurrentTileState curTile = CurrentTileState.None;
+    public EntityBase curSelectedTile;
     public Button B_Floor1;
     public Button B_Floor2;
     public Button B_Floor3;
@@ -72,7 +75,7 @@ public class TileConstruction : MonoBehaviour
     public List<EntityBase> AllCounters = new List<EntityBase>();
 
     [Header("Selected Entities")]
-    public EntityBase[] SelectedEntities;
+    public List<EntityBase> SelectedEntities = new List<EntityBase>();
 
     private void Start()
     {
@@ -83,31 +86,201 @@ public class TileConstruction : MonoBehaviour
 
     private void Update()
     {
-        OnMouseClick();
+        HandleOnDrag();
+        CancelBuilding();
+        HandleSelectedEntities();
     }
 
-    private void OnMouseClick()
+    private void HandleOnDrag()
     {
-        if (root != null) 
-        { 
+        if (curTile != CurrentTileState.None)
+        {
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                // TO-DO
+                // - Return selected entity
+                if (RectTransformUtility.ScreenPointToLocalPointInRectangle(root, Input.mousePosition, null, out Vector2 localPoint))
+                {
+                    Vector2Int gridPoint = Vector2Int.RoundToInt(new Vector2(localPoint.x / root.sizeDelta.x + root.pivot.x, localPoint.y / root.sizeDelta.y + root.pivot.y));
+                    // Get Grid position relative to UI
+                    curSelectedTile = Grid.GetLastEntity<EntityBase>(gridPoint);
+                }
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            if (root != null) 
+            { 
+                if (RectTransformUtility.ScreenPointToLocalPointInRectangle(root, Input.mousePosition, null, out Vector2 localPoint))
+                {
+                    // Get Grid position relative to UI
+                    Vector2Int gridPoint = Vector2Int.RoundToInt(new Vector2(localPoint.x / root.sizeDelta.x + root.pivot.x, localPoint.y / root.sizeDelta.y + root.pivot.y));
+                    firstCorner = gridPoint;
+                    // Add first selected entity to selected entities
+                    if (!SelectedEntities.Contains(Grid.GetLastEntity<EntityBase>(gridPoint)))
+                    {
+                        if (Grid.GetLastEntity<EntityBase>(gridPoint).Priority != EntityPriority.Characters)
+                        {
+                            SelectedEntities.Add(Grid.GetLastEntity<EntityBase>(gridPoint));
+                        }
+                    }
+                }
+            }
+        }
+        if (Input.GetKey(KeyCode.Mouse0))
+        {
             if (RectTransformUtility.ScreenPointToLocalPointInRectangle(root, Input.mousePosition, null, out Vector2 localPoint))
             {
+                // Get Grid position relative to UI
                 Vector2Int gridPoint = Vector2Int.RoundToInt(new Vector2(localPoint.x / root.sizeDelta.x + root.pivot.x, localPoint.y / root.sizeDelta.y + root.pivot.y));
-                Debug.Log(Grid.GetLastEntity<EntityBase>(gridPoint).Name);
-                //
+                lastCorner = gridPoint;
+
+                // If both corners are different
+                if (firstCorner != lastCorner)
+                {
+                    for (int i = 0; i < Grid.FindEntities(firstCorner, lastCorner).Length; i++)
+                    {
+                        if (!SelectedEntities.Contains(Grid.FindEntities(firstCorner, lastCorner)[i]))
+                        {
+                            SelectedEntities.Add(Grid.FindEntities(firstCorner, lastCorner)[i]);
+                        }
+                    }
+
+                    // Once all entities are added
+                    HandleSelectedEntities();
+                }
             }
         }
     }
 
-    private void SetObjects() 
+    private void HandleSelectedEntities() 
     {
-        Grid = GetComponent<EntityGrid>();
+        if (curTile != CurrentTileState.None)
+        {
+            for (int i = 0; i < SelectedEntities.Count; i++)
+            {
+                SelectedEntities[i] = ChangeSelectedEntities(SelectedEntities[i].Position);
+            }
+        }
     }
-    private void SetConstructionButtons() 
+
+    private EntityBase ChangeSelectedEntities(Vector2Int position) 
     {
-        B_ConstructionIcon.onClick.AddListener(ControlConstructionUI);
+        if (SelectedEntities.Count == 1)
+        {
+            switch (curTile)
+            {
+                case CurrentTileState.Roaster:
+                    EntityRoasteryMachineOne roaster = Grid.Create<EntityRoasteryMachineOne>(position);
+                    return roaster;
+                case CurrentTileState.Brewer:
+                    EntityBrewingMachineOne br = Grid.Create<EntityBrewingMachineOne>(position);
+                    return br;
+                case CurrentTileState.Register:
+                    EntityRegister reg = Grid.Create<EntityRegister>(position);
+                    return reg;
+                case CurrentTileState.Espresso:
+                    EntityEspressoMachineOne Espresso = Grid.Create<EntityEspressoMachineOne>(position);
+                    return Espresso;
+                case CurrentTileState.S_Table1:
+                    EntityTableSmooth S_Table1 = Grid.Create<EntityTableSmooth>(position);
+                    return S_Table1;
+                case CurrentTileState.S_Table2:
+                    EntityTableRough S_Table2 = Grid.Create<EntityTableRough>(position);
+                    return S_Table2;
+                case CurrentTileState.S_Table3:
+                    EntityTableGrey S_Table3 = Grid.Create<EntityTableGrey>(position);
+                    return S_Table3;
+                case CurrentTileState.S_Table4:
+                    EntityTableSquareGrey S_Table4 = Grid.Create<EntityTableSquareGrey>(position);
+                    return S_Table4;
+                case CurrentTileState.S_Chair1:
+                    EntityChairSmooth S_Chair1 = Grid.Create<EntityChairSmooth>(position);
+                    return S_Chair1;
+                case CurrentTileState.S_Chair2:
+                    EntityChairRough S_Chair2 = Grid.Create<EntityChairRough>(position);
+                    return S_Chair2;
+                case CurrentTileState.S_Chair3:
+                    EntityChairGrey S_Chair3 = Grid.Create<EntityChairGrey>(position);
+                    return S_Chair3;
+                case CurrentTileState.S_Chair4:
+                    EntityChairRed S_Chair4 = Grid.Create<EntityChairRed>(position);
+                    return S_Chair4;
+                case CurrentTileState.S_Barstool:
+                    EntityBarstool S_Barstool = Grid.Create<EntityBarstool>(position);
+                    return S_Barstool;
+                default:
+                    return null;
+            }
+        }
+        else if (SelectedEntities.Count > 1)
+        {
+            // Entities are selected
+            switch (curTile)
+            {
+                case CurrentTileState.S_Floor1:
+                    EntityFloor S_Floor1 = Grid.Create<EntityFloor>(position);
+                    return S_Floor1;
+                case CurrentTileState.S_Floor2:
+                    EntityFloorTwo S_Floor2 = Grid.Create<EntityFloorTwo>(position);
+                    return S_Floor2;
+                case CurrentTileState.S_Floor3:
+                    EntityFloorThree S_Floor3 = Grid.Create<EntityFloorThree>(position);
+                    return S_Floor3;
+                case CurrentTileState.S_Floor4:
+                    EntityFloorFour S_Floor4 = Grid.Create<EntityFloorFour>(position);
+                    return S_Floor4;
+                case CurrentTileState.S_Floor5:
+                    EntityFloorFive S_Floor5 = Grid.Create<EntityFloorFive>(position);
+                    return S_Floor5;
+                case CurrentTileState.S_Floor7:
+                    EntityFloorSeven S_Floor7 = Grid.Create<EntityFloorSeven>(position);
+                    return S_Floor7;
+                case CurrentTileState.S_Wall1:
+                    EntityWallBrick S_Wall1 = Grid.Create<EntityWallBrick>(position);
+                    return S_Wall1;
+                case CurrentTileState.S_Wall2:
+                    EntityWallGreyBrick S_Wall2 = Grid.Create<EntityWallGreyBrick>(position);
+                    return S_Wall2;
+                case CurrentTileState.S_Wall3:
+                    EntityWallPale S_Wall3 = Grid.Create<EntityWallPale>(position);
+                    return S_Wall3;
+                case CurrentTileState.S_Wall4:
+                    EntityWallPlaster S_Wall4 = Grid.Create<EntityWallPlaster>(position);
+                    return S_Wall4;
+                case CurrentTileState.S_Counter1:
+                    EntityCounterGrey S_Counter1 = Grid.Create<EntityCounterGrey>(position);
+                    return S_Counter1;
+                case CurrentTileState.S_Counter2:
+                    EntityCounterMarble S_Counter2 = Grid.Create<EntityCounterMarble>(position);
+                    return S_Counter2;
+                case CurrentTileState.S_Counter3:
+                    EntityCounterRed S_Counter3 = Grid.Create<EntityCounterRed>(position);
+                    return S_Counter3;
+                default:
+                    return null;
+            }
+        }
+        else if (SelectedEntities.Count < 1)
+        {
+            return null;
+        }
+        else 
+        {
+            return null;
+        }
     }
-    private void ControlConstructionUI() 
+
+    private void CancelBuilding() 
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            curTile = CurrentTileState.None;
+            curSelectedTile = null;
+        }
+    }
+
+    private void ControlConstructionUI()
     {
         if (isConstructionOpen == false)
         {
@@ -119,6 +292,15 @@ public class TileConstruction : MonoBehaviour
             ConstructionPanel.SetActive(true);
             isConstructionOpen = false;
         }
+    }
+
+    private void SetObjects() 
+    {
+        Grid = FindObjectOfType<EntityGrid>();
+    }
+    private void SetConstructionButtons() 
+    {
+        B_ConstructionIcon.onClick.AddListener(ControlConstructionUI);
     }
     private void SetTileButtons() 
     {
