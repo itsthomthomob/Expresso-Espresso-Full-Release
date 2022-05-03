@@ -4,23 +4,19 @@ using UnityEngine;
 
 public class GhostEntity : EntityBase
 {
-    public void SetGhostPriority(EntityPriority newP) 
+    public void SetGhostSprite(Sprite newSprite)
     {
-        SetEntityPriority(newP);
-    }
-
-    public void SetGhostSprite(Sprite newSprite) 
-    { 
         SetEntitySprite(newSprite);
     }
 
-    public void SetGhostPos(Vector2Int newPos) 
+    private void Start()
     {
-        Move(newPos, 0f);
+        //gameObject.SetActive(false);
     }
-
     public override void OnEntityAwake()
     {
+        SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Building/Floor"));
         SetEntityPriority(EntityPriority.Floating);
+        SetEntityName("Rough Pale Wooden Floor");
     }
 }

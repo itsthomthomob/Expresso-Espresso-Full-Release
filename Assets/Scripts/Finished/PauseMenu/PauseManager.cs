@@ -8,7 +8,7 @@ public class PauseManager : MonoBehaviour
 {
     public GameObject pauseMenu;
     public GameObject pauseMenuFilter;
-    public GameObject ghost;
+    public EntityBase ghost;
     public TileConstruction tile;
     public Button resume;
     public Button exit;
@@ -19,10 +19,15 @@ public class PauseManager : MonoBehaviour
     {
         LoadStates();
         tile = FindObjectOfType<TileConstruction>();
+        ghost = FindObjectOfType<GhostTile>().ghostEntity;
     }
 
     private void Update()
     {
+        if (ghost == null) 
+        { 
+            ghost = FindObjectOfType<GhostTile>().ghostEntity;
+        }
         if (!GetUI.isActive)
         {
             ManagePause();
@@ -40,7 +45,7 @@ public class PauseManager : MonoBehaviour
 
         if (isPaused)
         {
-            ghost.SetActive(false);
+            ghost.gameObject.SetActive(false);
             pauseMenu.SetActive(true);
             pauseMenuFilter.SetActive(true);
             Time.timeScale = 0;
@@ -52,7 +57,7 @@ public class PauseManager : MonoBehaviour
 
             if (tile.curTile != TileConstruction.CurrentTileState.None)
             {
-                ghost.SetActive(true);
+                //ghost.gameObject.SetActive(true);
             }
             getTime.Timer.Start();
             Time.timeScale = 1;

@@ -10998,7 +10998,7 @@ MonoBehaviour:
   TooltipUI: {fileID: 1635918065}
   TileName: {fileID: 1429249952}
   TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 1827071814}
+  ghostTile: {fileID: 0}
 --- !u!114 &233411628
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13251,7 +13251,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -2.8947754, y: -13.026855}
+  m_AnchoredPosition: {x: -2.8947754, y: -13.026733}
   m_SizeDelta: {x: 617.6477, y: 265.15186}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &294982898
@@ -15021,7 +15021,7 @@ MonoBehaviour:
   TooltipUI: {fileID: 1635918065}
   TileName: {fileID: 1429249952}
   TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 1827071814}
+  ghostTile: {fileID: 0}
 --- !u!114 &336476349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18110,7 +18110,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -2.8947754, y: -2.7301025}
+  m_AnchoredPosition: {x: -2.8947754, y: -2.7299805}
   m_SizeDelta: {x: 1820, y: 1381.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &427294673
@@ -20027,7 +20027,7 @@ MonoBehaviour:
   TooltipUI: {fileID: 1635918065}
   TileName: {fileID: 1429249952}
   TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 1827071814}
+  ghostTile: {fileID: 0}
 --- !u!114 &472941833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20586,7 +20586,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -0.00014114, y: 0.00012207031}
+  m_AnchoredPosition: {x: -0.00014114, y: 0.00024414062}
   m_SizeDelta: {x: 545.2, y: 1.41}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &483565681
@@ -21724,7 +21724,7 @@ MonoBehaviour:
   TooltipUI: {fileID: 1635918065}
   TileName: {fileID: 1429249952}
   TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 1827071814}
+  ghostTile: {fileID: 0}
 --- !u!114 &502164641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21889,7 +21889,7 @@ MonoBehaviour:
   TooltipUI: {fileID: 1635918065}
   TileName: {fileID: 1429249952}
   TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 1827071814}
+  ghostTile: {fileID: 0}
 --- !u!114 &508782082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29190,7 +29190,7 @@ MonoBehaviour:
   TooltipUI: {fileID: 1635918065}
   TileName: {fileID: 1429249952}
   TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 1827071814}
+  ghostTile: {fileID: 0}
 --- !u!114 &694705452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30965,7 +30965,7 @@ MonoBehaviour:
   TooltipUI: {fileID: 1635918065}
   TileName: {fileID: 1429249952}
   TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 1827071814}
+  ghostTile: {fileID: 0}
 --- !u!114 &729432223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31130,7 +31130,7 @@ MonoBehaviour:
   TooltipUI: {fileID: 1635918065}
   TileName: {fileID: 1429249952}
   TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 1827071814}
+  ghostTile: {fileID: 0}
 --- !u!114 &737052373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32084,7 +32084,7 @@ MonoBehaviour:
   TooltipUI: {fileID: 1635918065}
   TileName: {fileID: 1429249952}
   TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 1827071814}
+  ghostTile: {fileID: 0}
 --- !u!114 &752962480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37020,9 +37020,11 @@ MonoBehaviour:
   firstCorner: {x: 0, y: 0}
   lastCorner: {x: 0, y: 0}
   isConstructionOpen: 0
+  isDestroyOn: 0
   isOverUI: 0
   B_ConstructionIcon: {fileID: 489498689}
   ConstructionPanel: {fileID: 1191712097}
+  DestroyIcon: {fileID: 750384958}
   curTile: 27
   curSelectedTile: {fileID: 0}
   B_Floor1: {fileID: 1270859159}
@@ -37124,7 +37126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseMenu: {fileID: 1984617370}
   pauseMenuFilter: {fileID: 728700206}
-  ghost: {fileID: 1827071814}
+  ghost: {fileID: 0}
   tile: {fileID: 0}
   resume: {fileID: 1273921827}
   exit: {fileID: 146509117}
@@ -37164,12 +37166,12 @@ MonoBehaviour:
   GetPause: {fileID: 837644313}
   ghostEntity: {fileID: 0}
   applyMat: {fileID: 2100000, guid: 64662e3f52143234cbb653d532426262, type: 2}
-  GhostTileObj: {fileID: 1827071814}
-  GhostTileImg: {fileID: 1827071815}
+  GhostTileImg: {fileID: 0}
   parentCanvas: {fileID: 875476158}
   XAdjust: 60
   YAdjust: 60
   newPos: {x: 0, y: 0, z: 0}
+  Grid: {fileID: 0}
   root: {fileID: 262216595}
 --- !u!114 &837644316
 MonoBehaviour:
@@ -39241,7 +39243,6 @@ RectTransform:
   - {fileID: 926840626}
   - {fileID: 728700207}
   - {fileID: 1984617371}
-  - {fileID: 1827071817}
   - {fileID: 1381839798}
   - {fileID: 1125996169}
   - {fileID: 1181120005}
@@ -40170,7 +40171,7 @@ MonoBehaviour:
   TooltipUI: {fileID: 1635918065}
   TileName: {fileID: 1429249952}
   TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 1827071814}
+  ghostTile: {fileID: 0}
 --- !u!114 &895950091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42642,7 +42643,7 @@ MonoBehaviour:
   TooltipUI: {fileID: 1635918065}
   TileName: {fileID: 1429249952}
   TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 1827071814}
+  ghostTile: {fileID: 0}
 --- !u!114 &968067989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45770,7 +45771,7 @@ MonoBehaviour:
   TooltipUI: {fileID: 1635918065}
   TileName: {fileID: 1429249952}
   TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 1827071814}
+  ghostTile: {fileID: 0}
 --- !u!114 &1022404962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47786,7 +47787,7 @@ MonoBehaviour:
   TooltipUI: {fileID: 1635918065}
   TileName: {fileID: 1429249952}
   TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 1827071814}
+  ghostTile: {fileID: 0}
 --- !u!114 &1056902169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51693,7 +51694,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 875476159}
-  m_RootOrder: 35
+  m_RootOrder: 34
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -52159,7 +52160,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -2.7424316, y: -2.7330322}
+  m_AnchoredPosition: {x: -2.7424316, y: -2.7329102}
   m_SizeDelta: {x: 1820.3, y: 1381.426}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1134161915
@@ -53107,7 +53108,7 @@ MonoBehaviour:
   TooltipUI: {fileID: 1635918065}
   TileName: {fileID: 1429249952}
   TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 1827071814}
+  ghostTile: {fileID: 0}
 --- !u!114 &1158732874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54091,7 +54092,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 875476159}
-  m_RootOrder: 36
+  m_RootOrder: 35
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -56007,7 +56008,7 @@ MonoBehaviour:
   TooltipUI: {fileID: 1635918065}
   TileName: {fileID: 1429249952}
   TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 1827071814}
+  ghostTile: {fileID: 0}
 --- !u!114 &1222178520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56543,7 +56544,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 178.38423, y: -50.701508}
+  m_AnchoredPosition: {x: 178.38423, y: -50.701416}
   m_SizeDelta: {x: 323.0649, y: 60.575}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1242761870
@@ -57915,7 +57916,7 @@ MonoBehaviour:
   TooltipUI: {fileID: 1635918065}
   TileName: {fileID: 1429249952}
   TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 1827071814}
+  ghostTile: {fileID: 0}
 --- !u!114 &1270859163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62100,7 +62101,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 875476159}
-  m_RootOrder: 34
+  m_RootOrder: 33
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -67151,7 +67152,7 @@ MonoBehaviour:
   TooltipUI: {fileID: 1635918065}
   TileName: {fileID: 1429249952}
   TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 1827071814}
+  ghostTile: {fileID: 0}
 --- !u!114 &1515755066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67737,7 +67738,7 @@ MonoBehaviour:
   TooltipUI: {fileID: 1635918065}
   TileName: {fileID: 1429249952}
   TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 1827071814}
+  ghostTile: {fileID: 0}
 --- !u!114 &1533404269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69554,7 +69555,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 434.11795, y: -50.701508}
+  m_AnchoredPosition: {x: 434.11795, y: -50.701416}
   m_SizeDelta: {x: 120.9954, y: 56.981}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1596644682
@@ -70445,7 +70446,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -2.8947754, y: -13.026855}
+  m_AnchoredPosition: {x: -2.8947754, y: -13.026733}
   m_SizeDelta: {x: 617.6477, y: 265.15186}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1614303501
@@ -71374,7 +71375,7 @@ MonoBehaviour:
   TooltipUI: {fileID: 1635918065}
   TileName: {fileID: 1429249952}
   TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 1827071814}
+  ghostTile: {fileID: 0}
 --- !u!114 &1627669443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71748,7 +71749,7 @@ MonoBehaviour:
   TooltipUI: {fileID: 1635918065}
   TileName: {fileID: 1429249952}
   TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 1827071814}
+  ghostTile: {fileID: 0}
 --- !u!114 &1630578569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75970,7 +75971,7 @@ MonoBehaviour:
   TooltipUI: {fileID: 1635918065}
   TileName: {fileID: 1429249952}
   TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 1827071814}
+  ghostTile: {fileID: 0}
 --- !u!114 &1730619912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76771,7 +76772,7 @@ MonoBehaviour:
   TooltipUI: {fileID: 1635918065}
   TileName: {fileID: 1429249952}
   TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 1827071814}
+  ghostTile: {fileID: 0}
 --- !u!114 &1737542513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82364,81 +82365,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOver: 0
---- !u!1 &1827071814
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1827071817}
-  - component: {fileID: 1827071816}
-  - component: {fileID: 1827071815}
-  m_Layer: 5
-  m_Name: GhostTileObj
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1827071815
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1827071814}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1827071816
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1827071814}
-  m_CullTransparentMesh: 1
---- !u!224 &1827071817
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1827071814}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 875476159}
-  m_RootOrder: 33
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1028.7, y: -114}
-  m_SizeDelta: {x: 75, y: 75}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1827572241
 GameObject:
   m_ObjectHideFlags: 0
@@ -85467,7 +85393,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 875476159}
-  m_RootOrder: 37
+  m_RootOrder: 36
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -87051,7 +86977,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1610034674}
   m_HandleRect: {fileID: 1610034673}
   m_Direction: 0
-  m_Value: 0
+  m_Value: -0.00000008784043
   m_Size: 0.47315288
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -90517,7 +90443,7 @@ MonoBehaviour:
   TooltipUI: {fileID: 1635918065}
   TileName: {fileID: 1429249952}
   TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 1827071814}
+  ghostTile: {fileID: 0}
 --- !u!114 &2062855523
 MonoBehaviour:
   m_ObjectHideFlags: 0
