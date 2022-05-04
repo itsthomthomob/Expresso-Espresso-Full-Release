@@ -77,8 +77,8 @@ public class TileConstruction : MonoBehaviour
     public List<EntityBase> AllCounters = new List<EntityBase>();
 
     [Header("Selected Entities")]
-    public List<EntityBase> SelectedEntities = new List<EntityBase>();
-
+    public EntityBase[] SelectedEntities;
+    EntityBase[] oldSelection = new EntityBase[0];
     private void Start()
     {
         SetObjects();
@@ -98,7 +98,7 @@ public class TileConstruction : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.B))
         {
-            SelectedEntities.Clear();
+            SelectedEntities = new EntityBase[0];
             curTile = CurrentTileState.None;
             isDestroyOn = !isDestroyOn;
         }
@@ -115,41 +115,46 @@ public class TileConstruction : MonoBehaviour
     private void HandleOnDrag()
     {
         if (!isOverUI && !isDestroyOn) 
-        { 
-            if (curTile != CurrentTileState.None)
+        {
+            // Single-Tile Building
+            if (Input.GetKeyUp(KeyCode.Mouse0))
             {
-                if (Input.GetKeyDown(KeyCode.Mouse0))
+                // If there arent multiple entities selected
+                if (SelectedEntities.Length == 0)
                 {
-                    // TO-DO
-                    // - Return selected entity
-                    if (RectTransformUtility.ScreenPointToLocalPointInRectangle(root, Input.mousePosition, null, out Vector2 localPoint))
+                    // Check if curTile is not none
+                    if (curTile != CurrentTileState.None)
                     {
-                        Vector2Int gridPoint = Vector2Int.RoundToInt(new Vector2(localPoint.x / root.sizeDelta.x + root.pivot.x, localPoint.y / root.sizeDelta.y + root.pivot.y));
-                        // Get Grid position relative to UI
-                        curSelectedTile = Grid.GetLastEntity<EntityBase>(gridPoint);
-                    }
-                }
-            }
-            if (Input.GetKeyDown(KeyCode.Mouse0))
-            {
-                if (root != null) 
-                { 
-                    if (RectTransformUtility.ScreenPointToLocalPointInRectangle(root, Input.mousePosition, null, out Vector2 localPoint))
-                    {
-                        // Get Grid position relative to UI
-                        Vector2Int gridPoint = Vector2Int.RoundToInt(new Vector2(localPoint.x / root.sizeDelta.x + root.pivot.x, localPoint.y / root.sizeDelta.y + root.pivot.y));
-                        firstCorner = gridPoint;
-                        // Add first selected entity to selected entities
-                        if (!SelectedEntities.Contains(Grid.GetLastEntity<EntityBase>(gridPoint)))
+                        // Get mouse position
+                        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(root, Input.mousePosition, null, out Vector2 localPoint))
                         {
-                            if (Grid.GetLastEntity<EntityBase>(gridPoint).Priority != EntityPriority.Characters)
-                            {
-                                SelectedEntities.Add(Grid.GetLastEntity<EntityBase>(gridPoint));
-                            }
+                            // Gets first corner
+                            Vector2Int gridPoint = Vector2Int.RoundToInt(new Vector2(localPoint.x / root.sizeDelta.x + root.pivot.x, localPoint.y / root.sizeDelta.y + root.pivot.y));
+
+                            // Build tile
+                            Debug.Log("Building tile...");
+                            SelectedEntities = new EntityBase[0];
+                            Debug.Log(SelectedEntities.Length);
+                            BuildTileAt(gridPoint);
                         }
                     }
                 }
             }
+            // Gets min corner
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                if (curTile != CurrentTileState.None) 
+                { 
+                    if (RectTransformUtility.ScreenPointToLocalPointInRectangle(root, Input.mousePosition, null, out Vector2 localPoint))
+                    {
+                        // Gets first corner
+                        Vector2Int gridPoint = Vector2Int.RoundToInt(new Vector2(localPoint.x / root.sizeDelta.x + root.pivot.x, localPoint.y / root.sizeDelta.y + root.pivot.y));
+                        firstCorner = gridPoint;
+                        curSelectedTile = Grid.GetLastEntity<EntityBase>(gridPoint);
+                    }
+                }
+            }
+            // Gets max corner, finds SelectedEntities
             if (Input.GetKey(KeyCode.Mouse0))
             {
                 if (RectTransformUtility.ScreenPointToLocalPointInRectangle(root, Input.mousePosition, null, out Vector2 localPoint))
@@ -157,24 +162,66 @@ public class TileConstruction : MonoBehaviour
                     // Get Grid position relative to UI
                     Vector2Int gridPoint = Vector2Int.RoundToInt(new Vector2(localPoint.x / root.sizeDelta.x + root.pivot.x, localPoint.y / root.sizeDelta.y + root.pivot.y));
                     lastCorner = gridPoint;
+                    oldSelection = new EntityBase[0];
+                    oldSelection = SelectedEntities;
 
                     // If both corners are different
                     if (firstCorner != lastCorner)
                     {
-                        for (int i = 0; i < Grid.FindEntities(firstCorner, lastCorner).Length; i++)
-                        {
-                            if (!SelectedEntities.Contains(Grid.FindEntities(firstCorner, lastCorner)[i]))
-                            {
-                                SelectedEntities.Add(Grid.FindEntities(firstCorner, lastCorner)[i]);
-                            }
-                        }
+                        SelectedEntities = Grid.FindEntities(firstCorner, lastCorner);
 
                         // Once all entities are added
                         HandleSelectedEntities();
                     }
+
+                    // Clear material
+                    if (SelectedEntities != oldSelection)
+                    {
+                        for (int j = 0; j < oldSelection.Length; j++)
+                        {
+                            // This selected entity is not in the old selection
+                            oldSelection[j].GetComponent<Image>().material = null;
+                        }
+                    }
                 }
             }
+            // Multi-Tile Building
+            if (Input.GetKeyUp(KeyCode.Mouse0))
+            {
+                for (int i = 0; i < SelectedEntities.Length; i++)
+                {
+                    SelectedEntities[i].GetComponent<Image>().material = null;
+                    BuildTileAt(SelectedEntities[i].Position);
+                }
+
+                for (int i = 0; i < oldSelection.Length; i++)
+                {
+                    if (oldSelection[i] != null)
+                    {
+                        oldSelection[i].GetComponent<Image>().material = null;
+                    }
+                }
+
+                SelectedEntities = new EntityBase[0];
+            }
+            // Cancel Building
+            if (Input.GetKeyDown(KeyCode.Mouse1))
+            {
+                curTile = CurrentTileState.None;
+                for (int i = 0; i < SelectedEntities.Length; i++)
+                {
+                    SelectedEntities[i].GetComponent<Image>().material = null;
+                }
+                for (int i = 0; i < oldSelection.Length; i++)
+                {
+                    oldSelection[i].GetComponent<Image>().material = null;
+                }
+                SelectedEntities = new EntityBase[0];
+                oldSelection = new EntityBase[0];
+                curSelectedTile = null;
+            }
         }
+        // Deleting
         if (isDestroyOn)
         {
             if (Input.GetKeyDown(KeyCode.Mouse0))
@@ -186,14 +233,6 @@ public class TileConstruction : MonoBehaviour
                         // Get Grid position relative to UI
                         Vector2Int gridPoint = Vector2Int.RoundToInt(new Vector2(localPoint.x / root.sizeDelta.x + root.pivot.x, localPoint.y / root.sizeDelta.y + root.pivot.y));
                         firstCorner = gridPoint;
-                        // Add first selected entity to selected entities
-                        if (!SelectedEntities.Contains(Grid.GetLastEntity<EntityBase>(gridPoint)))
-                        {
-                            if (Grid.GetLastEntity<EntityBase>(gridPoint).Priority != EntityPriority.Characters)
-                            {
-                                SelectedEntities.Add(Grid.GetLastEntity<EntityBase>(gridPoint));
-                            }
-                        }
                     }
                 }
             }
@@ -204,35 +243,17 @@ public class TileConstruction : MonoBehaviour
                     // Get Grid position relative to UI
                     Vector2Int gridPoint = Vector2Int.RoundToInt(new Vector2(localPoint.x / root.sizeDelta.x + root.pivot.x, localPoint.y / root.sizeDelta.y + root.pivot.y));
                     lastCorner = gridPoint;
-
-                    // If both corners are different
-                    if (firstCorner != lastCorner)
-                    {
-                        for (int i = 0; i < Grid.FindEntities(firstCorner, lastCorner).Length; i++)
-                        {
-                            if (!SelectedEntities.Contains(Grid.FindEntities(firstCorner, lastCorner)[i]))
-                            {
-                                SelectedEntities.Add(Grid.FindEntities(firstCorner, lastCorner)[i]);
-                            }
-                        }
-                    }
                 }
             }
             if (Input.GetKeyUp(KeyCode.Mouse0))
             {
-                for (int i = 0; i < SelectedEntities.Count; i++)
+                for (int i = 0; i < SelectedEntities.Length; i++)
                 {
-                    if (SelectedEntities[i].Name == "Grass" ||
-                        SelectedEntities[i].Name == "Customer" ||
-                        SelectedEntities[i].Name == "Concrete"
-                        )
-                    {
-
-                    }
-                    else 
-                    {
-                        Grid.Destroy(SelectedEntities[i]);
-                    }
+                    SelectedEntities[i].GetComponent<Image>().material = null;
+                }
+                for (int i = 0; i < oldSelection.Length; i++)
+                {
+                    oldSelection[i].GetComponent<Image>().material = null;
                 }
             }
         }
@@ -240,168 +261,39 @@ public class TileConstruction : MonoBehaviour
 
     private void HandleSelectedEntities() 
     {
-        if (curTile != CurrentTileState.None)
+        if (SelectedEntities.Length > 1)
         {
-            if (firstCorner != Vector2Int.zero && lastCorner != Vector2Int.zero)
+            if (curTile != CurrentTileState.None)
             {
-                for (int i = 0; i < SelectedEntities.Count; i++)
+                for (int i = 0; i < SelectedEntities.Length; i++)
                 {
-                    ChangeSelectedEntities(SelectedEntities[i].Position);
+                    SelectedEntities[i].GetComponent<Image>().material = Resources.Load<Material>("Sprites/UI/Indicators/SelectedEntity");
                 }
             }
         }
     }
 
-    private void ChangeSelectedEntities(Vector2Int position) 
+    private void BuildTileAt(Vector2Int position) 
     {
-        if (SelectedEntities.Count == 1)
+        // Destroy any entity that isn't concrete, grass, or character
+        if (Grid.GetLastEntity<EntityBase>(position).name 
+            !=
+            "Grass" ||
+            Grid.GetLastEntity<EntityBase>(position).name
+            !=
+            "Concrete" ||
+            Grid.GetLastEntity<EntityBase>(position).name
+            !=
+            "Character" 
+            )
         {
-            switch (curTile)
-            {
-                case CurrentTileState.Roaster:
-                    if (Grid.GetLastEntity<EntityBase>(position) is EntityRoasteryMachineOne)
-                    {
-                        return;
-                    }
-                    else 
-                    { 
-                        EntityRoasteryMachineOne roaster = Grid.Create<EntityRoasteryMachineOne>(position);
-                        return;
-                    }
-                case CurrentTileState.Brewer:
-                    if (Grid.GetLastEntity<EntityBase>(position) is EntityBrewingMachineOne)
-                    {
-                        return;
-                    }
-                    else
-                    { 
-                        EntityBrewingMachineOne br = Grid.Create<EntityBrewingMachineOne>(position);
-                        return;
-                    }
-                case CurrentTileState.Register:
-                    if (Grid.GetLastEntity<EntityBase>(position) is EntityRegister)
-                    {
-                        return;
-                    }
-                    else
-                    {
-
-                        EntityRegister reg = Grid.Create<EntityRegister>(position);
-                        return;
-                    }
-                case CurrentTileState.Espresso:
-                    if (Grid.GetLastEntity<EntityBase>(position) is EntityEspressoMachineOne)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        EntityEspressoMachineOne Espresso = Grid.Create<EntityEspressoMachineOne>(position);
-                        return;
-                    }
-                case CurrentTileState.S_Table1:
-                    if (Grid.GetLastEntity<EntityBase>(position) is EntityTableSmooth)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        EntityTableSmooth S_Table1 = Grid.Create<EntityTableSmooth>(position);
-                        return;
-                    }
-                case CurrentTileState.S_Table2:
-                    if (Grid.GetLastEntity<EntityBase>(position) is EntityTableRough)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        EntityTableRough S_Table2 = Grid.Create<EntityTableRough>(position);
-                        return;
-                    }
-                case CurrentTileState.S_Table3:
-                    if (Grid.GetLastEntity<EntityBase>(position) is EntityTableGrey)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        EntityTableGrey S_Table3 = Grid.Create<EntityTableGrey>(position);
-                        return;
-                    }
-                case CurrentTileState.S_Table4:
-                    if (Grid.GetLastEntity<EntityBase>(position) is EntityTableSquareGrey)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        EntityTableSquareGrey S_Table4 = Grid.Create<EntityTableSquareGrey>(position);
-                        return;
-
-                    }
-                case CurrentTileState.S_Chair1:
-                    if (Grid.GetLastEntity<EntityBase>(position) is EntityChairSmooth)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        EntityChairSmooth S_Chair1 = Grid.Create<EntityChairSmooth>(position);
-                        return;
-
-                    }
-                case CurrentTileState.S_Chair2:
-                    if (Grid.GetLastEntity<EntityBase>(position) is EntityChairRough)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        EntityChairRough S_Chair2 = Grid.Create<EntityChairRough>(position);
-                        return;
-
-                    }
-                case CurrentTileState.S_Chair3:
-                    if (Grid.GetLastEntity<EntityBase>(position) is EntityChairGrey)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        EntityChairGrey S_Chair3 = Grid.Create<EntityChairGrey>(position);
-                        return;
-
-                    }
-                case CurrentTileState.S_Chair4:
-                    if (Grid.GetLastEntity<EntityBase>(position) is EntityChairRed)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        EntityChairRed S_Chair4 = Grid.Create<EntityChairRed>(position);
-                        return;
-
-                    }
-                case CurrentTileState.S_Barstool:
-                    if (Grid.GetLastEntity<EntityBase>(position) is EntityBarstool)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        EntityBarstool S_Barstool = Grid.Create<EntityBarstool>(position);
-                        return;
-
-                    }
-                default:
-                    return;
-            }
+            EntityBase curEntity = Grid.GetLastEntity<EntityBase>(position);
+            Grid.Destroy(curEntity);
         }
-        else if (SelectedEntities.Count > 1)
+
+        if (SelectedEntities.Length > 1)
         {
-            // Entities are selected
+            // Spawn new entities
             switch (curTile)
             {
                 case CurrentTileState.S_Floor1:
@@ -551,6 +443,296 @@ public class TileConstruction : MonoBehaviour
                     return;
             }
         }
+
+        if (SelectedEntities.Length == 0)
+        {
+            switch (curTile)
+            {
+                case CurrentTileState.S_Floor1:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityFloor)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        EntityFloor S_Floor1 = Grid.Create<EntityFloor>(position);
+                        break;
+
+                    }
+                case CurrentTileState.S_Floor2:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityFloorTwo)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        EntityFloorTwo S_Floor2 = Grid.Create<EntityFloorTwo>(position);
+                        break;
+
+                    }
+                case CurrentTileState.S_Floor3:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityFloorThree)
+                    {
+                        break;
+                    }
+                    else
+                    {
+
+                        EntityFloorThree S_Floor3 = Grid.Create<EntityFloorThree>(position);
+                        break;
+                    }
+                case CurrentTileState.S_Floor4:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityFloorFour)
+                    {
+                        break;
+                    }
+                    else
+                    {
+
+                        EntityFloorFour S_Floor4 = Grid.Create<EntityFloorFour>(position);
+                        break;
+                    }
+                case CurrentTileState.S_Floor5:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityFloorFive)
+                    {
+                        break;
+                    }
+                    else
+                    {
+
+                        EntityFloorFive S_Floor5 = Grid.Create<EntityFloorFive>(position);
+                        break;
+                    }
+                case CurrentTileState.S_Floor7:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityFloorSeven)
+                    {
+                        break;
+                    }
+                    else
+                    {
+
+                        EntityFloorSeven S_Floor7 = Grid.Create<EntityFloorSeven>(position);
+                        break;
+                    }
+                case CurrentTileState.S_Wall1:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityWallBrick)
+                    {
+                        break;
+                    }
+                    else
+                    {
+
+                        EntityWallBrick S_Wall1 = Grid.Create<EntityWallBrick>(position);
+                        break;
+                    }
+                case CurrentTileState.S_Wall2:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityWallGreyBrick)
+                    {
+                        break;
+                    }
+                    else
+                    {
+
+                        EntityWallGreyBrick S_Wall2 = Grid.Create<EntityWallGreyBrick>(position);
+                        break;
+                    }
+                case CurrentTileState.S_Wall3:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityWallPale)
+                    {
+                        break;
+                    }
+                    else
+                    {
+
+                        EntityWallPale S_Wall3 = Grid.Create<EntityWallPale>(position);
+                        break;
+                    }
+                case CurrentTileState.S_Wall4:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityWallPlaster)
+                    {
+                        break;
+                    }
+                    else
+                    {
+
+                        EntityWallPlaster S_Wall4 = Grid.Create<EntityWallPlaster>(position);
+                        break;
+                    }
+                case CurrentTileState.S_Counter1:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityCounterGrey)
+                    {
+                        break;
+                    }
+                    else
+                    {
+
+                        EntityCounterGrey S_Counter1 = Grid.Create<EntityCounterGrey>(position);
+                        break;
+                    }
+                case CurrentTileState.S_Counter2:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityCounterMarble)
+                    {
+                        break;
+                    }
+                    else
+                    {
+
+                        EntityCounterMarble S_Counter2 = Grid.Create<EntityCounterMarble>(position);
+                        break;
+                    }
+                case CurrentTileState.S_Counter3:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityCounterRed)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        EntityCounterRed S_Counter3 = Grid.Create<EntityCounterRed>(position);
+                        break;
+
+                    }
+                case CurrentTileState.Roaster:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityRoasteryMachineOne)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        EntityRoasteryMachineOne roaster = Grid.Create<EntityRoasteryMachineOne>(position);
+                        break;
+                    }
+                case CurrentTileState.Brewer:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityBrewingMachineOne)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        EntityBrewingMachineOne br = Grid.Create<EntityBrewingMachineOne>(position);
+                        break;
+                    }
+                case CurrentTileState.Register:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityRegister)
+                    {
+                        break;
+                    }
+                    else
+                    {
+
+                        EntityRegister reg = Grid.Create<EntityRegister>(position);
+                        break;
+                    }
+                case CurrentTileState.Espresso:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityEspressoMachineOne)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        EntityEspressoMachineOne Espresso = Grid.Create<EntityEspressoMachineOne>(position);
+                        break;
+                    }
+                case CurrentTileState.S_Table1:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityTableSmooth)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        EntityTableSmooth S_Table1 = Grid.Create<EntityTableSmooth>(position);
+                        break;
+                    }
+                case CurrentTileState.S_Table2:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityTableRough)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        EntityTableRough S_Table2 = Grid.Create<EntityTableRough>(position);
+                        break;
+                    }
+                case CurrentTileState.S_Table3:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityTableGrey)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        EntityTableGrey S_Table3 = Grid.Create<EntityTableGrey>(position);
+                        break;
+                    }
+                case CurrentTileState.S_Table4:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityTableSquareGrey)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        EntityTableSquareGrey S_Table4 = Grid.Create<EntityTableSquareGrey>(position);
+                        break;
+
+                    }
+                case CurrentTileState.S_Chair1:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityChairSmooth)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        EntityChairSmooth S_Chair1 = Grid.Create<EntityChairSmooth>(position);
+                        break;
+
+                    }
+                case CurrentTileState.S_Chair2:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityChairRough)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        EntityChairRough S_Chair2 = Grid.Create<EntityChairRough>(position);
+                        break;
+
+                    }
+                case CurrentTileState.S_Chair3:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityChairGrey)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        EntityChairGrey S_Chair3 = Grid.Create<EntityChairGrey>(position);
+                        break;
+
+                    }
+                case CurrentTileState.S_Chair4:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityChairRed)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        EntityChairRed S_Chair4 = Grid.Create<EntityChairRed>(position);
+                        break;
+
+                    }
+                case CurrentTileState.S_Barstool:
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityBarstool)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        EntityBarstool S_Barstool = Grid.Create<EntityBarstool>(position);
+                        break;
+
+                    }
+                default:
+                    break;
+            }
+            Debug.Log("Built tile");
+        }
     }
 
     private void CancelBuilding() 
@@ -558,6 +740,7 @@ public class TileConstruction : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             curTile = CurrentTileState.None;
+            SelectedEntities = new EntityBase[0];
             curSelectedTile = null;
         }
     }
@@ -575,7 +758,6 @@ public class TileConstruction : MonoBehaviour
             isConstructionOpen = false;
         }
     }
-
     private void SetObjects() 
     {
         Grid = FindObjectOfType<EntityGrid>();
@@ -617,48 +799,48 @@ public class TileConstruction : MonoBehaviour
     }
     private void FloorOne() 
     {
-        SelectedEntities.Clear();
+        SelectedEntities = new EntityBase[0];
         curTile = CurrentTileState.S_Floor1;
     }
     private void FloorTwo() 
     {
-        SelectedEntities.Clear();
+        SelectedEntities = new EntityBase[0];
         curTile = CurrentTileState.S_Floor2;
 
     }
     private void FloorThree()
     {
-        SelectedEntities.Clear();
+        SelectedEntities = new EntityBase[0];
         curTile = CurrentTileState.S_Floor3;
 
     }
     private void FloorFour()
     {
-        SelectedEntities.Clear();
+SelectedEntities= new EntityBase[0];
         curTile = CurrentTileState.S_Floor4;
 
     }
     private void WallOne() 
     {
-        SelectedEntities.Clear();
+SelectedEntities= new EntityBase[0];
         curTile = CurrentTileState.S_Wall1;
 
     }
     private void WallTwo()
     {
-        SelectedEntities.Clear();
+SelectedEntities= new EntityBase[0];
         curTile = CurrentTileState.S_Wall2;
 
     }
     private void WallThree()
     {
-        SelectedEntities.Clear();
+SelectedEntities= new EntityBase[0];
         curTile = CurrentTileState.S_Wall3;
 
     }
     private void WallFour()
     {
-        SelectedEntities.Clear();
+SelectedEntities= new EntityBase[0];
 
         curTile = CurrentTileState.S_Wall4;
     }
@@ -668,85 +850,85 @@ public class TileConstruction : MonoBehaviour
     }
     private void TableTwo()
     {
-        SelectedEntities.Clear();
+SelectedEntities= new EntityBase[0];
 
         curTile = CurrentTileState.S_Table2;
     }
     private void TableThree()
     {
-        SelectedEntities.Clear();
+SelectedEntities= new EntityBase[0];
 
         curTile = CurrentTileState.S_Table3;
     }
     private void TableFour()
     {
-        SelectedEntities.Clear();
+SelectedEntities= new EntityBase[0];
 
         curTile = CurrentTileState.S_Table4;
     }
     private void ChairOne() 
     {
-        SelectedEntities.Clear();
+SelectedEntities= new EntityBase[0];
 
         curTile = CurrentTileState.S_Chair1;
     }
     private void ChairTwo()
     {
-        SelectedEntities.Clear();
+SelectedEntities= new EntityBase[0];
 
         curTile = CurrentTileState.S_Chair2;
     }
     private void ChairThree()
     {
-        SelectedEntities.Clear();
+SelectedEntities= new EntityBase[0];
 
         curTile = CurrentTileState.S_Chair3;
     }
     private void ClickedBarstool() 
     {
-        SelectedEntities.Clear();
+SelectedEntities= new EntityBase[0];
 
         curTile = CurrentTileState.S_Barstool;
     }
     private void CounterOne() 
     {
-        SelectedEntities.Clear();
+SelectedEntities= new EntityBase[0];
 
         curTile = CurrentTileState.S_Counter1;
     }
     private void CounterTwo()
     {
-        SelectedEntities.Clear();
+SelectedEntities= new EntityBase[0];
 
         curTile = CurrentTileState.S_Counter2;
     }
     private void CounterThree()
     {
-        SelectedEntities.Clear();
+SelectedEntities= new EntityBase[0];
 
         curTile = CurrentTileState.S_Counter3;
     }
     private void ClickedEspresso() 
     {
-        SelectedEntities.Clear();
+SelectedEntities= new EntityBase[0];
 
         curTile = CurrentTileState.Espresso;
     }
     private void ClickedRoaster()
     {
-        SelectedEntities.Clear();
+SelectedEntities= new EntityBase[0];
 
         curTile = CurrentTileState.Roaster;
     }
     private void ClickedBrewer()
     {
-        SelectedEntities.Clear();
+SelectedEntities= new EntityBase[0];
 
         curTile = CurrentTileState.Brewer;
     }
     private void ClickedRegister()
     {
-        SelectedEntities.Clear();
+SelectedEntities= new EntityBase[0];
 
         curTile = CurrentTileState.Register;
     }

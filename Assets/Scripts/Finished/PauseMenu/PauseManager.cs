@@ -45,7 +45,7 @@ public class PauseManager : MonoBehaviour
 
         if (isPaused)
         {
-            ghost.gameObject.SetActive(false);
+            //ghost.gameObject.SetActive(false);
             pauseMenu.SetActive(true);
             pauseMenuFilter.SetActive(true);
             Time.timeScale = 0;
