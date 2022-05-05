@@ -2,23 +2,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class TileConstruction : MonoBehaviour
 {
-    [Header("Grid")]
+    [Header("Game Controls")]
     EntityGrid Grid;
     public RectTransform root;
     public Vector2Int firstCorner;
     public Vector2Int lastCorner;
+    public CafeEconomySystem GetEconomy;
 
     [Header("Handle Construction Panel")]
+    public EventSystem curEvent;
+    public Dropdown TileTypeSelector;
     public bool isConstructionOpen = false;
     public bool isDestroyOn = false;
     public bool isOverUI;
+    public bool isMouseOverUI;
     public Button B_ConstructionIcon;
     public GameObject ConstructionPanel;
     public GameObject DestroyIcon;
 
+    [Header("Construction Costs")]
+    public float RefundRate;
+    public int FurnitureCost;
+    public int FloorCost;
+    public int WallCost;
+    public int RoasterCost;
+    public int EspressoCost;
+    public int RegisterCost;
+    public int BrewerCost;
+
+    public enum SelectedTileType
+    {
+        none,
+        Building,
+        Furniture,
+        Machines
+    }
     public enum CurrentTileState 
     { 
         Roaster, Brewer, Register, Espresso,
@@ -31,10 +53,13 @@ public class TileConstruction : MonoBehaviour
         None
     }
 
-
     [Header("Tile Buttons")]
     public CurrentTileState curTile = CurrentTileState.None;
+    public SelectedTileType currentTileType = SelectedTileType.Building;
     public EntityBase curSelectedTile;
+    public GameObject machineTiles;
+    public GameObject buildingTiles;
+    public GameObject furnitureTiles;
     public Button B_Floor1;
     public Button B_Floor2;
     public Button B_Floor3;
@@ -69,7 +94,6 @@ public class TileConstruction : MonoBehaviour
     [Header("AI Dependent")]
     public List<EntityRegister> AllRegisters = new List<EntityRegister>();
 
-
     [Header("Objective Dependent")]
     public List<EntityBase> AllChairs = new List<EntityBase>();
     public List<EntityBase> AllFloors = new List<EntityBase>();
@@ -79,6 +103,7 @@ public class TileConstruction : MonoBehaviour
     [Header("Selected Entities")]
     public EntityBase[] SelectedEntities;
     EntityBase[] oldSelection = new EntityBase[0];
+
     private void Start()
     {
         SetObjects();
@@ -88,13 +113,18 @@ public class TileConstruction : MonoBehaviour
 
     private void Update()
     {
+        // Tile Construction
         HandleOnDrag();
         CancelBuilding();
         HandleSelectedEntities();
-        HandleDestroy();
+        HandleDestroySwitch();
+
+        // UI Management
+        ManageSubmenus();
+        CheckToggles();
     }
 
-    private void HandleDestroy() 
+    private void HandleDestroySwitch() 
     {
         if (Input.GetKeyDown(KeyCode.B))
         {
@@ -111,9 +141,9 @@ public class TileConstruction : MonoBehaviour
             DestroyIcon.SetActive(false);
         }
     }
-
     private void HandleOnDrag()
     {
+        // Building
         if (!isOverUI && !isDestroyOn) 
         {
             // Single-Tile Building
@@ -132,9 +162,7 @@ public class TileConstruction : MonoBehaviour
                             Vector2Int gridPoint = Vector2Int.RoundToInt(new Vector2(localPoint.x / root.sizeDelta.x + root.pivot.x, localPoint.y / root.sizeDelta.y + root.pivot.y));
 
                             // Build tile
-                            Debug.Log("Building tile...");
                             SelectedEntities = new EntityBase[0];
-                            Debug.Log(SelectedEntities.Length);
                             BuildTileAt(gridPoint);
                         }
                     }
@@ -188,22 +216,25 @@ public class TileConstruction : MonoBehaviour
             // Multi-Tile Building
             if (Input.GetKeyUp(KeyCode.Mouse0))
             {
-                for (int i = 0; i < SelectedEntities.Length; i++)
+                if (!isOverUI)
                 {
-                    SelectedEntities[i].GetComponent<Image>().material = null;
-                    BuildTileAt(SelectedEntities[i].Position);
-                }
-
-                for (int i = 0; i < oldSelection.Length; i++)
-                {
-                    if (oldSelection[i] != null)
+                    for (int i = 0; i < SelectedEntities.Length; i++)
                     {
-                        oldSelection[i].GetComponent<Image>().material = null;
+                        SelectedEntities[i].GetComponent<Image>().material = null;
+                        BuildTileAt(SelectedEntities[i].Position);
+                    }
+
+                    for (int i = 0; i < oldSelection.Length; i++)
+                    {
+                        if (oldSelection[i] != null)
+                        {
+                            oldSelection[i].GetComponent<Image>().material = null;
+                        }
                     }
                 }
-
                 SelectedEntities = new EntityBase[0];
             }
+
             // Cancel Building
             if (Input.GetKeyDown(KeyCode.Mouse1))
             {
@@ -221,6 +252,7 @@ public class TileConstruction : MonoBehaviour
                 curSelectedTile = null;
             }
         }
+
         // Deleting
         if (isDestroyOn)
         {
@@ -233,6 +265,20 @@ public class TileConstruction : MonoBehaviour
                         // Get Grid position relative to UI
                         Vector2Int gridPoint = Vector2Int.RoundToInt(new Vector2(localPoint.x / root.sizeDelta.x + root.pivot.x, localPoint.y / root.sizeDelta.y + root.pivot.y));
                         firstCorner = gridPoint;
+
+                        EntityBase selectedEntity = Grid.GetLastEntity<EntityBase>(gridPoint);
+                        if (selectedEntity is EntityGrass || selectedEntity is EntityConcrete ||
+                            selectedEntity is EntityCustomer || selectedEntity is EntityBarista ||
+                            selectedEntity is EntitySupport || selectedEntity is EntityFront)
+                        {
+
+                        }
+                        else 
+                        {
+                            Grid.Destroy(selectedEntity);
+                        }
+
+                        SelectedEntities = new EntityBase[0];
                     }
                 }
             }
@@ -243,22 +289,47 @@ public class TileConstruction : MonoBehaviour
                     // Get Grid position relative to UI
                     Vector2Int gridPoint = Vector2Int.RoundToInt(new Vector2(localPoint.x / root.sizeDelta.x + root.pivot.x, localPoint.y / root.sizeDelta.y + root.pivot.y));
                     lastCorner = gridPoint;
+
+                    // If both corners are different
+                    if (firstCorner != lastCorner)
+                    {
+                        SelectedEntities = Grid.FindEntities(firstCorner, lastCorner);
+                    }
                 }
             }
             if (Input.GetKeyUp(KeyCode.Mouse0))
             {
                 for (int i = 0; i < SelectedEntities.Length; i++)
                 {
+
                     SelectedEntities[i].GetComponent<Image>().material = null;
+
+                    // If not grass, concrete, or character
+                    if (SelectedEntities[i].Priority != EntityPriority.Terrain ||
+                        SelectedEntities[i].Priority != EntityPriority.Characters ||
+                        SelectedEntities[i].Priority != EntityPriority.Foundations)
+                    {
+                    }
+                    else 
+                    { 
+                        Grid.Create<EntityGrass>(SelectedEntities[i].Position);
+                        Grid.Destroy(SelectedEntities[i]);
+                    }
+
                 }
+
                 for (int i = 0; i < oldSelection.Length; i++)
                 {
-                    oldSelection[i].GetComponent<Image>().material = null;
+                    if (oldSelection[i] != null)
+                    {
+                        oldSelection[i].GetComponent<Image>().material = null;
+                    }
                 }
+
+                SelectedEntities = new EntityBase[0];
             }
         }
     }
-
     private void HandleSelectedEntities() 
     {
         if (SelectedEntities.Length > 1)
@@ -270,27 +341,36 @@ public class TileConstruction : MonoBehaviour
                     SelectedEntities[i].GetComponent<Image>().material = Resources.Load<Material>("Sprites/UI/Indicators/SelectedEntity");
                 }
             }
+            if (isDestroyOn)
+            {
+                for (int i = 0; i < SelectedEntities.Length; i++)
+                {
+                    if (SelectedEntities[i] != null)
+                    {
+                        SelectedEntities[i].GetComponent<Image>().material = Resources.Load<Material>("Sprites/UI/Indicators/SelectedEntity");
+                    }
+                }
+            }
         }
     }
-
     private void BuildTileAt(Vector2Int position) 
     {
-        // Destroy any entity that isn't concrete, grass, or character
-        if (Grid.GetLastEntity<EntityBase>(position).name 
-            !=
-            "Grass" ||
-            Grid.GetLastEntity<EntityBase>(position).name
-            !=
-            "Concrete" ||
-            Grid.GetLastEntity<EntityBase>(position).name
-            !=
-            "Character" 
-            )
+        // Replace any entity that isn't concrete, grass, or character
+        if (curTile != CurrentTileState.None)
         {
             EntityBase curEntity = Grid.GetLastEntity<EntityBase>(position);
-            Grid.Destroy(curEntity);
+            if (curEntity.Priority != EntityPriority.Terrain ||
+                curEntity.Priority != EntityPriority.Characters ||
+                curEntity.Priority != EntityPriority.Foundations)
+            {
+            }
+            else 
+            { 
+                Grid.Destroy(curEntity);
+            }
         }
 
+        // If more than 1 is selected
         if (SelectedEntities.Length > 1)
         {
             // Spawn new entities
@@ -304,6 +384,7 @@ public class TileConstruction : MonoBehaviour
                     else
                     { 
                         EntityFloor S_Floor1 = Grid.Create<EntityFloor>(position);
+                        GetEconomy.CurrentExpenses += FloorCost;
                         return;
                     
                     }
@@ -315,6 +396,8 @@ public class TileConstruction : MonoBehaviour
                     else
                     {
                         EntityFloorTwo S_Floor2 = Grid.Create<EntityFloorTwo>(position);
+                        GetEconomy.CurrentExpenses += FloorCost;
+
                         return;
 
                     }
@@ -327,7 +410,9 @@ public class TileConstruction : MonoBehaviour
                     {
 
                     EntityFloorThree S_Floor3 = Grid.Create<EntityFloorThree>(position);
-                    return;
+                        GetEconomy.CurrentExpenses += FloorCost;
+
+                        return;
                     }
                 case CurrentTileState.S_Floor4:
                     if (Grid.GetLastEntity<EntityBase>(position) is EntityFloorFour)
@@ -338,7 +423,9 @@ public class TileConstruction : MonoBehaviour
                     {
 
                     EntityFloorFour S_Floor4 = Grid.Create<EntityFloorFour>(position);
-                    return;
+                        GetEconomy.CurrentExpenses += FloorCost;
+
+                        return;
                     }
                 case CurrentTileState.S_Floor5:
                     if (Grid.GetLastEntity<EntityBase>(position) is EntityFloorFive)
@@ -349,7 +436,9 @@ public class TileConstruction : MonoBehaviour
                     {
 
                     EntityFloorFive S_Floor5 = Grid.Create<EntityFloorFive>(position);
-                    return;
+                        GetEconomy.CurrentExpenses += FloorCost;
+
+                        return;
                     }
                 case CurrentTileState.S_Floor7:
                     if (Grid.GetLastEntity<EntityBase>(position) is EntityFloorSeven)
@@ -360,7 +449,9 @@ public class TileConstruction : MonoBehaviour
                     {
 
                     EntityFloorSeven S_Floor7 = Grid.Create<EntityFloorSeven>(position);
-                    return;
+                        GetEconomy.CurrentExpenses += FloorCost;
+
+                        return;
                     }
                 case CurrentTileState.S_Wall1:
                     if (Grid.GetLastEntity<EntityBase>(position) is EntityWallBrick)
@@ -371,7 +462,9 @@ public class TileConstruction : MonoBehaviour
                     {
 
                     EntityWallBrick S_Wall1 = Grid.Create<EntityWallBrick>(position);
-                    return;
+                        GetEconomy.CurrentExpenses += WallCost;
+
+                        return;
                     }
                 case CurrentTileState.S_Wall2:
                     if (Grid.GetLastEntity<EntityBase>(position) is EntityWallGreyBrick)
@@ -382,7 +475,9 @@ public class TileConstruction : MonoBehaviour
                     {
 
                     EntityWallGreyBrick S_Wall2 = Grid.Create<EntityWallGreyBrick>(position);
-                    return;
+                        GetEconomy.CurrentExpenses += WallCost;
+
+                        return;
                     }
                 case CurrentTileState.S_Wall3:
                     if (Grid.GetLastEntity<EntityBase>(position) is EntityWallPale)
@@ -393,7 +488,9 @@ public class TileConstruction : MonoBehaviour
                     {
 
                     EntityWallPale S_Wall3 = Grid.Create<EntityWallPale>(position);
-                    return;
+                        GetEconomy.CurrentExpenses += WallCost;
+
+                        return;
                     }
                 case CurrentTileState.S_Wall4:
                     if (Grid.GetLastEntity<EntityBase>(position) is EntityWallPlaster)
@@ -404,7 +501,9 @@ public class TileConstruction : MonoBehaviour
                     {
 
                     EntityWallPlaster S_Wall4 = Grid.Create<EntityWallPlaster>(position);
-                    return;
+                        GetEconomy.CurrentExpenses += WallCost;
+
+                        return;
                     }
                 case CurrentTileState.S_Counter1:
                     if (Grid.GetLastEntity<EntityBase>(position) is EntityCounterGrey)
@@ -415,7 +514,9 @@ public class TileConstruction : MonoBehaviour
                     {
 
                     EntityCounterGrey S_Counter1 = Grid.Create<EntityCounterGrey>(position);
-                    return;
+                        GetEconomy.CurrentExpenses += FurnitureCost;
+
+                        return;
                     }
                 case CurrentTileState.S_Counter2:
                     if (Grid.GetLastEntity<EntityBase>(position) is EntityCounterMarble)
@@ -426,7 +527,9 @@ public class TileConstruction : MonoBehaviour
                     {
 
                     EntityCounterMarble S_Counter2 = Grid.Create<EntityCounterMarble>(position);
-                    return;
+                        GetEconomy.CurrentExpenses += FurnitureCost;
+
+                        return;
                     }
                 case CurrentTileState.S_Counter3:
                     if (Grid.GetLastEntity<EntityBase>(position) is EntityCounterRed)
@@ -436,6 +539,8 @@ public class TileConstruction : MonoBehaviour
                     else
                     {
                         EntityCounterRed S_Counter3 = Grid.Create<EntityCounterRed>(position);
+                        
+                        GetEconomy.CurrentExpenses += FurnitureCost;
                         return;
 
                     }
@@ -444,6 +549,7 @@ public class TileConstruction : MonoBehaviour
             }
         }
 
+        // If none are selected
         if (SelectedEntities.Length == 0)
         {
             switch (curTile)
@@ -456,6 +562,8 @@ public class TileConstruction : MonoBehaviour
                     else
                     {
                         EntityFloor S_Floor1 = Grid.Create<EntityFloor>(position);
+                        GetEconomy.CurrentExpenses += FloorCost;
+
                         break;
 
                     }
@@ -467,6 +575,8 @@ public class TileConstruction : MonoBehaviour
                     else
                     {
                         EntityFloorTwo S_Floor2 = Grid.Create<EntityFloorTwo>(position);
+                        GetEconomy.CurrentExpenses += FloorCost;
+
                         break;
 
                     }
@@ -479,6 +589,8 @@ public class TileConstruction : MonoBehaviour
                     {
 
                         EntityFloorThree S_Floor3 = Grid.Create<EntityFloorThree>(position);
+                        GetEconomy.CurrentExpenses += FloorCost;
+
                         break;
                     }
                 case CurrentTileState.S_Floor4:
@@ -490,6 +602,8 @@ public class TileConstruction : MonoBehaviour
                     {
 
                         EntityFloorFour S_Floor4 = Grid.Create<EntityFloorFour>(position);
+                        GetEconomy.CurrentExpenses += FloorCost;
+
                         break;
                     }
                 case CurrentTileState.S_Floor5:
@@ -501,6 +615,8 @@ public class TileConstruction : MonoBehaviour
                     {
 
                         EntityFloorFive S_Floor5 = Grid.Create<EntityFloorFive>(position);
+                        GetEconomy.CurrentExpenses += FloorCost;
+
                         break;
                     }
                 case CurrentTileState.S_Floor7:
@@ -512,6 +628,8 @@ public class TileConstruction : MonoBehaviour
                     {
 
                         EntityFloorSeven S_Floor7 = Grid.Create<EntityFloorSeven>(position);
+                        GetEconomy.CurrentExpenses += FloorCost;
+
                         break;
                     }
                 case CurrentTileState.S_Wall1:
@@ -523,6 +641,8 @@ public class TileConstruction : MonoBehaviour
                     {
 
                         EntityWallBrick S_Wall1 = Grid.Create<EntityWallBrick>(position);
+                        GetEconomy.CurrentExpenses += WallCost;
+
                         break;
                     }
                 case CurrentTileState.S_Wall2:
@@ -534,6 +654,8 @@ public class TileConstruction : MonoBehaviour
                     {
 
                         EntityWallGreyBrick S_Wall2 = Grid.Create<EntityWallGreyBrick>(position);
+                        GetEconomy.CurrentExpenses += WallCost;
+
                         break;
                     }
                 case CurrentTileState.S_Wall3:
@@ -545,6 +667,8 @@ public class TileConstruction : MonoBehaviour
                     {
 
                         EntityWallPale S_Wall3 = Grid.Create<EntityWallPale>(position);
+                        GetEconomy.CurrentExpenses += WallCost;
+
                         break;
                     }
                 case CurrentTileState.S_Wall4:
@@ -556,6 +680,8 @@ public class TileConstruction : MonoBehaviour
                     {
 
                         EntityWallPlaster S_Wall4 = Grid.Create<EntityWallPlaster>(position);
+                        GetEconomy.CurrentExpenses += WallCost;
+
                         break;
                     }
                 case CurrentTileState.S_Counter1:
@@ -567,6 +693,8 @@ public class TileConstruction : MonoBehaviour
                     {
 
                         EntityCounterGrey S_Counter1 = Grid.Create<EntityCounterGrey>(position);
+                        GetEconomy.CurrentExpenses += FurnitureCost;
+
                         break;
                     }
                 case CurrentTileState.S_Counter2:
@@ -578,6 +706,8 @@ public class TileConstruction : MonoBehaviour
                     {
 
                         EntityCounterMarble S_Counter2 = Grid.Create<EntityCounterMarble>(position);
+                        GetEconomy.CurrentExpenses += FurnitureCost;
+
                         break;
                     }
                 case CurrentTileState.S_Counter3:
@@ -588,6 +718,8 @@ public class TileConstruction : MonoBehaviour
                     else
                     {
                         EntityCounterRed S_Counter3 = Grid.Create<EntityCounterRed>(position);
+                        GetEconomy.CurrentExpenses += FurnitureCost;
+
                         break;
 
                     }
@@ -599,6 +731,8 @@ public class TileConstruction : MonoBehaviour
                     else
                     {
                         EntityRoasteryMachineOne roaster = Grid.Create<EntityRoasteryMachineOne>(position);
+                        GetEconomy.CurrentExpenses += RoasterCost;
+
                         break;
                     }
                 case CurrentTileState.Brewer:
@@ -609,6 +743,8 @@ public class TileConstruction : MonoBehaviour
                     else
                     {
                         EntityBrewingMachineOne br = Grid.Create<EntityBrewingMachineOne>(position);
+                        GetEconomy.CurrentExpenses += BrewerCost;
+
                         break;
                     }
                 case CurrentTileState.Register:
@@ -620,6 +756,8 @@ public class TileConstruction : MonoBehaviour
                     {
 
                         EntityRegister reg = Grid.Create<EntityRegister>(position);
+                        GetEconomy.CurrentExpenses += RegisterCost;
+
                         break;
                     }
                 case CurrentTileState.Espresso:
@@ -630,6 +768,8 @@ public class TileConstruction : MonoBehaviour
                     else
                     {
                         EntityEspressoMachineOne Espresso = Grid.Create<EntityEspressoMachineOne>(position);
+                        GetEconomy.CurrentExpenses += EspressoCost;
+
                         break;
                     }
                 case CurrentTileState.S_Table1:
@@ -640,6 +780,8 @@ public class TileConstruction : MonoBehaviour
                     else
                     {
                         EntityTableSmooth S_Table1 = Grid.Create<EntityTableSmooth>(position);
+                        GetEconomy.CurrentExpenses += FurnitureCost;
+
                         break;
                     }
                 case CurrentTileState.S_Table2:
@@ -650,6 +792,8 @@ public class TileConstruction : MonoBehaviour
                     else
                     {
                         EntityTableRough S_Table2 = Grid.Create<EntityTableRough>(position);
+                        GetEconomy.CurrentExpenses += FurnitureCost;
+
                         break;
                     }
                 case CurrentTileState.S_Table3:
@@ -660,6 +804,8 @@ public class TileConstruction : MonoBehaviour
                     else
                     {
                         EntityTableGrey S_Table3 = Grid.Create<EntityTableGrey>(position);
+                        GetEconomy.CurrentExpenses += FurnitureCost;
+
                         break;
                     }
                 case CurrentTileState.S_Table4:
@@ -670,6 +816,8 @@ public class TileConstruction : MonoBehaviour
                     else
                     {
                         EntityTableSquareGrey S_Table4 = Grid.Create<EntityTableSquareGrey>(position);
+                        GetEconomy.CurrentExpenses += FurnitureCost;
+
                         break;
 
                     }
@@ -681,6 +829,8 @@ public class TileConstruction : MonoBehaviour
                     else
                     {
                         EntityChairSmooth S_Chair1 = Grid.Create<EntityChairSmooth>(position);
+                        GetEconomy.CurrentExpenses += FurnitureCost;
+
                         break;
 
                     }
@@ -692,6 +842,8 @@ public class TileConstruction : MonoBehaviour
                     else
                     {
                         EntityChairRough S_Chair2 = Grid.Create<EntityChairRough>(position);
+                        GetEconomy.CurrentExpenses += FurnitureCost;
+
                         break;
 
                     }
@@ -703,6 +855,8 @@ public class TileConstruction : MonoBehaviour
                     else
                     {
                         EntityChairGrey S_Chair3 = Grid.Create<EntityChairGrey>(position);
+                        GetEconomy.CurrentExpenses += FurnitureCost;
+
                         break;
 
                     }
@@ -714,6 +868,8 @@ public class TileConstruction : MonoBehaviour
                     else
                     {
                         EntityChairRed S_Chair4 = Grid.Create<EntityChairRed>(position);
+                        GetEconomy.CurrentExpenses += FurnitureCost;
+
                         break;
 
                     }
@@ -725,16 +881,16 @@ public class TileConstruction : MonoBehaviour
                     else
                     {
                         EntityBarstool S_Barstool = Grid.Create<EntityBarstool>(position);
+                        GetEconomy.CurrentExpenses += FurnitureCost;
+
                         break;
 
                     }
                 default:
                     break;
             }
-            Debug.Log("Built tile");
         }
     }
-
     private void CancelBuilding() 
     {
         if (Input.GetKeyDown(KeyCode.R))
@@ -744,7 +900,6 @@ public class TileConstruction : MonoBehaviour
             curSelectedTile = null;
         }
     }
-
     private void ControlConstructionUI()
     {
         if (isConstructionOpen == false)
@@ -758,9 +913,70 @@ public class TileConstruction : MonoBehaviour
             isConstructionOpen = false;
         }
     }
+    private void ManageSubmenus() 
+    {
+        switch (currentTileType)
+        {
+            case SelectedTileType.Building:
+                buildingTiles.SetActive(true);
+
+                furnitureTiles.SetActive(false);
+                machineTiles.SetActive(false);
+                break;
+
+            case SelectedTileType.Furniture:
+                furnitureTiles.SetActive(true);
+
+                machineTiles.SetActive(false);
+                buildingTiles.SetActive(false);
+                break;
+
+            case SelectedTileType.Machines:
+                machineTiles.SetActive(true);
+
+                buildingTiles.SetActive(false);
+                furnitureTiles.SetActive(false);
+                break;
+            case SelectedTileType.none:
+                machineTiles.SetActive(false);
+
+                buildingTiles.SetActive(false);
+                furnitureTiles.SetActive(false);
+                break;
+        }
+    }
+    private void CheckToggles()
+    {
+        if (TileTypeSelector.value == 0)
+        {
+            ClickedCon_Building();
+        }
+        else if (TileTypeSelector.value == 1)
+        {
+            ClickedCon_Furniture();
+        }
+        else if (TileTypeSelector.value == 2)
+        {
+            ClickedCon_Machines();
+        }
+    }
+    private void ClickedCon_Building() 
+    {
+        currentTileType = SelectedTileType.Building;
+    }
+    private void ClickedCon_Furniture()
+    {
+        currentTileType = SelectedTileType.Furniture;
+    }
+    private void ClickedCon_Machines()
+    {
+        currentTileType = SelectedTileType.Machines;
+    }
     private void SetObjects() 
     {
         Grid = FindObjectOfType<EntityGrid>();
+        curEvent = EventSystem.current;
+        GetEconomy = FindObjectOfType<CafeEconomySystem>();
     }
     private void SetConstructionButtons() 
     {
