@@ -496,7 +496,10 @@ public class SaveGameSystem : MonoBehaviour
                         curEntity = GameGrid.Create<EntityBarstool>(AllStoredEntities[i].position);
                         break;
                     case "Grey Chair":
-                        curEntity = GameGrid.Create<EntityChairGrey>(AllStoredEntities[i].position);
+                        curEntity = GameGrid.Create<EntityChairSquareGrey>(AllStoredEntities[i].position);
+                        break;
+                    case "Round Grey Chair":
+                        curEntity = GameGrid.Create<EntityChairRoundGrey>(AllStoredEntities[i].position);
                         break;
                     case "Red Chair":
                         curEntity = GameGrid.Create<EntityChairRed>(AllStoredEntities[i].position);

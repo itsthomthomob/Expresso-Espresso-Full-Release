@@ -7,7 +7,7 @@ public class GreyChairVars
     public int MyCustomersID;
 }
 
-public class EntityChairGrey : EntityBase
+public class EntityChairSquareGrey : EntityBase
 {
     EntityCustomer MyCustomer;
 
@@ -15,7 +15,6 @@ public class EntityChairGrey : EntityBase
     {
         return MyCustomer;
     }
-
     public void SetMyCustomer(EntityCustomer Customer)
     {
         MyCustomer = Customer;
@@ -30,7 +29,6 @@ public class EntityChairGrey : EntityBase
         }
         return JsonUtility.ToJson(vars);
     }
-
     public override void OnDeserialize(string json)
     {
         GreyChairVars vars = JsonUtility.FromJson<GreyChairVars>(OnSerialize());
@@ -44,9 +42,29 @@ public class EntityChairGrey : EntityBase
         }
     }
 
+    private void Start()
+    {
+        ItemRotationManager getRotation = FindObjectOfType<ItemRotationManager>();
+        switch (getRotation.rotAmount)
+        {
+            case 0:
+                SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/sgrey chair_front"));
+                break;
+            case 90:
+                SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/sgrey chair_left"));
+                break;
+            case 180:
+                SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/sgrey chair_back"));
+                break;
+            case 270:
+                SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/sgrey chair_right"));
+                break;
+        }
+    }
+
     public override void OnEntityAwake()
     {
-        SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/sgrey chair_left"));
+        SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Transparent"));
         SetEntityPriority(EntityPriority.Furniture);
         SetEntityName("Grey Chair");
     }

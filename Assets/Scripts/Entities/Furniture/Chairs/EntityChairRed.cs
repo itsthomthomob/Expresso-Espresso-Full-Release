@@ -46,9 +46,29 @@ public class EntityChairRed : EntityBase
         }
     }
 
+    private void Start()
+    {
+        ItemRotationManager getRotation = FindObjectOfType<ItemRotationManager>();
+        switch (getRotation.rotAmount)
+        {
+            case 0:
+                SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/rred chair_front"));
+                break;
+            case 90:
+                SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/rred chair_left"));
+                break;
+            case 180:
+                SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/rred chair_back"));
+                break;
+            case 270:
+                SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/rred chair_right"));
+                break;
+        }
+    }
+
     public override void OnEntityAwake()
     {
-        SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/rgrey chair_left"));
+        SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Transparent"));
         SetEntityPriority(EntityPriority.Furniture);
         SetEntityName("Rough Grey Chair");
     }

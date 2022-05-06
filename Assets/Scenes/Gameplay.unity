@@ -36832,6 +36832,7 @@ GameObject:
   - component: {fileID: 837644323}
   - component: {fileID: 837644324}
   - component: {fileID: 837644325}
+  - component: {fileID: 837644326}
   m_Layer: 0
   m_Name: GameControllers
   m_TagString: Untagged
@@ -36864,7 +36865,7 @@ MonoBehaviour:
   B_ConstructionIcon: {fileID: 489498689}
   ConstructionPanel: {fileID: 1191712097}
   DestroyIcon: {fileID: 750384958}
-  RefundRate: 0
+  RefundRate: 0.8
   FurnitureCost: 25
   FloorCost: 20
   WallCost: 30
@@ -36901,8 +36902,8 @@ MonoBehaviour:
   B_Counter2: {fileID: 233411624}
   B_Counter3: {fileID: 1056902165}
   B_Barstool: {fileID: 968067985}
-  B_Espresso: {fileID: 414387470}
-  B_Brewer: {fileID: 976988071}
+  B_Espresso: {fileID: 976988071}
+  B_Brewer: {fileID: 414387470}
   B_Roaster: {fileID: 1160965299}
   B_Register: {fileID: 538321469}
   AllRegisters: []
@@ -37008,7 +37009,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 837644308}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e909ab89c5a174c42994cd62f8c75737, type: 3}
   m_Name: 
@@ -37017,13 +37018,13 @@ MonoBehaviour:
   GetPause: {fileID: 837644313}
   ghostEntity: {fileID: 0}
   applyMat: {fileID: 2100000, guid: 64662e3f52143234cbb653d532426262, type: 2}
-  GhostTileImg: {fileID: 0}
   parentCanvas: {fileID: 875476158}
   XAdjust: 60
   YAdjust: 60
   newPos: {x: 0, y: 0, z: 0}
   Grid: {fileID: 0}
   root: {fileID: 262216595}
+  rotationManager: {fileID: 0}
 --- !u!114 &837644316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37298,6 +37299,19 @@ MonoBehaviour:
   mainSource: {fileID: 780643745}
   requiredTime: 0
   delayedTime: 60
+--- !u!114 &837644326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837644308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c080d23f6a7d9c44b71a90563a7d7d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotAmount: 0
 --- !u!1 &844453373
 GameObject:
   m_ObjectHideFlags: 0

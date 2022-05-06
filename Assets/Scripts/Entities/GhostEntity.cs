@@ -1,22 +1,19 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class GhostEntity : EntityBase
 {
     public void SetGhostSprite(Sprite newSprite)
     {
-        SetEntitySprite(newSprite);
+        gameObject.GetComponent<Image>().sprite = newSprite;
     }
 
-    private void Start()
-    {
-        //gameObject.SetActive(false);
-    }
     public override void OnEntityAwake()
     {
-        SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Building/Floor"));
+        SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Transparent") as Sprite);
         SetEntityPriority(EntityPriority.Floating);
-        SetEntityName("Rough Pale Wooden Floor");
+        SetEntityName("GhostEntity");
     }
 }

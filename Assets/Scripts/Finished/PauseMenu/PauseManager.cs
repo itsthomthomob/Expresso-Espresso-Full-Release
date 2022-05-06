@@ -24,10 +24,6 @@ public class PauseManager : MonoBehaviour
 
     private void Update()
     {
-        if (ghost == null) 
-        { 
-            ghost = FindObjectOfType<GhostTile>().ghostEntity;
-        }
         if (!GetUI.isActive)
         {
             ManagePause();
@@ -39,27 +35,24 @@ public class PauseManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             isPaused = !isPaused;
-            getTime.scale = 0;
             getTime.Timer.Stop();
         }
 
         if (isPaused)
         {
-            //ghost.gameObject.SetActive(false);
+            ghost.gameObject.SetActive(false);
             pauseMenu.SetActive(true);
             pauseMenuFilter.SetActive(true);
+            getTime.Timer.Stop();
+            getTime.scale = 0;
             Time.timeScale = 0;
         }
         else
         {
             pauseMenu.SetActive(false);
             pauseMenuFilter.SetActive(false);
-
-            if (tile.curTile != TileConstruction.CurrentTileState.None)
-            {
-                //ghost.gameObject.SetActive(true);
-            }
             getTime.Timer.Start();
+            getTime.scale = 1;
             Time.timeScale = 1;
         }
     }
@@ -75,5 +68,8 @@ public class PauseManager : MonoBehaviour
         Application.Quit();
     }
 
-    public void resumeGame() { isPaused = false; }
+    public void resumeGame() 
+    { 
+        isPaused = false; 
+    }
 }

@@ -27,7 +27,7 @@ public class CustomerSpawnSystem : MonoBehaviour
     [Header("All Chairs")]
     List<EntityBase> AllChairs = new List<EntityBase>();
     EntityBarstool[] AllChairBarstools;
-    EntityChairGrey[] AllChairGrey;
+    EntityChairSquareGrey[] AllChairGrey;
     EntityChairRed[] AllChairRed;
     EntityChairRough[] AllChairRough;
     EntityChairSmooth[] AllChairSmooth;

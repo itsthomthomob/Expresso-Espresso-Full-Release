@@ -309,7 +309,8 @@ public class EntityCustomer : EntityBase
             if (MyChair == null)
             {
                 EntityBarstool[] AllBarstools = FindObjectsOfType<EntityBarstool>();
-                EntityChairGrey[] AllGreyChairs = FindObjectsOfType<EntityChairGrey>();
+                EntityChairSquareGrey[] AllGreyChairs = FindObjectsOfType<EntityChairSquareGrey>();
+                EntityChairRoundGrey[] AllRoundGreyChairs = FindObjectsOfType<EntityChairRoundGrey>();
                 EntityChairRed[] AllRedChairs = FindObjectsOfType<EntityChairRed>();
                 EntityChairRough[] AllRoughChairs = FindObjectsOfType<EntityChairRough>();
                 EntityChairSmooth[] AllSmoothChairs = FindObjectsOfType<EntityChairSmooth>();
@@ -337,10 +338,26 @@ public class EntityCustomer : EntityBase
                     if (found &&
                         MyChair == null &&
                         AllGreyChairs[i].GetMyCustomer() == null &&
-                        AllGreyChairs[i] is EntityChairGrey)
+                        AllGreyChairs[i] is EntityChairSquareGrey)
                     {
                         MyChair = AllGreyChairs[i];
-                        EntityChairGrey chair = MyChair as EntityChairGrey;
+                        EntityChairSquareGrey chair = MyChair as EntityChairSquareGrey;
+                        chair.SetMyCustomer(this);
+                        break;
+                    }
+                }
+
+                // Check all grey chairs
+                for (int i = 0; i < AllRoundGreyChairs.Length; i++)
+                {
+                    bool found = Grid.Pathfind(Position, AllRoundGreyChairs[i].Position, IsPassable, out Vector2Int next);
+                    if (found &&
+                        MyChair == null &&
+                        AllRoundGreyChairs[i].GetMyCustomer() == null &&
+                        AllRoundGreyChairs[i] is EntityChairRoundGrey)
+                    {
+                        MyChair = AllRoundGreyChairs[i];
+                        EntityChairRoundGrey chair = MyChair as EntityChairRoundGrey;
                         chair.SetMyCustomer(this);
                         break;
                     }
