@@ -10,6 +10,11 @@ public class GhostEntity : EntityBase
         gameObject.GetComponent<Image>().sprite = newSprite;
     }
 
+    public Sprite GetGhostSprite() 
+    {
+        return gameObject.GetComponent<Image>().sprite;
+    }
+
     public override void OnEntityAwake()
     {
         SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Transparent") as Sprite);

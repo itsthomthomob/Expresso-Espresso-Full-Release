@@ -115,7 +115,7 @@ public class TileConstruction : MonoBehaviour
     private void Update()
     {
         // Tile Construction
-        HandleOnDrag();
+        HandleBuilding();
         CancelBuilding();
         HandleSelectedEntities();
         HandleDestroySwitch();
@@ -148,7 +148,7 @@ public class TileConstruction : MonoBehaviour
             DestroyIcon.SetActive(false);
         }
     }
-    private void HandleOnDrag()
+    private void HandleBuilding()
     {
         // Building
         if (!isOverUI && !isDestroyOn) 
@@ -170,6 +170,33 @@ public class TileConstruction : MonoBehaviour
 
                             // Build tile
                             SelectedEntities = new EntityBase[0];
+                            if (Grid.GetLastEntity<EntityBase>(gridPoint) is EntityBarista ||
+                                Grid.GetLastEntity<EntityBase>(gridPoint) is EntitySupport ||
+                                Grid.GetLastEntity<EntityBase>(gridPoint) is EntityFront ||
+                                Grid.GetLastEntity<EntityBase>(gridPoint) is EntityCustomer ||
+                                Grid.GetLastEntity<EntityBase>(gridPoint) is GhostEntity ||
+                                Grid.GetLastEntity<EntityBase>(gridPoint).Priority == EntityPriority.Appliances)
+                            {
+
+                            }
+                            else 
+                            {
+                                EntityBase[] destroyThese = Grid.GetEntities<EntityBase>(gridPoint);
+                                for (int i = 0; i < destroyThese.Length; i++)
+                                {
+                                    if (destroyThese[i].Priority == EntityPriority.Characters ||
+                                        destroyThese[i].Priority == EntityPriority.Terrain ||
+                                        destroyThese[i].Priority == EntityPriority.Foundations ||
+                                        destroyThese[i].Priority == EntityPriority.Buildings)
+                                    {
+
+                                    }
+                                    else 
+                                    { 
+                                        Grid.Destroy(destroyThese[i]);
+                                    }
+                                }
+                            }
                             BuildTileAt(gridPoint);
                         }
                     }
@@ -230,7 +257,18 @@ public class TileConstruction : MonoBehaviour
                         if (SelectedEntities[i].Name != "GhostEntity")
                         {
                             SelectedEntities[i].GetComponent<Image>().material = null;
-                            BuildTileAt(SelectedEntities[i].Position);
+                            if (Grid.GetLastEntity<EntityBase>(SelectedEntities[i].Position) is EntityBarista ||
+                                Grid.GetLastEntity<EntityBase>(SelectedEntities[i].Position) is EntitySupport ||
+                                Grid.GetLastEntity<EntityBase>(SelectedEntities[i].Position) is EntityFront ||
+                                Grid.GetLastEntity<EntityBase>(SelectedEntities[i].Position) is EntityCustomer ||
+                                Grid.GetLastEntity<EntityBase>(SelectedEntities[i].Position) is GhostEntity)
+                            {
+
+                            }
+                            else 
+                            { 
+                                BuildTileAt(SelectedEntities[i].Position); 
+                            }
                         }
                     }
 
@@ -284,21 +322,35 @@ public class TileConstruction : MonoBehaviour
 
                         for (int i = 0; i < selectedEntities.Length; i++)
                         {
-                            Debug.Log("Deleting: " + selectedEntities[i].Name);
-                            if (selectedEntities[i] is EntityGrass || selectedEntities[i] is EntityConcrete ||
-                                selectedEntities[i] is EntityCustomer || selectedEntities[i] is EntityBarista ||
-                                selectedEntities[i] is EntitySupport || selectedEntities[i] is EntityFront ||
-                                selectedEntities[i] is GhostEntity || selectedEntities[i] is EntityCoffee)
-                            { 
-                            }
-                            else 
+                            if (selectedEntities[i].Priority == EntityPriority.Characters ||
+                                selectedEntities[i].Priority == EntityPriority.Terrain ||
+                                selectedEntities[i] is GhostEntity)
                             {
-                                Grid.Destroy(selectedEntities[i]);
-                                Debug.Log("Destroyed entity.");
+
+                            }
+                            else
+                            {
+                                if (selectedEntities[i].Priority == EntityPriority.Foundations)
+                                {
+                                    if (selectedEntities[i + 1].Priority == EntityPriority.Furniture)
+                                    {
+                                        // If current entity is a floor with furniture on it, delete furniture
+                                        Grid.Destroy(selectedEntities[i + 1]);
+                                    }
+                                    else 
+                                    {
+                                        // If not, only delete floor
+                                        Grid.Destroy(selectedEntities[i]);
+                                    }
+                                }
+                                else 
+                                { 
+                                    // Delete all other entities
+                                    Grid.Destroy(selectedEntities[i]);
+                                }
                             }
                         }
-
-
+                        selectedEntities = new EntityBase[0];
                         SelectedEntities = new EntityBase[0];
                     }
                 }
@@ -543,14 +595,14 @@ public class TileConstruction : MonoBehaviour
                             return;
                         }
                 case CurrentTileState.S_Wall2:
-                    if (Grid.GetLastEntity<EntityBase>(position) is EntityWallGreyBrick)
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityWallPlaster)
                     {
                         return;
                     }
                     else
                     {
 
-                    EntityWallGreyBrick S_Wall2 = Grid.Create<EntityWallGreyBrick>(position);
+                        EntityWallPlaster S_Wall2 = Grid.Create<EntityWallPlaster>(position);
                         GetEconomy.CurrentExpenses += WallCost;
                         AllWalls.Add(S_Wall2);
 
@@ -571,14 +623,14 @@ public class TileConstruction : MonoBehaviour
                         return;
                     }
                 case CurrentTileState.S_Wall4:
-                    if (Grid.GetLastEntity<EntityBase>(position) is EntityWallPlaster)
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityWallGreyBrick)
                     {
                         return;
                     }
                     else
                     {
 
-                    EntityWallPlaster S_Wall4 = Grid.Create<EntityWallPlaster>(position);
+                        EntityWallGreyBrick S_Wall4 = Grid.Create<EntityWallGreyBrick>(position);
                         GetEconomy.CurrentExpenses += WallCost;
                         AllWalls.Add(S_Wall4);
                         return;
@@ -733,14 +785,14 @@ public class TileConstruction : MonoBehaviour
                         break;
                     }
                 case CurrentTileState.S_Wall2:
-                    if (Grid.GetLastEntity<EntityBase>(position) is EntityWallGreyBrick)
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityWallPlaster)
                     {
                         break;
                     }
                     else
                     {
 
-                        EntityWallGreyBrick S_Wall2 = Grid.Create<EntityWallGreyBrick>(position);
+                        EntityWallPlaster S_Wall2 = Grid.Create<EntityWallPlaster>(position);
                         GetEconomy.CurrentExpenses += WallCost;
                         AllWalls.Add(S_Wall2);
 
@@ -761,14 +813,14 @@ public class TileConstruction : MonoBehaviour
                         break;
                     }
                 case CurrentTileState.S_Wall4:
-                    if (Grid.GetLastEntity<EntityBase>(position) is EntityWallPlaster)
+                    if (Grid.GetLastEntity<EntityBase>(position) is EntityWallGreyBrick)
                     {
                         break;
                     }
                     else
                     {
 
-                        EntityWallPlaster S_Wall4 = Grid.Create<EntityWallPlaster>(position);
+                        EntityWallGreyBrick S_Wall4 = Grid.Create<EntityWallGreyBrick>(position);
                         GetEconomy.CurrentExpenses += WallCost;
                         AllWalls.Add(S_Wall4);
                         break;
@@ -846,7 +898,7 @@ public class TileConstruction : MonoBehaviour
 
                         EntityRegister reg = Grid.Create<EntityRegister>(position);
                         GetEconomy.CurrentExpenses += RegisterCost;
-
+                        AllRegisters.Add(reg);
                         break;
                     }
                 case CurrentTileState.Espresso:

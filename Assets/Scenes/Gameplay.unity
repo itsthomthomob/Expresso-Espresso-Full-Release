@@ -10873,7 +10873,6 @@ GameObject:
   - component: {fileID: 233411625}
   - component: {fileID: 233411624}
   - component: {fileID: 233411628}
-  - component: {fileID: 233411627}
   - component: {fileID: 233411629}
   m_Layer: 5
   m_Name: Counter_2
@@ -10983,22 +10982,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 233411622}
   m_CullTransparentMesh: 1
---- !u!114 &233411627
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 233411622}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10031516c14866d4a945ddecfd292a8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TooltipUI: {fileID: 1635918065}
-  TileName: {fileID: 1429249952}
-  TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 0}
 --- !u!114 &233411628
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14896,7 +14879,6 @@ GameObject:
   - component: {fileID: 336476346}
   - component: {fileID: 336476345}
   - component: {fileID: 336476349}
-  - component: {fileID: 336476348}
   - component: {fileID: 336476350}
   m_Layer: 5
   m_Name: Table_2
@@ -15006,22 +14988,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 336476343}
   m_CullTransparentMesh: 1
---- !u!114 &336476348
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 336476343}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10031516c14866d4a945ddecfd292a8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TooltipUI: {fileID: 1635918065}
-  TileName: {fileID: 1429249952}
-  TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 0}
 --- !u!114 &336476349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21434,7 +21400,6 @@ GameObject:
   - component: {fileID: 502164638}
   - component: {fileID: 502164637}
   - component: {fileID: 502164641}
-  - component: {fileID: 502164640}
   - component: {fileID: 502164642}
   m_Layer: 5
   m_Name: Chair_3
@@ -21544,22 +21509,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 502164635}
   m_CullTransparentMesh: 1
---- !u!114 &502164640
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 502164635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10031516c14866d4a945ddecfd292a8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TooltipUI: {fileID: 1635918065}
-  TileName: {fileID: 1429249952}
-  TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 0}
 --- !u!114 &502164641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21599,7 +21548,6 @@ GameObject:
   - component: {fileID: 508782079}
   - component: {fileID: 508782078}
   - component: {fileID: 508782082}
-  - component: {fileID: 508782081}
   - component: {fileID: 508782083}
   m_Layer: 5
   m_Name: Counter_1
@@ -21709,22 +21657,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 508782076}
   m_CullTransparentMesh: 1
---- !u!114 &508782081
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 508782076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10031516c14866d4a945ddecfd292a8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TooltipUI: {fileID: 1635918065}
-  TileName: {fileID: 1429249952}
-  TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 0}
 --- !u!114 &508782082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28900,7 +28832,6 @@ GameObject:
   - component: {fileID: 694705449}
   - component: {fileID: 694705448}
   - component: {fileID: 694705452}
-  - component: {fileID: 694705451}
   - component: {fileID: 694705453}
   m_Layer: 5
   m_Name: Chair_4
@@ -29010,22 +28941,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 694705446}
   m_CullTransparentMesh: 1
---- !u!114 &694705451
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 694705446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10031516c14866d4a945ddecfd292a8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TooltipUI: {fileID: 1635918065}
-  TileName: {fileID: 1429249952}
-  TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 0}
 --- !u!114 &694705452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30675,7 +30590,6 @@ GameObject:
   - component: {fileID: 729432220}
   - component: {fileID: 729432219}
   - component: {fileID: 729432223}
-  - component: {fileID: 729432222}
   - component: {fileID: 729432224}
   m_Layer: 5
   m_Name: Floor_4
@@ -30785,22 +30699,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 729432217}
   m_CullTransparentMesh: 1
---- !u!114 &729432222
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 729432217}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10031516c14866d4a945ddecfd292a8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TooltipUI: {fileID: 1635918065}
-  TileName: {fileID: 1429249952}
-  TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 0}
 --- !u!114 &729432223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30840,7 +30738,6 @@ GameObject:
   - component: {fileID: 737052370}
   - component: {fileID: 737052369}
   - component: {fileID: 737052373}
-  - component: {fileID: 737052372}
   - component: {fileID: 737052374}
   m_Layer: 5
   m_Name: Wall_2
@@ -30861,7 +30758,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1035854741}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -30950,22 +30847,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 737052367}
   m_CullTransparentMesh: 1
---- !u!114 &737052372
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 737052367}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10031516c14866d4a945ddecfd292a8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TooltipUI: {fileID: 1635918065}
-  TileName: {fileID: 1429249952}
-  TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 0}
 --- !u!114 &737052373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31794,7 +31675,6 @@ GameObject:
   - component: {fileID: 752962477}
   - component: {fileID: 752962476}
   - component: {fileID: 752962480}
-  - component: {fileID: 752962479}
   - component: {fileID: 752962481}
   m_Layer: 5
   m_Name: Table_4
@@ -31904,22 +31784,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 752962474}
   m_CullTransparentMesh: 1
---- !u!114 &752962479
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 752962474}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10031516c14866d4a945ddecfd292a8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TooltipUI: {fileID: 1635918065}
-  TileName: {fileID: 1429249952}
-  TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 0}
 --- !u!114 &752962480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36887,9 +36751,9 @@ MonoBehaviour:
   B_Floor6: {fileID: 0}
   B_Floor7: {fileID: 0}
   B_Wall1: {fileID: 1222178516}
-  B_Wall2: {fileID: 1627669439}
+  B_Wall2: {fileID: 737052369}
   B_Wall3: {fileID: 1022404958}
-  B_Wall4: {fileID: 737052369}
+  B_Wall4: {fileID: 1627669439}
   B_Table1: {fileID: 1515755062}
   B_Table2: {fileID: 336476345}
   B_Table3: {fileID: 1533404265}
@@ -39911,7 +39775,6 @@ GameObject:
   - component: {fileID: 895950088}
   - component: {fileID: 895950087}
   - component: {fileID: 895950091}
-  - component: {fileID: 895950090}
   - component: {fileID: 895950092}
   m_Layer: 5
   m_Name: Floor_3
@@ -40021,22 +39884,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 895950085}
   m_CullTransparentMesh: 1
---- !u!114 &895950090
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 895950085}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10031516c14866d4a945ddecfd292a8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TooltipUI: {fileID: 1635918065}
-  TileName: {fileID: 1429249952}
-  TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 0}
 --- !u!114 &895950091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42383,7 +42230,6 @@ GameObject:
   - component: {fileID: 968067986}
   - component: {fileID: 968067985}
   - component: {fileID: 968067989}
-  - component: {fileID: 968067988}
   - component: {fileID: 968067990}
   m_Layer: 5
   m_Name: Barstool
@@ -42493,22 +42339,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 968067983}
   m_CullTransparentMesh: 1
---- !u!114 &968067988
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 968067983}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10031516c14866d4a945ddecfd292a8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TooltipUI: {fileID: 1635918065}
-  TileName: {fileID: 1429249952}
-  TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 0}
 --- !u!114 &968067989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45511,7 +45341,6 @@ GameObject:
   - component: {fileID: 1022404959}
   - component: {fileID: 1022404958}
   - component: {fileID: 1022404962}
-  - component: {fileID: 1022404961}
   - component: {fileID: 1022404963}
   m_Layer: 5
   m_Name: Wall_3
@@ -45532,7 +45361,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1035854741}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -45621,22 +45450,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1022404956}
   m_CullTransparentMesh: 1
---- !u!114 &1022404961
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1022404956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10031516c14866d4a945ddecfd292a8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TooltipUI: {fileID: 1635918065}
-  TileName: {fileID: 1429249952}
-  TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 0}
 --- !u!114 &1022404962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46161,14 +45974,14 @@ RectTransform:
   - {fileID: 729432218}
   - {fileID: 1222178515}
   - {fileID: 1627669438}
-  - {fileID: 1022404957}
   - {fileID: 737052368}
+  - {fileID: 1022404957}
   m_Father: {fileID: 1427270530}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -30.784, y: 7.5999985}
+  m_AnchoredPosition: {x: -30.783, y: 7.6}
   m_SizeDelta: {x: 1257.3, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1035854742
@@ -47524,7 +47337,6 @@ GameObject:
   - component: {fileID: 1056902166}
   - component: {fileID: 1056902165}
   - component: {fileID: 1056902169}
-  - component: {fileID: 1056902168}
   - component: {fileID: 1056902170}
   m_Layer: 5
   m_Name: Counter_3
@@ -47634,22 +47446,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1056902163}
   m_CullTransparentMesh: 1
---- !u!114 &1056902168
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1056902163}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10031516c14866d4a945ddecfd292a8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TooltipUI: {fileID: 1635918065}
-  TileName: {fileID: 1429249952}
-  TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 0}
 --- !u!114 &1056902169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55580,7 +55376,6 @@ GameObject:
   - component: {fileID: 1222178517}
   - component: {fileID: 1222178516}
   - component: {fileID: 1222178520}
-  - component: {fileID: 1222178519}
   - component: {fileID: 1222178521}
   m_Layer: 5
   m_Name: Wall_1
@@ -55690,22 +55485,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1222178514}
   m_CullTransparentMesh: 1
---- !u!114 &1222178519
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1222178514}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10031516c14866d4a945ddecfd292a8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TooltipUI: {fileID: 1635918065}
-  TileName: {fileID: 1429249952}
-  TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 0}
 --- !u!114 &1222178520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57488,7 +57267,6 @@ GameObject:
   - component: {fileID: 1270859160}
   - component: {fileID: 1270859159}
   - component: {fileID: 1270859163}
-  - component: {fileID: 1270859162}
   - component: {fileID: 1270859164}
   m_Layer: 5
   m_Name: Floor_1
@@ -57598,22 +57376,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1270859157}
   m_CullTransparentMesh: 1
---- !u!114 &1270859162
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1270859157}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10031516c14866d4a945ddecfd292a8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TooltipUI: {fileID: 1635918065}
-  TileName: {fileID: 1429249952}
-  TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 0}
 --- !u!114 &1270859163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66738,7 +66500,6 @@ GameObject:
   - component: {fileID: 1515755063}
   - component: {fileID: 1515755062}
   - component: {fileID: 1515755066}
-  - component: {fileID: 1515755065}
   - component: {fileID: 1515755067}
   m_Layer: 5
   m_Name: Table_1
@@ -66848,22 +66609,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1515755060}
   m_CullTransparentMesh: 1
---- !u!114 &1515755065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1515755060}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10031516c14866d4a945ddecfd292a8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TooltipUI: {fileID: 1635918065}
-  TileName: {fileID: 1429249952}
-  TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 0}
 --- !u!114 &1515755066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67324,7 +67069,6 @@ GameObject:
   - component: {fileID: 1533404266}
   - component: {fileID: 1533404265}
   - component: {fileID: 1533404269}
-  - component: {fileID: 1533404268}
   - component: {fileID: 1533404270}
   m_Layer: 5
   m_Name: Table_3
@@ -67434,22 +67178,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1533404263}
   m_CullTransparentMesh: 1
---- !u!114 &1533404268
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1533404263}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10031516c14866d4a945ddecfd292a8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TooltipUI: {fileID: 1635918065}
-  TileName: {fileID: 1429249952}
-  TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 0}
 --- !u!114 &1533404269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70961,7 +70689,6 @@ GameObject:
   - component: {fileID: 1627669440}
   - component: {fileID: 1627669439}
   - component: {fileID: 1627669443}
-  - component: {fileID: 1627669442}
   - component: {fileID: 1627669444}
   m_Layer: 5
   m_Name: Wall_4
@@ -71071,22 +70798,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1627669437}
   m_CullTransparentMesh: 1
---- !u!114 &1627669442
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1627669437}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10031516c14866d4a945ddecfd292a8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TooltipUI: {fileID: 1635918065}
-  TileName: {fileID: 1429249952}
-  TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 0}
 --- !u!114 &1627669443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71335,7 +71046,6 @@ GameObject:
   - component: {fileID: 1630578566}
   - component: {fileID: 1630578565}
   - component: {fileID: 1630578569}
-  - component: {fileID: 1630578568}
   - component: {fileID: 1630578570}
   m_Layer: 5
   m_Name: Floor_2
@@ -71445,22 +71155,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1630578563}
   m_CullTransparentMesh: 1
---- !u!114 &1630578568
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1630578563}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10031516c14866d4a945ddecfd292a8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TooltipUI: {fileID: 1635918065}
-  TileName: {fileID: 1429249952}
-  TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 0}
 --- !u!114 &1630578569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75557,7 +75251,6 @@ GameObject:
   - component: {fileID: 1730619909}
   - component: {fileID: 1730619908}
   - component: {fileID: 1730619912}
-  - component: {fileID: 1730619911}
   - component: {fileID: 1730619913}
   m_Layer: 5
   m_Name: Chair_2
@@ -75667,22 +75360,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1730619906}
   m_CullTransparentMesh: 1
---- !u!114 &1730619911
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1730619906}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10031516c14866d4a945ddecfd292a8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TooltipUI: {fileID: 1635918065}
-  TileName: {fileID: 1429249952}
-  TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 0}
 --- !u!114 &1730619912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78560,7 +78237,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1765303356}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 691d02b465b9dbc48a2bf574fb76a0c2, type: 3}
   m_Name: 
@@ -89864,7 +89541,6 @@ GameObject:
   - component: {fileID: 2062855520}
   - component: {fileID: 2062855519}
   - component: {fileID: 2062855523}
-  - component: {fileID: 2062855522}
   - component: {fileID: 2062855524}
   m_Layer: 5
   m_Name: Chair_1
@@ -89974,22 +89650,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2062855517}
   m_CullTransparentMesh: 1
---- !u!114 &2062855522
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2062855517}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10031516c14866d4a945ddecfd292a8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TooltipUI: {fileID: 1635918065}
-  TileName: {fileID: 1429249952}
-  TileDetails: {fileID: 1700483813}
-  ghostTile: {fileID: 0}
 --- !u!114 &2062855523
 MonoBehaviour:
   m_ObjectHideFlags: 0

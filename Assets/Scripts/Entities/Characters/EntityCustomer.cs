@@ -32,7 +32,7 @@ public class EntityCustomer : EntityBase
     [SerializeField] private State CurrentState = State.WaitingForCafe;
     [SerializeField] public int MyCustomerID;
     [SerializeField] private EntityCoffee MyCoffee;
-    [SerializeField] private float Range = 4.0f;
+    [SerializeField] private float Range = 2.0f;
     [SerializeField] private MenuItem MyItem;
     [SerializeField] private EntityConcrete MyConcrete;
     EntityConcrete[] AllConcrete;
@@ -67,6 +67,7 @@ public class EntityCustomer : EntityBase
         GetEmployees = FindObjectOfType<EmployeeListManager>();
         didReview = false;
 
+
         // Load text bubbles
         string[] FileNames = new string[] { "Customer-Ordered0.png", "Customer-Ordered1.png" };
         UnityEngine.Debug.Log(FileNames[0]);
@@ -96,6 +97,15 @@ public class EntityCustomer : EntityBase
             transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         }
         Speed = 0.25f / GetTime.scale;
+
+        if (MyItem == null) 
+        {
+            if (GetMenu.AllMenuItems.Length > 0)
+            {
+                int index = UnityEngine.Random.Range(0, GetMenu.AllMenuItems.Length);
+                MyItem = GetMenu.AllMenuItems[index];
+            }
+        }
 
         switch (CurrentState)
         {
@@ -134,14 +144,13 @@ public class EntityCustomer : EntityBase
         if (!IsMoving)
         {
             int index = UnityEngine.Random.Range(0, AllConcrete.Length);
-            MenuItem findItem = FindObjectOfType<MenuItem>();
             if (MyConcrete == null)
             {
                 MyConcrete = AllConcrete[index];
             }
-            else 
+            else
             {
-                if (getTiles.AllRegisters.Count > 0 && findItem != null)
+                if (getTiles.AllRegisters.Count > 0 && MyItem != null)
                 {
                     // Player has register and menu item, go to register
                     CurrentState = State.GoingToRegister;
@@ -151,7 +160,7 @@ public class EntityCustomer : EntityBase
                     // At my concrete, choose another concrete
                     MyConcrete = AllConcrete[index];
                 }
-                else if (findItem == null)
+                else if (MyItem == null)
                 {
                     // menu item does not exist
                     bool found = Grid.Pathfind(Position, MyConcrete.Position, IsPassable, out Vector2Int next);
@@ -169,13 +178,25 @@ public class EntityCustomer : EntityBase
                         Move(next, Speed);
                     }
                 }
-                else 
+                else
                 {
                     bool found = Grid.Pathfind(Position, MyConcrete.Position, IsPassable, out Vector2Int next);
                     if (found)
                     {
                         Move(next, Speed);
                     }
+                }
+            }
+        }
+        else 
+        {
+            if (MyItem != null) 
+            {
+                if (GetEmployees.hiredBaristas.Count > 0 &&
+                    GetEmployees.hiredBaristas.Count > 0 &&
+                    GetEmployees.hiredBaristas.Count > 0)
+                {
+                    CurrentState = State.GoingToRegister;
                 }
             }
         }
@@ -205,7 +226,7 @@ public class EntityCustomer : EntityBase
                         }
                         else
                         {
-                            bool found = Grid.Pathfind(Position, getTiles.AllRegisters[i].GetCustomer().Position, IsPassable, out Vector2Int next);
+                            bool found = Grid.Pathfind(Position, new Vector2Int(getTiles.AllRegisters[i].GetCustomer().Position.x, getTiles.AllRegisters[i].GetCustomer().Position.y - 1), IsPassable, out Vector2Int next);
                             if (found)
                             {
                                 Move(next, Speed);
@@ -269,35 +290,25 @@ public class EntityCustomer : EntityBase
             {
                 if (TextWatch.Elapsed >= new TimeSpan(0, 0, 2))
                 {
-                    if (MyItem == null)
-                    {
-                        int ChooseItem = UnityEngine.Random.Range(0, GetMenu.MenuItems.Count);
-                        MyItem = GetMenu.MenuItems[ChooseItem];
-                        if (MyItem == null)
-                        {
-                            UnityEngine.Debug.Log("MyItem is null, " + MyCustomerID);
-                        }
-                        UnityEngine.Debug.Log("Chose: " + MyItem);
-                        GetECO.CurrentProfits = GetECO.CurrentProfits + MyItem.GetPrice();
-                        GetECO.CurrentExpenses = GetECO.CurrentExpenses + MyItem.GetExpense();
+                    GetECO.CurrentProfits = GetECO.CurrentProfits + MyItem.GetPrice();
+                    GetECO.CurrentExpenses = GetECO.CurrentExpenses + MyItem.GetExpense();
 
-                        StoreLevelManager LevelManager = FindObjectOfType<StoreLevelManager>();
-                        LevelManager.CustomerAddXP();
-                    }
-                    else 
+                    StoreLevelManager LevelManager = FindObjectOfType<StoreLevelManager>();
+                    LevelManager.CustomerAddXP();
+                    // Unlink register
+                    if (Register != null) 
                     { 
-                        // Unlink register
                         Register.SetCustomerToNone();
-                        Register = null;
-
-                        // Go to chair
-                        Destroy(MyTextBubble);
-
-
-                        CurrentState = State.GoingToEmptyChair;
-                        TextWatch.Stop();
-                        TextWatch.Reset();
                     }
+                    Register = null;
+
+                    // Go to chair
+                    Destroy(MyTextBubble);
+
+
+                    CurrentState = State.GoingToEmptyChair;
+                    TextWatch.Stop();
+                    TextWatch.Reset();
                 }
             }
         }
@@ -444,18 +455,14 @@ public class EntityCustomer : EntityBase
                 bool found = Grid.Pathfind(Position, MyChair.Position, IsChairPassable, out Vector2Int next);
                 if (found)
                 {
-                    Move(next, Speed);
+                    Move(next);
+                    CurrentState = State.WaitAtChair;
                 }
             }
             else
             {
                 // Neither near chair or at chair
                 CurrentState = State.GoingToEmptyChair;
-            }
-            if (Position == MyChair.Position) 
-            { 
-                // At chair, wait
-                CurrentState = State.WaitAtChair;
             }
         }
     }
@@ -497,7 +504,7 @@ public class EntityCustomer : EntityBase
             {
                 CurrentState = State.WaitAtChair;
             }
-            else if ((Position - (new Vector2Int(MyCoffee.Position.x, MyCoffee.Position.y - 2))).magnitude < Range)
+            else if ((Position - (new Vector2Int(MyCoffee.Position.x, MyCoffee.Position.y - 2))).magnitude < 4)
             {
                 // In range of coffee item, pick it up
                 MyCoffee.transform.position = gameObject.transform.position;

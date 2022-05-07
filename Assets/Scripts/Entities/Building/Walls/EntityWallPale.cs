@@ -17,7 +17,7 @@ public class EntityWallPale : EntityBase {
 
 	public void Update()
 	{
-		if (GetComponent<Image>().sprite != Resources.Load<Sprite>("Sprites/Tiles/Building/wall extension") as Sprite)
+		if (GetComponent<Image>().sprite != Resources.Load<Sprite>("Sprites/Tiles/Building/wall2 extension") as Sprite)
 		{
 			ManageSprites();
 		}

@@ -47,6 +47,8 @@ public class CameraSystem : MonoBehaviour, IDragHandler
     {
         InitialBoundsOffset = gridBounds.offset;
         InitialBoundsSize = gridBounds.size;
+        root.GetComponent<RectTransform>().sizeDelta = new Vector2(60, 60);
+        root.GetComponent<RectTransform>().pivot = new Vector2(0, -11);
     }
 
     private void Update()
