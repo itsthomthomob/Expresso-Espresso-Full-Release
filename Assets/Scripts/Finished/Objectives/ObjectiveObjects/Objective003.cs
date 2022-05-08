@@ -19,7 +19,7 @@ public class Objective003 : ObjectiveObject
     {
         getTiles = FindObjectOfType<TileConstruction>();
     }
-    private void FixedUpdate()
+    private void Update()
     {
         RequirementsMet();
         SetMinimum(getTiles.AllCounters.Count + loadedMin);

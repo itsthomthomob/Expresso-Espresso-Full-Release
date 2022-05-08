@@ -197,7 +197,22 @@ public class TileConstruction : MonoBehaviour
                                     }
                                 }
                             }
-                            BuildTileAt(gridPoint);
+                            if ((curTile == CurrentTileState.S_Chair1 ||
+                                curTile == CurrentTileState.S_Chair2 ||
+                                curTile == CurrentTileState.S_Chair3 ||
+                                curTile == CurrentTileState.S_Chair4 ||
+                                curTile == CurrentTileState.S_Table1 ||
+                                curTile == CurrentTileState.S_Table2 ||
+                                curTile == CurrentTileState.S_Table3 ||
+                                curTile == CurrentTileState.S_Table4)
+                                && Grid.HasPriority(gridPoint, EntityPriority.Furniture))
+                            {
+                                // dont build furniture onto furniture
+                            }
+                            else 
+                            { 
+                                BuildTileAt(gridPoint);
+                            }
                         }
                     }
                 }
@@ -306,7 +321,7 @@ public class TileConstruction : MonoBehaviour
         }
 
         // Deleting
-        if (isDestroyOn)
+        if (isDestroyOn && !isOverUI)
         {
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {

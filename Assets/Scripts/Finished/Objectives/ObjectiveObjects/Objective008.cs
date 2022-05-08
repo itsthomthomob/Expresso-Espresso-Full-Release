@@ -23,7 +23,7 @@ public class Objective008 : ObjectiveObject
 
     private void CheckRequirements()
     {
-        if (GetMinimum() == GetMaximum())
+        if (GetMinimum() == 5)
         {
             SetStatus(Status.Finished);
         }

@@ -43,8 +43,8 @@ public class EntityCustomer : EntityBase
     CafeEconomySystem GetECO;
     bool didReview;
 
-    EntityBase MyChair;
-    EntityRegister Register;
+    public EntityBase MyChair;
+    [SerializeField] private EntityRegister Register;
 
     TileConstruction getTiles;
 
@@ -55,6 +55,9 @@ public class EntityCustomer : EntityBase
 
     public TimeManager GetTime;
     public float Speed;
+
+    public EntityBase tempEntity;
+    public bool choosingLocation;
 
     private void Awake()
     {
@@ -84,6 +87,7 @@ public class EntityCustomer : EntityBase
     private void Start()
     {
         AllConcrete = FindObjectsOfType<EntityConcrete>();
+        choosingLocation = false;
     }
 
     private void FixedUpdate()
@@ -172,14 +176,13 @@ public class EntityCustomer : EntityBase
         }
         else 
         {
-            if (MyItem != null) 
+            if (MyItem != null && 
+                GetEmployees.hiredBaristas.Count > 0 &&
+                GetEmployees.hiredFronts.Count > 0 &&
+                GetEmployees.hiredSupports.Count > 0 &&
+                getTiles.AllChairs.Count > 5) 
             {
-                if (GetEmployees.hiredBaristas.Count > 0 &&
-                    GetEmployees.hiredBaristas.Count > 0 &&
-                    GetEmployees.hiredBaristas.Count > 0)
-                {
-                    CurrentState = State.GoingToRegister;
-                }
+                CurrentState = State.GoingToRegister;
             }
         }
     }
@@ -198,48 +201,80 @@ public class EntityCustomer : EntityBase
                     {
                         // This register does not have a customer, set it as mine
                         Register = getTiles.AllRegisters[i];
+                        Register.SetCustomer(this);
+                        break;
                     }
-                    else 
+                    else
                     {
-                        // This register is occupied, go to the customer
-                        EntityCustomer getCustomer = Register.GetCustomer();
-                        Vector2Int adjustPos = new Vector2Int(getCustomer.Position.x, getCustomer.Position.y - 1);
-                        
-                        if (Grid.HasEntity<EntityCustomer>(adjustPos))
+                        // This register is occupied, wait until it is not
+                        if (tempEntity == null && choosingLocation == false)
                         {
-                            // Find empty spot
-                            Vector2Int newPos = GoToLinePos(adjustPos);
+                            ChooseRandomLocation();
+                            break;
                         }
-                        
-                        // Go behind customer
-                        bool found = Grid.Pathfind(Position, adjustPos, IsPassable, out Vector2Int next);
+                    }
+                }
+            }
+            else 
+            {
+                if (Register.GetFront() != null)
+                {
+                    // I have a register, go to it
+                    choosingLocation = false;
+                    Vector2Int adjustPos = new Vector2Int(Register.Position.x, Register.Position.y - 1);
+                    if (Position == adjustPos)
+                    {
+                        CurrentState = State.DisplayText;
+                    }
+                    else
+                    {
+                        bool found = Grid.Pathfind(Position, adjustPos, IsRegisterPassable, out Vector2Int next);
                         if (found)
                         {
                             Move(next, Speed);
                         }
                     }
                 }
+                else 
+                { 
+                    // wait for front
+                }
             }
         }
     }
 
-    //private Vector2Int GoToLinePos(Vector2Int position) 
-    //{
-    //    if (Grid.HasEntity<EntityCustomer>(position))
-    //    {
-    //        EntityBase[] entitiesHere = Grid.GetEntities<EntityBase>(position);
-    //        EntityCustomer newCustomer = null;
-    //        for (int i = 0; i < entitiesHere.Length; i++)
-    //        {
-    //            if (entitiesHere[i] is EntityCustomer)
-    //            {
-    //                newCustomer = entitiesHere[i] as EntityCustomer;
-    //            }
-    //        }
-    //        Vector2Int newPos = new Vector2Int(position.x, position.y - 1);
-    //        return MoveInLine(newPos, newCustomer);
-    //    }
-    //}
+    private void ChooseRandomLocation() 
+    {
+        choosingLocation = true;
+        if (tempEntity == null)
+        {
+            int floorIndex = UnityEngine.Random.Range(0, getTiles.AllFloors.Count);
+            int conIndex = UnityEngine.Random.Range(0, AllConcrete.Length);
+            float chance = UnityEngine.Random.Range(0, 1);
+            if (chance > 0.50)
+            {
+                tempEntity = getTiles.AllFloors[floorIndex];
+            }
+            else if (chance < 0.50)
+            {
+                tempEntity = AllConcrete[conIndex];
+            }
+        }
+        else if (Position == tempEntity.Position) 
+        {
+            // reset
+            tempEntity = null;
+        }
+        else
+        {
+            // Found new location, go to it
+            bool found = Grid.Pathfind(Position, tempEntity.Position, IsPassable, out Vector2Int next);
+            if (found)
+            {
+                Move(next, Speed);
+            }
+        }
+    }
 
     private void OnDisplayText()
     {
@@ -323,6 +358,8 @@ public class EntityCustomer : EntityBase
                         MyChair = AllBarstools[i];
                         EntityBarstool chair = MyChair as EntityBarstool;
                         chair.SetMyCustomer(this);
+                        UnityEngine.Debug.LogWarning("Found chair");
+
                         break;
                     }
                 }
@@ -339,6 +376,8 @@ public class EntityCustomer : EntityBase
                         MyChair = AllGreyChairs[i];
                         EntityChairSquareGrey chair = MyChair as EntityChairSquareGrey;
                         chair.SetMyCustomer(this);
+                        UnityEngine.Debug.LogWarning("Found chair");
+
                         break;
                     }
                 }
@@ -355,6 +394,8 @@ public class EntityCustomer : EntityBase
                         MyChair = AllRoundGreyChairs[i];
                         EntityChairRoundGrey chair = MyChair as EntityChairRoundGrey;
                         chair.SetMyCustomer(this);
+                        UnityEngine.Debug.LogWarning("Found chair");
+
                         break;
                     }
                 }
@@ -371,6 +412,8 @@ public class EntityCustomer : EntityBase
                         MyChair = AllRedChairs[i];
                         EntityChairRed chair = MyChair as EntityChairRed;
                         chair.SetMyCustomer(this);
+                        UnityEngine.Debug.LogWarning("Found chair");
+
                         break;
                     }
                 }
@@ -387,6 +430,8 @@ public class EntityCustomer : EntityBase
                         MyChair = AllRoughChairs[i];
                         EntityChairRough chair = MyChair as EntityChairRough;
                         chair.SetMyCustomer(this);
+                        UnityEngine.Debug.LogWarning("Found chair");
+
                         break;
                     }
                 }
@@ -403,9 +448,14 @@ public class EntityCustomer : EntityBase
                         MyChair = AllSmoothChairs[i];
                         EntityChairSmooth chair = MyChair as EntityChairSmooth;
                         chair.SetMyCustomer(this);
+                        UnityEngine.Debug.LogWarning("Found chair");
+                        
                         break;
                     }
                 }
+
+                UnityEngine.Debug.LogWarning("Looking for chair");
+
             }
             else if ((Position - MyChair.Position).magnitude < Range)
             {
@@ -489,18 +539,20 @@ public class EntityCustomer : EntityBase
             {
                 CurrentState = State.WaitAtChair;
             }
-            else if ((Position - (new Vector2Int(MyCoffee.Position.x, MyCoffee.Position.y - 2))).magnitude < 4)
+            else if ((Position == new Vector2Int(MyCoffee.Position.x, MyCoffee.Position.y - 2)))
             {
                 // In range of coffee item, pick it up
                 MyCoffee.transform.position = gameObject.transform.position;
                 MyCoffee.transform.SetParent(this.transform);
+                EntityChairRoundGrey chair = MyChair as EntityChairRoundGrey;
+                chair.SetMyCustomer(null);
                 CurrentState = State.LeavingCafe;
                 UnityEngine.Debug.LogWarning("At coffee");
             }
             else
             {
                 // Go to coffee found
-                bool found = Grid.Pathfind(Position, MyCoffee.Position, IsChairPassable, out Vector2Int next);
+                bool found = Grid.Pathfind(Position, new Vector2Int(MyCoffee.Position.x, MyCoffee.Position.y - 2), IsCoffeePassable, out Vector2Int next);
                 if (found)
                 {
                     Move(next, Speed);
@@ -561,6 +613,35 @@ public class EntityCustomer : EntityBase
         }
     }
 
+    private bool IsRegisterPassable(Vector2Int position)
+    {
+        // Customers can only walk on:
+        // Concrete, Foundation, Furnitures
+        if (Grid.HasPriority(position, EntityPriority.Characters))
+        {
+            return true;
+        }
+        else if (Grid.HasPriority(position, EntityPriority.Buildings))
+        {
+            return false;
+        }
+        else if (Grid.HasPriority(position, EntityPriority.Counters))
+        {
+            return false;
+        }
+        else if (Grid.HasPriority(position, EntityPriority.Foundations) ||
+            Grid.HasPriority(position, EntityPriority.Furniture) ||
+            Grid.HasEntity<EntityConcrete>(position)
+            )
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     private bool IsCounterPassable(Vector2Int position)
     {
         // Customers can only walk on:
@@ -591,6 +672,22 @@ public class EntityCustomer : EntityBase
     private bool IsChairPassable(Vector2Int position) 
     {
         if (Grid.HasPriority(position, EntityPriority.Characters))
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    private bool IsCoffeePassable(Vector2Int position)
+    {
+        if (Grid.HasPriority(position, EntityPriority.Counters))
+        {
+            return false;
+        }
+        else if (Grid.HasPriority(position, EntityPriority.Buildings))
         {
             return false;
         }

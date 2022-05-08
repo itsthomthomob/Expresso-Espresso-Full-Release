@@ -178,6 +178,7 @@ public class EntityFront : EntityBase
             }
             else if (Position == new Vector2Int(myRegister.Position.x, myRegister.Position.y + 1))
             {
+                myRegister.SetFront(this);
                 CurrentState = State.WaitForCustomer;
                 UnityEngine.Debug.LogWarning("At register");
             }

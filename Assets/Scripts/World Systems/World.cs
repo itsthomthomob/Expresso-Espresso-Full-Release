@@ -47,6 +47,11 @@ public class World : MonoBehaviour {
 				Grid.Destroy(Grid.GetFirstEntity<EntityGrass>(new Vector2Int(x, Min.y + 1)));
 				Grid.Create<EntityConcrete>(new Vector2Int(x, Min.y + 1));
 			}
+			if (Grid.GetFirstEntity<EntityGrass>(new Vector2Int(x, Min.y + 2)) != null)
+			{
+				Grid.Destroy(Grid.GetFirstEntity<EntityGrass>(new Vector2Int(x, Min.y + 2)));
+				Grid.Create<EntityConcrete>(new Vector2Int(x, Min.y + 2));
+			}
 		}
 	}
 }
