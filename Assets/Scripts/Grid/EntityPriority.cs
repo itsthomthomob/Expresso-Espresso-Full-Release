@@ -5,7 +5,8 @@
 	Foundations = 2,
 	Buildings = 3,
 	Furniture = 4,
-	Characters = 5,
-	Appliances = 6,
+	Counters = 5,
+	Characters = 6,
+	Appliances = 7,
 	Floating = 10
 }

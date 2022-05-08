@@ -8,7 +8,7 @@ public class EntityCounterGrey : EntityBase
     public override void OnEntityAwake()
     {
         SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/Counter"));
-        SetEntityPriority(EntityPriority.Furniture);
+        SetEntityPriority(EntityPriority.Counters);
         SetEntityName("Grey Counter");
     }
 }

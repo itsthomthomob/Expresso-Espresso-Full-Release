@@ -7,7 +7,7 @@ public class EntityCounterMarble : EntityBase
     public override void OnEntityAwake()
     {
         SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/Counter1"));
-        SetEntityPriority(EntityPriority.Furniture);
+        SetEntityPriority(EntityPriority.Counters);
         SetEntityName("Marble Counter");
     }
 }

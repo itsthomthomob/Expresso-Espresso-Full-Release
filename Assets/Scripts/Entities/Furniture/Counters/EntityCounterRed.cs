@@ -7,7 +7,7 @@ public class EntityCounterRed : EntityBase
     public override void OnEntityAwake()
     {
         SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/Counter2"));
-        SetEntityPriority(EntityPriority.Furniture);
+        SetEntityPriority(EntityPriority.Counters);
         SetEntityName("Red Counter");
     }
 }

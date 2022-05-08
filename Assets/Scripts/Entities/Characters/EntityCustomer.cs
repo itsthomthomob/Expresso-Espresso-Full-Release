@@ -160,24 +160,6 @@ public class EntityCustomer : EntityBase
                     // At my concrete, choose another concrete
                     MyConcrete = AllConcrete[index];
                 }
-                else if (MyItem == null)
-                {
-                    // menu item does not exist
-                    bool found = Grid.Pathfind(Position, MyConcrete.Position, IsPassable, out Vector2Int next);
-                    if (found)
-                    {
-                        Move(next, Speed);
-                    }
-                }
-                else if (getTiles.AllRegisters.Count > 0)
-                {
-                    // a register does not exist
-                    bool found = Grid.Pathfind(Position, MyConcrete.Position, IsPassable, out Vector2Int next);
-                    if (found)
-                    {
-                        Move(next, Speed);
-                    }
-                }
                 else
                 {
                     bool found = Grid.Pathfind(Position, MyConcrete.Position, IsPassable, out Vector2Int next);
@@ -206,55 +188,58 @@ public class EntityCustomer : EntityBase
     {
         if (!IsMoving)
         {
-            for (int i = 0; i < getTiles.AllRegisters.Count; i++)
+            // Check for registers with no customers
+            if (Register == null)
             {
-                if (getTiles.AllRegisters[i].GetCustomer() == null && GetEmployees.hiredFronts.Count > 0)
+                // I have no register, look for register
+                for (int i = 0; i < getTiles.AllRegisters.Count; i++)
                 {
-                    Register = getTiles.AllRegisters[i];
-                    Register.SetCustomer(this);
-                    break;
-                }
-                else
-                {
-                    // Go to customer
-                    if ((getTiles.AllRegisters[i].GetCustomer().Position - getTiles.AllRegisters[i].Position).magnitude < Range)
+                    if (getTiles.AllRegisters[i].GetCustomer() == null)
                     {
-                        if ((Position - getTiles.AllRegisters[i].GetCustomer().Position).magnitude < Range)
+                        // This register does not have a customer, set it as mine
+                        Register = getTiles.AllRegisters[i];
+                    }
+                    else 
+                    {
+                        // This register is occupied, go to the customer
+                        EntityCustomer getCustomer = Register.GetCustomer();
+                        Vector2Int adjustPos = new Vector2Int(getCustomer.Position.x, getCustomer.Position.y - 1);
+                        
+                        if (Grid.HasEntity<EntityCustomer>(adjustPos))
                         {
-                            // Do nothing
-                            break;
+                            // Find empty spot
+                            Vector2Int newPos = GoToLinePos(adjustPos);
                         }
-                        else
+                        
+                        // Go behind customer
+                        bool found = Grid.Pathfind(Position, adjustPos, IsPassable, out Vector2Int next);
+                        if (found)
                         {
-                            bool found = Grid.Pathfind(Position, new Vector2Int(getTiles.AllRegisters[i].GetCustomer().Position.x, getTiles.AllRegisters[i].GetCustomer().Position.y - 1), IsPassable, out Vector2Int next);
-                            if (found)
-                            {
-                                Move(next, Speed);
-                            }
+                            Move(next, Speed);
                         }
                     }
                 }
             }
-
-            if (Register == null)
-            {
-                // Do nothing, wait for register
-            }
-            else if ((Position - Register.Position).magnitude < Range)
-            {
-                CurrentState = State.DisplayText;
-                UnityEngine.Debug.LogWarning("At register");
-            }
-            else
-            {
-                bool found = Grid.Pathfind(Position, Register.Position, IsPassable, out Vector2Int next);
-                if (found)
-                {
-                    Move(next, Speed);
-                }
-            }
         }
     }
+
+    //private Vector2Int GoToLinePos(Vector2Int position) 
+    //{
+    //    if (Grid.HasEntity<EntityCustomer>(position))
+    //    {
+    //        EntityBase[] entitiesHere = Grid.GetEntities<EntityBase>(position);
+    //        EntityCustomer newCustomer = null;
+    //        for (int i = 0; i < entitiesHere.Length; i++)
+    //        {
+    //            if (entitiesHere[i] is EntityCustomer)
+    //            {
+    //                newCustomer = entitiesHere[i] as EntityCustomer;
+    //            }
+    //        }
+    //        Vector2Int newPos = new Vector2Int(position.x, position.y - 1);
+    //        return MoveInLine(newPos, newCustomer);
+    //    }
+    //}
 
     private void OnDisplayText()
     {
@@ -305,8 +290,8 @@ public class EntityCustomer : EntityBase
                     // Go to chair
                     Destroy(MyTextBubble);
 
-
                     CurrentState = State.GoingToEmptyChair;
+
                     TextWatch.Stop();
                     TextWatch.Reset();
                 }
@@ -551,9 +536,20 @@ public class EntityCustomer : EntityBase
     {
         // Customers can only walk on:
         // Concrete, Foundation, Furnitures
-        if (Grid.HasPriority(position, EntityPriority.Foundations) ||
+        if (Grid.HasPriority(position, EntityPriority.Characters))
+        {
+            return false;
+        }
+        else if (Grid.HasPriority(position, EntityPriority.Buildings))
+        {
+            return false;
+        }
+        else if (Grid.HasPriority(position, EntityPriority.Counters))
+        {
+            return false;
+        }
+        else if (Grid.HasPriority(position, EntityPriority.Foundations) ||
             Grid.HasPriority(position, EntityPriority.Furniture) ||
-            Grid.HasPriority(position, EntityPriority.Characters) ||
             Grid.HasEntity<EntityConcrete>(position)
             )
         {

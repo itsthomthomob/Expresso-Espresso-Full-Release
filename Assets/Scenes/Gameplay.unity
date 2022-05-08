@@ -36905,7 +36905,7 @@ MonoBehaviour:
   totalCustomers: 0
   spawnedCustomers: []
   allCustomers: []
-  spawnLimit: 10
+  spawnLimit: 5
   AllCustomers: 0
   getWeather: {fileID: 837644324}
   allConcrete: []

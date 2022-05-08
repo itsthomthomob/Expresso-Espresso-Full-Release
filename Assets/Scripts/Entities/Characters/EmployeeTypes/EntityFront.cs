@@ -176,7 +176,7 @@ public class EntityFront : EntityBase
                 myRegister = Grid.FindNearestEntity<EntityRegister>(Position);
                 UnityEngine.Debug.Log("Can't find register");
             }
-            else if ((Position - myRegister.Position).magnitude < 2)
+            else if (Position == new Vector2Int(myRegister.Position.x, myRegister.Position.y + 1))
             {
                 CurrentState = State.WaitForCustomer;
                 UnityEngine.Debug.LogWarning("At register");
