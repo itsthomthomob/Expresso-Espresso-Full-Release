@@ -151,7 +151,6 @@ public class EntitySupport : EntityBase
                         if (!Grid.HasPriority(new Vector2Int(register.Position.x - 1, register.Position.y + 1), EntityPriority.Buildings))
                         {
                             Move(new Vector2Int(register.Position.x + 1, register.Position.y + 1), 0f);
-                            Debug.Log("Employee unstuck");
                         }
                         else
                         {
@@ -194,12 +193,10 @@ public class EntitySupport : EntityBase
             if (Roaster == null)
             {
                 CurrentState = State.TravelToBrewer;
-                Debug.LogWarning("No Roaster Found");
             }
             else if ((Position - Roaster.Position).magnitude < 1.5f)
             {
                 CurrentState = State.FillRoaster;
-                Debug.LogWarning("At roaster");
             }
             else
             {
@@ -210,7 +207,6 @@ public class EntitySupport : EntityBase
                 }
                 else
                 {
-                    Debug.LogWarning("Finished State");
 
                     CurrentState = State.FillRoaster;
                 }
@@ -220,13 +216,11 @@ public class EntitySupport : EntityBase
 
     private void OnFillRoaster()
     {
-        Debug.Log("Fill roaster?");
 
         if (Roaster != null)
         {
             if (!Roaster.isFilling)
             {
-                Debug.Log("Roaster is not filling");
                 // not filling
                 if (Roaster.IsBelowFillThreshold())
                 {
@@ -256,12 +250,10 @@ public class EntitySupport : EntityBase
             if (Brewer == null)
             {
                 CurrentState = State.TravelToEspresso;
-                Debug.LogWarning("No Brewer Found");
             }
             else if ((Position - Brewer.Position).magnitude < 1.5f)
             {
                 CurrentState = State.FillBrewer;
-                Debug.LogWarning("At Brewer");
             }
             else
             {
@@ -272,7 +264,6 @@ public class EntitySupport : EntityBase
                 }
                 else
                 {
-                    Debug.LogWarning("Finished State");
 
                     CurrentState = State.FillBrewer;
                 }
@@ -282,18 +273,15 @@ public class EntitySupport : EntityBase
 
     private void OnFillBrewer()
     {
-        Debug.Log("Fill brewer?");
 
         if (Brewer != null)
         {
             if (!Brewer.isFilling)
             {
-                Debug.Log("Brewer is not filling");
                 // not filling
                 if (Brewer.IsBelowFillThreshold())
                 {
                     // not filling and below threshold
-                    Debug.Log("Brewer roaster");
                     Brewer.StartFilling();
                 }
                 else
@@ -318,12 +306,10 @@ public class EntitySupport : EntityBase
             if (Espresso == null)
             {
                 CurrentState = State.TravelToRoaster;
-                Debug.LogWarning("No Espresso Found");
             }
             else if ((Position - Espresso.Position).magnitude < 1.5f)
             {
                 CurrentState = State.FillEspresso;
-                Debug.LogWarning("At Espresso");
             }
             else
             {
@@ -334,8 +320,6 @@ public class EntitySupport : EntityBase
                 }
                 else
                 {
-                    Debug.LogWarning("Finished State");
-
                     CurrentState = State.FillEspresso;
                 }
             }

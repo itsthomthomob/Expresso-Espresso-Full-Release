@@ -544,10 +544,44 @@ public class EntityCustomer : EntityBase
                 // In range of coffee item, pick it up
                 MyCoffee.transform.position = gameObject.transform.position;
                 MyCoffee.transform.SetParent(this.transform);
-                EntityChairRoundGrey chair = MyChair as EntityChairRoundGrey;
-                chair.SetMyCustomer(null);
-                CurrentState = State.LeavingCafe;
-                UnityEngine.Debug.LogWarning("At coffee");
+                if (MyChair != null)
+                {
+                    if (MyChair.Name == "Round Grey Chair")
+                    {
+                        EntityChairRoundGrey chair = MyChair as EntityChairRoundGrey;
+                        chair.SetMyCustomer(null);
+                        CurrentState = State.LeavingCafe;
+                        UnityEngine.Debug.LogWarning("At coffee");
+                    }
+                    else if (MyChair.Name == "Red Chair")
+                    {
+                        EntityChairRed chair = MyChair as EntityChairRed;
+                        chair.SetMyCustomer(null);
+                        CurrentState = State.LeavingCafe;
+                        UnityEngine.Debug.LogWarning("At coffee");
+                    }
+                    else if (MyChair.Name == "Round Chair")
+                    {
+                        EntityChairRough chair = MyChair as EntityChairRough;
+                        chair.SetMyCustomer(null);
+                        CurrentState = State.LeavingCafe;
+                        UnityEngine.Debug.LogWarning("At coffee");
+                    }
+                    else if (MyChair.Name == "Grey Chair")
+                    {
+                        EntityChairSquareGrey chair = MyChair as EntityChairSquareGrey;
+                        chair.SetMyCustomer(null);
+                        CurrentState = State.LeavingCafe;
+                        UnityEngine.Debug.LogWarning("At coffee");
+                    }
+                    else if (MyChair.Name == "Square Chair") 
+                    {
+                        EntityChairSmooth chair = MyChair as EntityChairSmooth;
+                        chair.SetMyCustomer(null);
+                        CurrentState = State.LeavingCafe;
+                        UnityEngine.Debug.LogWarning("At coffee");
+                    }
+                }
             }
             else
             {

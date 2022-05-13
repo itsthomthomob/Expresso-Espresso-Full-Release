@@ -272,17 +272,33 @@ public class TileConstruction : MonoBehaviour
                         if (SelectedEntities[i].Name != "GhostEntity")
                         {
                             SelectedEntities[i].GetComponent<Image>().material = null;
-                            if (Grid.GetLastEntity<EntityBase>(SelectedEntities[i].Position) is EntityBarista ||
-                                Grid.GetLastEntity<EntityBase>(SelectedEntities[i].Position) is EntitySupport ||
-                                Grid.GetLastEntity<EntityBase>(SelectedEntities[i].Position) is EntityFront ||
-                                Grid.GetLastEntity<EntityBase>(SelectedEntities[i].Position) is EntityCustomer ||
+                            if (
                                 Grid.GetLastEntity<EntityBase>(SelectedEntities[i].Position) is GhostEntity)
                             {
 
                             }
                             else 
-                            { 
-                                BuildTileAt(SelectedEntities[i].Position); 
+                            {
+                                if (Grid.GetLastEntity<EntityBase>(SelectedEntities[i].Position).Priority == EntityPriority.Characters)
+                                {
+                                    // There's grass and an entity, build under character
+                                    EntityBase[] allCurEntities = Grid.GetEntities<EntityBase>(SelectedEntities[i].Position);
+
+                                    for (int j = 0; j < allCurEntities.Length; j++)
+                                    {
+                                        if (allCurEntities[j].Priority == EntityPriority.Characters)
+                                        {
+                                            // Characters are always on top of foundation and terrain entities
+                                            Debug.Log("Character is at: " + allCurEntities[j].Position);
+                                            BuildTileAt(allCurEntities[j - 1].Position);
+                                            break;
+                                        }
+                                    }
+                                }
+                                else 
+                                { 
+                                    BuildTileAt(SelectedEntities[i].Position); 
+                                }
                             }
                         }
                     }

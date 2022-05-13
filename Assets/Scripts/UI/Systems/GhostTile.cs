@@ -227,6 +227,7 @@ public class GhostTile : MonoBehaviour
                 ghostEntity.SetGhostSprite(Resources.Load<Sprite>("Sprites/Tiles/Furniture/rred chair_front") as Sprite);
                 break;
             case TileConstruction.CurrentTileState.None:
+                ghostEntity.SetGhostSprite(Resources.Load<Sprite>("Sprites/Tiles/Transparent") as Sprite);
                 break; 
             default:
                 break; 

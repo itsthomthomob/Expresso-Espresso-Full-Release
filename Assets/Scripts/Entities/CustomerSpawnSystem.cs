@@ -13,9 +13,12 @@ public class CustomerSpawnSystem : MonoBehaviour
     public List<EntityCustomer> allCustomers = new List<EntityCustomer>();
 
     [Header("Spawn Modifiers")]
-    public int StartingCustomers = 5;
-    public int customerAmount;
-    public int spawnChance;
+    public int SpawnAmount = 5;
+    public int totalCustomersInt;
+    public int LevelZeroChance;
+    public int LevelOneChance;
+    public int LevelTwoChance;
+    public int LevelThreeChance;
     public bool spawnedCustomers;
     WeatherManager getWeather;
     CafeEconomySystem getEconomy;
@@ -54,14 +57,15 @@ public class CustomerSpawnSystem : MonoBehaviour
 
     private void SpawnCustomers() 
     {
-        for (int i = 0; i < StartingCustomers; i++)
+        for (int i = 0; i < SpawnAmount; i++)
         {
-            customerAmount += 1;
+            totalCustomersInt += 1;
             int index = UnityEngine.Random.Range(0, allConcrete.Length);
             EntityCustomer newCustomer = Grid.Create<EntityCustomer>(allConcrete[index].Position);
             allCustomers.Add(newCustomer);
         }
         spawnedCustomers = true;
+        UnityEngine.Debug.Log("Spawning customers...");
     }
 
     private void CustomerGenerator() 
@@ -81,64 +85,98 @@ public class CustomerSpawnSystem : MonoBehaviour
             {
                 if (SpawnWatch.Elapsed >= new TimeSpan(0, 0, 7))
                 {
-                    int chance = UnityEngine.Random.Range(0, 100);
-                    if (chance > spawnChance)
+                    UnityEngine.Debug.Log("Deciding to spawn customer");
+                    int chance = UnityEngine.Random.Range(0, 10);
+                    if (chance <= LevelZeroChance)
                     {
+                        spawnedCustomers = false;
+
                         if (spawnedCustomers == true)
                         {
                             SpawnCustomers();
                             spawnedCustomers = false;
+                            SpawnWatch.Restart();
                         }
                     }
-                    SpawnWatch.Restart();
+                    else 
+                    {
+                        UnityEngine.Debug.Log("Not spawning, " + chance);
+                        SpawnWatch.Restart();
+                    }
                 }
             }
-            else if (getLevel.StoreLevel > 0 || getLevel.StoreLevel == 3) 
+            if (getLevel.StoreLevel == 1 ||
+                getLevel.StoreLevel == 2 ||
+                getLevel.StoreLevel == 3 ) 
             {
                 if (SpawnWatch.Elapsed >= new TimeSpan(0, 0, 5))
                 {
-                    int chance = UnityEngine.Random.Range(0, 100);
-                    if (chance > spawnChance)
+                    UnityEngine.Debug.Log("Deciding to spawn customer");
+                    int chance = UnityEngine.Random.Range(0, 10);
+                    if (chance <= LevelOneChance)
                     {
+                        spawnedCustomers = false;
                         if (spawnedCustomers == true)
                         {
                             SpawnCustomers();
+                            SpawnWatch.Restart();
                             spawnedCustomers = false;
                         }
                     }
-                    SpawnWatch.Restart();
+                    else 
+                    {
+                        UnityEngine.Debug.Log("Not spawning, " + chance);
+                        SpawnWatch.Restart();
+                    }
                 }
             }
-            else if (getLevel.StoreLevel == 4)
+            if (getLevel.StoreLevel == 4)
             {
                 if (SpawnWatch.Elapsed >= new TimeSpan(0, 0, 3))
                 {
-                    int chance = UnityEngine.Random.Range(0, 100);
-                    if (chance > spawnChance)
+                    UnityEngine.Debug.Log("Deciding to spawn customer");
+                    int chance = UnityEngine.Random.Range(0, 10);
+                    if (chance <= LevelTwoChance)
                     {
+                        spawnedCustomers = false;
+
                         if (spawnedCustomers == true)
                         {
                             SpawnCustomers();
+                            SpawnWatch.Restart();
                             spawnedCustomers = false;
                         }
                     }
-                    SpawnWatch.Restart();
+                    else 
+                    {
+                        UnityEngine.Debug.Log("Not spawning, " + chance);
+                        SpawnWatch.Restart();
+                    }
                 }
             }
-            else if (getLevel.StoreLevel == 5)
+            if (getLevel.StoreLevel == 5)
             {
                 if (SpawnWatch.Elapsed >= new TimeSpan(0, 0, 2))
                 {
-                    int chance = UnityEngine.Random.Range(0, 100);
-                    if (chance > spawnChance)
+                    UnityEngine.Debug.Log("Deciding to spawn customer");
+                    int chance = UnityEngine.Random.Range(0, 10);
+                    if (chance <= LevelThreeChance)
                     {
+                        spawnedCustomers = false;
+
                         if (spawnedCustomers == true)
                         {
                             SpawnCustomers();
+                            SpawnWatch.Restart();
                             spawnedCustomers = false;
                         }
                     }
-                    SpawnWatch.Restart();
+                    else 
+                    {
+                        UnityEngine.Debug.Log("Not spawning, " + chance);
+
+                        SpawnWatch.Restart();
+                    }
                 }
             }
         }

@@ -69,6 +69,6 @@ public class EntityChairRough : EntityBase
     {
         SetEntitySprite(Resources.Load<Sprite>("Sprites/Tiles/Transparent"));
         SetEntityPriority(EntityPriority.Furniture);
-        SetEntityName("Rough Chair");
+        SetEntityName("Round Chair");
     }
 }

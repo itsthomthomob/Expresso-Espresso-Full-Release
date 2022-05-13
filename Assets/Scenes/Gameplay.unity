@@ -37172,9 +37172,13 @@ MonoBehaviour:
   Grid: {fileID: 0}
   totalCustomers: 0
   allCustomers: []
-  StartingCustomers: 5
-  customerAmount: 0
-  spawnChance: 60
+  SpawnAmount: 5
+  totalCustomersInt: 0
+  LevelZeroChance: 3
+  LevelOneChance: 4
+  LevelTwoChance: 6
+  LevelThreeChance: 8
+  LevelFourChance: 0
   spawnedCustomers: 0
   allConcrete: []
 --- !u!114 &837644317
@@ -87012,7 +87016,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1610034673}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.47315294
+  m_Size: 0.47315288
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
