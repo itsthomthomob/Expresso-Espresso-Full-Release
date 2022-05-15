@@ -86,7 +86,7 @@ public class CustomerSpawnSystem : MonoBehaviour
                 if (SpawnWatch.Elapsed >= new TimeSpan(0, 0, 7))
                 {
                     UnityEngine.Debug.Log("Deciding to spawn customer");
-                    int chance = UnityEngine.Random.Range(0, 10);
+                    int chance = UnityEngine.Random.Range(0, 8);
                     if (chance <= LevelZeroChance)
                     {
                         spawnedCustomers = false;
@@ -112,7 +112,7 @@ public class CustomerSpawnSystem : MonoBehaviour
                 if (SpawnWatch.Elapsed >= new TimeSpan(0, 0, 5))
                 {
                     UnityEngine.Debug.Log("Deciding to spawn customer");
-                    int chance = UnityEngine.Random.Range(0, 10);
+                    int chance = UnityEngine.Random.Range(0, 7);
                     if (chance <= LevelOneChance)
                     {
                         spawnedCustomers = false;
@@ -135,7 +135,7 @@ public class CustomerSpawnSystem : MonoBehaviour
                 if (SpawnWatch.Elapsed >= new TimeSpan(0, 0, 3))
                 {
                     UnityEngine.Debug.Log("Deciding to spawn customer");
-                    int chance = UnityEngine.Random.Range(0, 10);
+                    int chance = UnityEngine.Random.Range(0, 7);
                     if (chance <= LevelTwoChance)
                     {
                         spawnedCustomers = false;
@@ -159,7 +159,7 @@ public class CustomerSpawnSystem : MonoBehaviour
                 if (SpawnWatch.Elapsed >= new TimeSpan(0, 0, 2))
                 {
                     UnityEngine.Debug.Log("Deciding to spawn customer");
-                    int chance = UnityEngine.Random.Range(0, 10);
+                    int chance = UnityEngine.Random.Range(0, 6);
                     if (chance <= LevelThreeChance)
                     {
                         spawnedCustomers = false;

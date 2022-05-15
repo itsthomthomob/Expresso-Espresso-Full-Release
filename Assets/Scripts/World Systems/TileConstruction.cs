@@ -210,8 +210,34 @@ public class TileConstruction : MonoBehaviour
                                 // dont build furniture onto furniture
                             }
                             else 
-                            { 
-                                BuildTileAt(gridPoint);
+                            {
+                                if (curTile == CurrentTileState.S_Barstool ||
+                                        curTile == CurrentTileState.S_Chair1 ||
+                                        curTile == CurrentTileState.S_Chair2 ||
+                                        curTile == CurrentTileState.S_Chair3 ||
+                                        curTile == CurrentTileState.S_Chair4 ||
+                                        curTile == CurrentTileState.S_Counter1 ||
+                                        curTile == CurrentTileState.S_Counter2 ||
+                                        curTile == CurrentTileState.S_Counter3 ||
+                                        curTile == CurrentTileState.S_Table1 ||
+                                        curTile == CurrentTileState.S_Table2 ||
+                                        curTile == CurrentTileState.S_Table3 ||
+                                        curTile == CurrentTileState.S_Table4)
+                                {
+                                    // do not build on walls
+                                    if (Grid.HasPriority(gridPoint, EntityPriority.Buildings))
+                                    {
+                                        // do nothing
+                                    }
+                                    else
+                                    {
+                                        BuildTileAt(Grid.GetLastEntity<EntityBase>(gridPoint).Position);
+                                    }
+                                }
+                                else
+                                {
+                                    BuildTileAt(Grid.GetLastEntity<EntityBase>(gridPoint).Position);
+                                }
                             }
                         }
                     }
@@ -272,8 +298,7 @@ public class TileConstruction : MonoBehaviour
                         if (SelectedEntities[i].Name != "GhostEntity")
                         {
                             SelectedEntities[i].GetComponent<Image>().material = null;
-                            if (
-                                Grid.GetLastEntity<EntityBase>(SelectedEntities[i].Position) is GhostEntity)
+                            if (Grid.GetLastEntity<EntityBase>(SelectedEntities[i].Position) is GhostEntity)
                             {
 
                             }
@@ -295,9 +320,31 @@ public class TileConstruction : MonoBehaviour
                                         }
                                     }
                                 }
+                                else if (Grid.GetLastEntity<EntityBase>(SelectedEntities[i].Position).Priority == EntityPriority.Buildings)
+                                {
+                                    if (curTile == CurrentTileState.S_Barstool ||
+                                        curTile == CurrentTileState.S_Chair1 ||
+                                        curTile == CurrentTileState.S_Chair2 ||
+                                        curTile == CurrentTileState.S_Chair3 ||
+                                        curTile == CurrentTileState.S_Chair4 ||
+                                        curTile == CurrentTileState.S_Counter1 ||
+                                        curTile == CurrentTileState.S_Counter2 ||
+                                        curTile == CurrentTileState.S_Counter3 ||
+                                        curTile == CurrentTileState.S_Table1 ||
+                                        curTile == CurrentTileState.S_Table2 ||
+                                        curTile == CurrentTileState.S_Table3 ||
+                                        curTile == CurrentTileState.S_Table4)
+                                    {
+                                        // do nothing
+                                    }
+                                    else
+                                    {
+                                        BuildTileAt(SelectedEntities[i].Position);
+                                    }
+                                }
                                 else 
-                                { 
-                                    BuildTileAt(SelectedEntities[i].Position); 
+                                {
+                                    BuildTileAt(SelectedEntities[i].Position);
                                 }
                             }
                         }
@@ -510,15 +557,19 @@ public class TileConstruction : MonoBehaviour
         // Replace any entity that isn't concrete, grass, or character
         if (curTile != CurrentTileState.None)
         {
-            EntityBase curEntity = Grid.GetLastEntity<EntityBase>(position);
-            if (curEntity.Priority != EntityPriority.Terrain ||
-                curEntity.Priority != EntityPriority.Characters ||
-                curEntity.Priority != EntityPriority.Foundations)
+            EntityBase[] curEntities = Grid.GetEntities<EntityBase>(position);
+            for (int i = 0; i < curEntities.Length; i++)
             {
-            }
-            else 
-            { 
-                Grid.Destroy(curEntity);
+                if (curEntities[i].Priority == EntityPriority.Terrain ||
+                    curEntities[i].Priority == EntityPriority.Characters ||
+                    curEntities[i].Priority == EntityPriority.Foundations)
+                {
+                    break;
+                }
+                else 
+                {
+                    Grid.Destroy(curEntities[i]);
+                }
             }
         }
 
